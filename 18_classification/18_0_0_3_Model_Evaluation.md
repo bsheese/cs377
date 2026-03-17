@@ -70,7 +70,7 @@ A high F1-score indicates that both precision and recall are reasonably high, ma
 
 In addition to accuracy, precision, recall, and F1-score, another common way to evaluate a classification model is with the **Receiver Operating Characteristic (ROC) curve** and the **Area Under the Curve (AUC)**.
 
-- **ROC Curve**: The ROC curve plots the **true positive rate (recall)** against the **false positive rate** (FPR) at various threshold values. The false positive rate is calculated as:
+- **ROC Curve**: The ROC curve plots the **true positive rate** (also called **recall** or **sensitivity**) against the **false positive rate** (FPR, or **1 - specificity**) at various threshold values. The false positive rate is calculated as:
 
   $$\text{False Positive Rate} = \frac{FP}{FP + TN}$$
 
@@ -121,7 +121,7 @@ Regularization becomes necessary when:
 - There is multicollinearity (high correlation) between the predictor variables, causing instability in the estimated coefficients.
 - We want to simplify the model by reducing the impact of less important variables.
 
-Regularization works by adding a **penalty term** to the loss function (the function the model tries to minimize during training). In logistic regression, this loss function is the **log-likelihood** of the data. The penalty term discourages the model from assigning large weights (coefficients) to the predictor variables unless they significantly improve the model's performance.
+Regularization works by adding a **penalty term** to the loss function (the function the model tries to minimize during training). In logistic regression, the loss function is typically the **negative log-likelihood** (also known as **Log Loss** or **Cross-Entropy**). The penalty term discourages the model from assigning large weights (coefficients) to the predictor variables unless they significantly improve the model's performance.
 
 #### **L2 Regularization (Ridge Regression)**
 
@@ -132,8 +132,8 @@ The **L2 penalty** forces the model to prefer smaller coefficient values. By shr
 **Impact of L2 Regularization**:
 
 - L2 regularization reduces the size of the coefficients without setting them to zero. As a result, the model retains all variables but assigns less weight to those with little explanatory power.
-- When ($\lambda$) is very small (close to 0), regularization has little effect, and the model behaves like ordinary logistic regression.
-- When ($\lambda$) is very large, the coefficients shrink toward 0, leading to a simpler model that may underfit the data.
+- When $\lambda$ is very small (close to 0), regularization has little effect, and the model behaves like ordinary logistic regression.
+- When $\lambda$ is very large, the coefficients shrink toward 0, leading to a simpler model that may underfit the data.
 
 #### **L1 Regularization (Lasso Regression)**
 
@@ -144,14 +144,14 @@ The key difference between L1 and L2 regularization is that L1 regularization ca
 **Impact of L1 Regularization**:
 
 - L1 regularization can result in sparse models where only the most important predictor variables have non-zero coefficients.
-- Like L2 regularization, the larger the ($\lambda$), the stronger the regularization effect.
-- When ($\lambda$) is large, the model may eliminate irrelevant features by setting their coefficients to zero, leading to a simpler model.
+- Like L2 regularization, the larger the $\lambda$, the stronger the regularization effect.
+- When $\lambda$ is large, the model may eliminate irrelevant features by setting their coefficients to zero, leading to a simpler model.
 
 #### **Comparison of L1 and L2 Regularization**
 
 | **Aspect** | **L1 Regularization (Lasso)** | **L2 Regularization (Ridge)** |
 |---|---|---|
-| **Penalty** | Based on the absolute values of coefficients ($\beta_j$) | Based on the squared values of coefficients ($\beta_j^2$) |
+| **Penalty** | Based on the absolute values of coefficients $\beta_j$ | Based on the squared values of coefficients $\beta_j^2$ |
 | **Feature Selection** | Can set coefficients to exactly 0, effectively selecting features | Shrinks coefficients but does not eliminate any variables |
 | **Sparsity** | Tends to produce sparse models (with many zero coefficients) | Does not produce sparse models (all coefficients are small, but non-zero) |
 | **Use Case** | Useful when you believe many features are irrelevant | Useful when you want to retain all features but reduce the influence of less important ones |
@@ -162,16 +162,16 @@ Sometimes, combining the strengths of both L1 and L2 regularization is beneficia
 
 #### **Choosing the Right Regularization Strength**
 
-The regularization strength ($\lambda$) is a hyperparameter that controls how strongly regularization is applied. Selecting the right value for ($\lambda$) is crucial for balancing underfitting and overfitting. A value that is too small may lead to overfitting, while a value that is too large may lead to underfitting.
+The regularization strength $\lambda$ is a hyperparameter that controls how strongly regularization is applied. Selecting the right value for $\lambda$ is crucial for balancing underfitting and overfitting. A value that is too small may lead to overfitting, while a value that is too large may lead to underfitting.
 
-To choose the optimal ($\lambda$), we typically use **cross-validation**, which involves testing the model with different values of ($\lambda$) on different subsets of the data to see which one gives the best performance. Cross-validation helps ensure that the selected model generalizes well to unseen data.
+To choose the optimal $\lambda$, we typically use **cross-validation**, which involves testing the model with different values of $\lambda$ on different subsets of the data to see which one gives the best performance. Cross-validation helps ensure that the selected model generalizes well to unseen data.
 
 #### **Summary of Regularization**
 
 - **L2 Regularization (Ridge)** reduces the size of the coefficients, preventing overfitting while keeping all predictor variables in the model.
 - **L1 Regularization (Lasso)** can set coefficients to zero, effectively performing feature selection and simplifying the model by removing irrelevant predictors.
 - **Elastic Net** combines both L1 and L2 regularization, offering the best of both worlds: feature selection and coefficient shrinkage.
-- The regularization strength ($\lambda$) controls how much regularization is applied, and selecting the right ($\lambda$) through cross-validation is critical for building a robust model.
+- The regularization strength $\lambda$ controls how much regularization is applied, and selecting the right $\lambda$ through cross-validation is critical for building a robust model.
 
 ---
 
@@ -196,13 +196,13 @@ $$\text{AIC} = -2 \log L + 2k$$
 
 Where:
 
-- ($\log L$) is the log-likelihood of the model (i.e., how well the model fits the data).
-- ($k$) is the number of parameters in the model (the number of predictors plus the intercept).
+- $\log L$ is the log-likelihood of the model (i.e., how well the model fits the data).
+- $k$ is the number of parameters in the model (the number of predictors plus the intercept).
 
 **How AIC Works**:
 
-- The **first term** ($-2 \log L$) rewards models that fit the data well (i.e., models with higher log-likelihood values).
-- The **second term** ($2k$) penalizes models that are more complex (i.e., models with more parameters).
+- The **first term** $-2 \log L$ rewards models that fit the data well (i.e., models with higher log-likelihood values).
+- The **second term** $2k$ penalizes models that are more complex (i.e., models with more parameters).
 
 A lower AIC value indicates a better model. When comparing multiple models, the one with the **lowest AIC** is typically preferred because it strikes a balance between accuracy and simplicity. However, AIC does not tell you how well a model performs in an absolute sense—it only provides a way to compare models relative to one another.
 
@@ -214,14 +214,14 @@ $$\text{BIC} = -2 \log L + \log(n) \cdot k$$
 
 Where:
 
-- ($\log L$) is the log-likelihood of the model.
-- ($k$) is the number of parameters in the model.
-- ($n$) is the number of observations in the dataset.
+- $\log L$ is the log-likelihood of the model.
+- $k$ is the number of parameters in the model.
+- $n$ is the number of observations in the dataset.
 
 The difference between AIC and BIC lies in the **penalty term**:
 
-- In AIC, the penalty is ($2k$).
-- In BIC, the penalty is ($\log(n) \cdot k$), which means that BIC penalizes more heavily for model complexity when the dataset size ($n$) is large.
+- In AIC, the penalty is $2k$.
+- In BIC, the penalty is $\log(n) \cdot k$, which means that BIC penalizes more heavily for model complexity when the dataset size $n$ is large.
 
 **When to Use BIC**:
 
@@ -230,17 +230,17 @@ The difference between AIC and BIC lies in the **penalty term**:
 
 #### **Cross-Validation**
 
-**Cross-validation** is a robust and widely used method for model selection and evaluation, particularly in machine learning. Unlike AIC and BIC, which are based on information criteria, cross-validation is based on empirical testing of the model's performance on different subsets of the data.
+**Cross-validation** is a robust and widely used method for model selection and evaluation, particularly in machine learning. While AIC and BIC provide an in-sample estimate of model quality based on information criteria, cross-validation offers a more robust, empirical measure of how the model generalizes to new, unseen data by testing it on different subsets of the dataset.
 
 ##### **K-Fold Cross-Validation**
 
-In **K-fold cross-validation**, the data is randomly split into ($K$) equal-sized folds (or subsets). The model is trained on ($K-1$) folds and tested on the remaining fold. This process is repeated ($K$) times, with each fold being used as the test set once. The model's performance is then averaged over the ($K$) iterations to give an overall measure of its effectiveness.
+In **K-fold cross-validation**, the data is randomly split into $K$ equal-sized folds (or subsets). The model is trained on $K-1$ folds and tested on the remaining fold. This process is repeated $K$ times, with each fold being used as the test set once. The model's performance is then averaged over the $K$ iterations to give an overall measure of its effectiveness.
 
 The steps for K-fold cross-validation are as follows:
 
-1. Split the dataset into ($K$) folds.
-2. For each fold ($i$):
-   - Train the model on ($K-1$) folds (the training set).
+1. Split the dataset into $K$ folds.
+2. For each fold $i$:
+   - Train the model on $K-1$ folds (the training set).
    - Test the model on the remaining fold (the test set).
    - Record the performance metric (e.g., accuracy, AUC).
 3. Compute the average performance across all folds.
@@ -253,7 +253,7 @@ The steps for K-fold cross-validation are as follows:
 
 ##### **Leave-One-Out Cross-Validation (LOOCV)**
 
-**Leave-One-Out Cross-Validation (LOOCV)** is a special case of K-fold cross-validation where ($K$) is equal to the number of observations in the dataset (i.e., each fold contains only one observation). This means the model is trained on all but one observation and tested on the remaining one. LOOCV provides a more thorough evaluation of the model but can be computationally expensive for large datasets.
+**Leave-One-Out Cross-Validation (LOOCV)** is a special case of K-fold cross-validation where $K$ is equal to the number of observations in the dataset (i.e., each fold contains only one observation). This means the model is trained on all but one observation and tested on the remaining one. LOOCV provides a more thorough evaluation of the model but can be computationally expensive for large datasets.
 
 #### **When to Use AIC, BIC, or Cross-Validation**
 
@@ -330,7 +330,7 @@ For each class $k$, softmax regression calculates a score based on the input fea
 
 In softmax regression:
 
-- Each class has its own set of coefficients ($\beta_k$) that determine the relationship between the predictor variables and the probability of that class.
+- Each class has its own set of coefficients $\beta_k$ that determine the relationship between the predictor variables and the probability of that class.
 - The denominator ensures that the probabilities of all classes sum to 1.
 - The predicted class is the one with the highest probability.
 
