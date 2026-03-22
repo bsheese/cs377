@@ -219,11 +219,11 @@ To maximize the log-likelihood function, we need an optimization algorithm that 
 Here's how gradient descent works:
 
 1.  Compute the Gradient: The gradient is a vector of partial derivatives that tells us the direction and rate of change of the log-likelihood function with respect to each coefficient. In simple terms, the gradient tells us how to change the coefficients to increase the likelihood of the observed data.
-2.  Update the Coefficients: The coefficients ($\beta_0, \beta_1, \ldots, \beta_k$) are updated by moving in the direction of the gradient. The size of each step is controlled by a parameter called the **learning rate** ($\alpha$):
+2.  Update the Coefficients: The coefficients ($\beta_0, \beta_1, \ldots, \beta_k$) are updated by moving in the direction of the gradient. The size of each step is controlled by a parameter called the learning rate ($\alpha$):
 
-    $$ \beta_j = \beta_j + \alpha \frac{\partial \log L}{\partial \beta_j} $$
+    $$\beta_j = \beta_j + \alpha \frac{\partial \log L}{\partial \beta_j}$$
 
-    This equation updates each coefficient ($\beta_j$) by taking a small step in the direction of the gradient.
+    This equation updates each coefficient $$\beta_j$$ by taking a small step in the direction of the gradient.
 3.  Repeat Until Convergence: Gradient descent repeatedly updates the coefficients until the changes become very small, meaning that we've reached the maximum likelihood and the model has "converged." At this point, the coefficients are optimized.
 
 In practice, gradient descent continues updating the coefficients until one of the following stopping criteria is met:
