@@ -65,7 +65,7 @@ Let's say we want to predict whether a customer will buy a product (1 = yes, 0 =
 
 We could use logistic regression to model the probability of the customer making a purchase. The equation might look something like this:
 
-$$ \log\left(\frac{p}{1 - p}\right) = \beta_0 + \beta_1 (\text{spend}) + \beta_2 (\text{visits}) $$
+$$\log\left(\frac{p}{1 - p}\right) = \beta_0 + \beta_1 (\text{spend}) + \beta_2 (\text{visits})$$
 
 Where:
 
@@ -89,15 +89,15 @@ Before we get into the logistic function, it's essential to understand the diffe
 
 *   Probability (p): This refers to the likelihood of an event happening, and it always takes a value between 0 and 1. For example, if you say there is a 0.8 probability that it will rain today, that means you believe there's an 80% chance of rain.
 
-    $$ 0 \leq p \leq 1 $$
+    $$0 \leq p \leq 1$$
 
 *   Odds: The odds of an event happening are defined as the ratio of the probability of the event happening to the probability of the event not happening. In other words, the odds tell you how much more likely the event is to happen compared to it not happening.
 
-    $$ \text{Odds} = \frac{p}{1 - p} $$
+    $$\text{Odds} = \frac{p}{1 - p}$$
 
     For example, if the probability of rain is 0.8, the odds are:
 
-    $$ \frac{0.8}{1 - 0.8} = 4 $$
+    $$\frac{0.8}{1 - 0.8} = 4$$
 
     This means the odds of rain are 4 to 1 in favor of rain.
 
@@ -107,7 +107,7 @@ The heart of logistic regression is the logistic function, also called the sigmo
 
 The logistic function is given by the following formula:
 
-$$ p = \frac{1}{1 + e^{-z}} $$
+$$p = \frac{1}{1 + e^{-z}}$$
 
 Where:
 
