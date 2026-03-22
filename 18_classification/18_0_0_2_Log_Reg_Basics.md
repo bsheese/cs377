@@ -21,7 +21,7 @@ At its core, logistic regression is quite similar to linear regression in that i
 
 In a linear regression model, the output is calculated as:
 
-\[y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k\]
+$$y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k$$
 
 However, in logistic regression, the output needs to be a probability, which means it must be between 0 and 1. To achieve this, logistic regression uses a special function called the **logistic function** (or **sigmoid function**), which transforms any value into a number between 0 and 1.
 
