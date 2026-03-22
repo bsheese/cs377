@@ -47,7 +47,7 @@ The logistic function squashes the output of the linear equation into the range 
 
 2.  Linear Relationship in the Log-Odds: Although logistic regression predicts probabilities, it is still considered a **linear model** because the relationship between the predictor variables and the **log-odds** of the outcome is linear. The log-odds is simply the logarithm of the odds of the event happening, and the logistic regression equation can be written as:
 
-    $$ \log\left(\frac{p}{1 - p}\right) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k $$
+    $$\log\left(\frac{p}{1 - p}\right) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k$$
 
     In this equation:
     *   The left-hand side represents the log-odds of the event happening.
