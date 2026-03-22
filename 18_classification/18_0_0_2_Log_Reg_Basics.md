@@ -27,27 +27,27 @@ However, in logistic regression, the output needs to be a probability, which mea
 
 The logistic function is defined as:
 
-\[p = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k)}}\]
+$$p = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k)}}$$
 
 Where:
 
-*   \( p \) is the predicted probability of the event occurring (e.g., the probability of the email being spam).
-*   \( \beta_0 \) is the intercept (the baseline value of the logit when all predictors are 0).
-*   \( \beta_1, \beta_2, \ldots, \beta_k \) are the coefficients that represent the impact of each predictor variable (\( X_1, X_2, \ldots, X_k \)) on the outcome.
+*   $$p$$ is the predicted probability of the event occurring (e.g., the probability of the email being spam).
+*   $$\beta_0$$ is the intercept (the baseline value of the logit when all predictors are 0).
+*   $$\beta_1, \beta_2, \ldots, \beta_k$$ are the coefficients that represent the impact of each predictor variable $$X_1, X_2, \ldots, X_k$$ on the outcome.
 
 The logistic function squashes the output of the linear equation into the range [0, 1], which makes it ideal for predicting probabilities.
 
 ---
 
-### **Key Features of Logistic Regression**
+## Key Features of Logistic Regression
 
 1.  **Prediction of Probabilities**: Logistic regression doesn't predict classes directly (0 or 1). Instead, it predicts a probability value between 0 and 1, which tells us how likely the event is to occur. We can then use a threshold (usually 0.5) to classify the event:
-    *   If \( p \geq 0.5 \), classify the observation as class 1.
-    *   If \( p < 0.5 \), classify the observation as class 0.
+    *   If $$p \geq 0.5$$, classify the observation as class 1.
+    *   If $$p < 0.5$$, classify the observation as class 0.
 
 2.  **Linear Relationship in the Log-Odds**: Although logistic regression predicts probabilities, it is still considered a **linear model** because the relationship between the predictor variables and the **log-odds** of the outcome is linear. The log-odds is simply the logarithm of the odds of the event happening, and the logistic regression equation can be written as:
 
-    \[    \log\left(\frac{p}{1 - p}\right) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k    \]
+    $$   \log\left(\frac{p}{1 - p}\right) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k   $$
 
     In this equation:
     *   The left-hand side represents the **log-odds** of the event happening.
