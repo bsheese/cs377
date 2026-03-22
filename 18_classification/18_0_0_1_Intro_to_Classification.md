@@ -12,9 +12,10 @@ This brings us to an important distinction in how machine learning models commun
 
 ## **Binary vs. Multiclass Classification**
 
-Classification tasks come in varying degrees of complexity, largely dictated by the number of possible outcomes. The simplest form deals in ultimatums: an email is either spam or it is not; a credit card transaction is either fraudulent or legitimate. Practitioners refer to this as binary classification, where the model is forced to choose between exactly two mutually exclusive paths. Yet, the real world is rarely so dualistic. When an algorithm is asked to identify handwritten digits, it must choose among ten distinct possibilities. When diagnosing plant diseases from photographs, it might have to choose among dozens. This expanded approach, known as multiclass classification, requires the model to juggle numerous categories simultaneously, weighing the evidence for each before declaring a winner.
+Classification tasks come in varying degrees of complexity, largely dictated by the number of possible outcomes. The simplest form deals in ultimatums: an email is either spam or it is not; a credit card transaction is either fraudulent or legitimate. Practitioners refer to this as binary classification, where the model is forced to choose between exactly two mutually exclusive paths. Yet, the real world is rarely so dualistic. When an algorithm is asked to identify handwritten digits, it must choose among ten distinct possibilities. When diagnosing plant diseases from photographs, it might have to choose among dozens. This expanded approach, known as multiclass classification, requires the model to juggle numerous categories simultaneously, weighing the evidence for each before making a classification.
 
-Because classification and regression both rely on feeding historical data into an algorithm to predict an outcome, it is tempting to wonder why we cannot simply use the same mathematical tools for both. Why not just use a standard linear regression line to separate the spam from the important emails? The reason lies in the constraints of reality.
+
+Because both classification and regression involve feeding historical data into an algorithm to forecast an outcome, it is perfectly reasonable to wonder why we cannot rely on the identical mathematical machinery for both tasks. If a standard linear regression line is so effective at predicting continuous variables, why not simply repurpose it to separate spam from legitimate emails? The answer lies in a fundamental mismatch between the geometry of a straight line and the strict, bounded nature of probabilities.
 
 Regression models are built to predict continuous, unbounded numbers. If you fit a straight line through a set of data to predict house prices, that line stretches infinitely in both directions. But probabilities are strictly bound between zero and one hundred percent. If we force a straight regression line to predict a binary outcome, the line will inevitably extend beyond the realm of logical possibility, perhaps suggesting a negative twenty percent chance of rain, or a one hundred and fifty percent chance that a tumor is malignant. Because linear regression cannot understand these absolute boundaries, it is mathematically inappropriate for classification.
 
@@ -29,6 +30,8 @@ Because of this trap, data scientists rarely rely on accuracy alone. Instead, th
 ---
 
 ## **Some Classification Examples**
+
+To give you a sense of where we are going with all of this: 
 
 *   **Medical Diagnosis:** Identifying disease presence based on biomarkers. We will focus on predicting breast cancer in our exercises. 
 *   **Spam Detection:** Filtering harmful or irrelevant content from communication channels.
