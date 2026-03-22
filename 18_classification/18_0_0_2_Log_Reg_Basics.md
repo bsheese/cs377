@@ -1,55 +1,33 @@
-# Logistic Regression Video
-
-Required video: [StatQuest introduction to logistic regression](https://www.youtube.com/watch?v=yIYKR4sgzI8&list=PLblh5JKOoLUKxzEP5HA2d-Li7IJkHfXSe&index=1) A transcript of the video is provided at the bottom of this page.
-
-
-
+# Logistic Regression 
+Required video: [StatQuest introduction to logistic regression](https://www.youtube.com/watch?v=yIYKR4sgzI8&list=PLblh5JKOoLUKxzEP5HA2d-Li7IJkHfXSe&index=1)
+Watch the video several times if You have not had courswork on Logistic Regression before. Take notes. Ask us questions. Watch it again. 
 
 ---
 
-# Why Logistic Regression for Classification?
-
-Logistic regression is widely used for classification problems, particularly binary classification, because it models the probability of an observation belonging to a certain class. By applying a transformation called the **logistic function** (also known as the sigmoid function), logistic regression ensures that the predicted probabilities fall between 0 and 1. This is crucial because probabilities must be between 0% and 100%, and logistic regression gives us a straightforward way to estimate this.
-
-
-
-
----
-
-# Understanding Logistic Regression: The Basics
-
----
-
-Logistic regression is a fundamental algorithm in machine learning used for solving **binary classification problems**, where the goal is to predict one of two possible outcomes. While its name includes the word "regression," logistic regression is used for classification tasks, not for predicting continuous values like linear regression.
-
-### **What Does Logistic Regression Do?**
-
-Logistic regression predicts the probability that an observation belongs to one of two classes. Specifically, it models the probability of an event happening, such as whether an email is "spam" or "not spam," or whether a customer will "buy" or "not buy" a product.
+Logistic regression is a fundamental algorithm in machine learning used for solving binary classification problems, where the goal is to predict one of two possible outcomes. While its name includes the word "regression," logistic regression is used for classification tasks, not for predicting continuous values like linear regression. Logistic regression predicts the probability that an observation belongs to one of two classes. Specifically, it models the probability of an event happening, such as whether an email is "spam" or "not spam," or whether a customer will "buy" or "not buy" a product.
 
 For example:
 
 *   In a medical context, we might want to predict whether a patient has a disease (1) or not (0).
 *   In marketing, we might want to predict whether a customer will make a purchase (1) or not (0).
 
-The key idea behind logistic regression is that instead of directly predicting whether something will happen or not (1 or 0), it predicts the **probability** of it happening. If the predicted probability is greater than 0.5, we might predict the event will occur (class 1), and if it's less than 0.5, we predict the event will not occur (class 0).
+The key idea behind logistic regression is that instead of directly predicting whether something will happen or not (1 or 0), it predicts the probability of it happening. If the predicted probability is greater than 0.5, we might predict the event will occur (class 1), and if it's less than 0.5, we predict the event will not occur (class 0).
 
-### **How Does Logistic Regression Work?**
+---
 
-At its core, logistic regression is quite similar to linear regression in that it tries to establish a relationship between the predictor variables (also known as **features**) and the outcome. The difference is that in logistic regression, the outcome is binary (e.g., yes/no, success/failure), and instead of predicting a direct value (as in linear regression), it predicts a probability between 0 and 1.
+## How Does Logistic Regression Work?
 
-In a **linear regression model**, the output is calculated as:
+At its core, logistic regression is quite similar to linear regression in that it tries to establish a relationship between the features and the outcome. The difference is that in logistic regression, the outcome is binary (e.g., yes/no, success/failure), and instead of predicting a direct value (as in linear regression), it predicts a probability between 0 and 1.
 
-\[
-y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k
-\]
+In a linear regression model, the output is calculated as:
 
-However, in **logistic regression**, the output needs to be a probability, which means it must be between 0 and 1. To achieve this, logistic regression uses a special function called the **logistic function** (or **sigmoid function**), which transforms any value into a number between 0 and 1.
+\[y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k\]
+
+However, in logistic regression, the output needs to be a probability, which means it must be between 0 and 1. To achieve this, logistic regression uses a special function called the **logistic function** (or **sigmoid function**), which transforms any value into a number between 0 and 1.
 
 The logistic function is defined as:
 
-\[
-p = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k)}}
-\]
+\[p = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k)}}\]
 
 Where:
 
@@ -59,6 +37,8 @@ Where:
 
 The logistic function squashes the output of the linear equation into the range [0, 1], which makes it ideal for predicting probabilities.
 
+---
+
 ### **Key Features of Logistic Regression**
 
 1.  **Prediction of Probabilities**: Logistic regression doesn't predict classes directly (0 or 1). Instead, it predicts a probability value between 0 and 1, which tells us how likely the event is to occur. We can then use a threshold (usually 0.5) to classify the event:
@@ -67,9 +47,7 @@ The logistic function squashes the output of the linear equation into the range 
 
 2.  **Linear Relationship in the Log-Odds**: Although logistic regression predicts probabilities, it is still considered a **linear model** because the relationship between the predictor variables and the **log-odds** of the outcome is linear. The log-odds is simply the logarithm of the odds of the event happening, and the logistic regression equation can be written as:
 
-    \[
-    \log\left(\frac{p}{1 - p}\right) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k
-    \]
+    \[    \log\left(\frac{p}{1 - p}\right) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k    \]
 
     In this equation:
     *   The left-hand side represents the **log-odds** of the event happening.
