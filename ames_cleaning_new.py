@@ -110,10 +110,6 @@ def load_and_clean_ames(
     # Optional: One-hot encode remaining categoricals
     if one_hot_encode:
         df = pd.get_dummies(df, columns=df.select_dtypes(include='category').columns, drop_first=True)
-    else:
-        # Convert category columns to numeric codes for tree models
-        for col in df.select_dtypes(include='category').columns:
-            df[col] = df[col].cat.codes
     
     return df
 
