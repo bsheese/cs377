@@ -28,6 +28,7 @@ This guide summarizes the key concepts from each part of the regression series. 
 - **Multicollinearity**: When independent variables are highly correlated with each other
 - **Polynomial Features**: Creating squared, cubed, or interaction terms to capture non-linear relationships
 - **Centering/Standardizing**: Subtracting mean and dividing by std to avoid structural multicollinearity with polynomials
+- **Log Transformation**: Applying log() to right-skewed target variable to normalize distribution and improve model fit
 
 *See [Part 2 Notebook](./17_2_4_2_MLR_Ames_Part2_Revised.ipynb) for feature selection methods.*
 
@@ -62,7 +63,7 @@ This guide summarizes the key concepts from each part of the regression series. 
 - **Decision Tree**: Splits data by asking yes/no questions at each node; prone to overfitting
 - **Random Forest (Bagging)**: Ensemble of many decision trees, each trained on a bootstrap sample
 - **Gradient Boosting**: Sequential ensemble where each tree corrects the errors of the previous trees
-- **XGBoost (eXtreme Gradient Boosting**: Optimized implementation of gradient boosting
+- **XGBoost (eXtreme Gradient Boosting)**: Optimized implementation of gradient boosting
 - **HistGradientBoostingRegressor**: sklearn's fast histogram-based gradient boosting that handles categoricals natively
 - **Feature Importance (Impurity-Based)**: Measures how much each feature contributes to error reduction across all trees
 - **Hyperparameters (Tree Models)**: `n_estimators`, `learning_rate`, `max_depth`, `min_samples_leaf`, etc.
@@ -94,6 +95,8 @@ This guide summarizes the key concepts from each part of the regression series. 
 | **Overfitting** | Model learns noise in training data; performs poorly on new data |
 | **Pipeline** | Chain of transformations applied sequentially to data |
 | **R² (R-squared)** | Proportion of variance explained by the model; higher is better |
+| **MSE (Mean Squared Error)** | Average squared difference between predicted and actual values; sensitive to outliers |
+| **RMSE (Root Mean Squared Error)** | Square root of MSE; in same units as the target variable |
 | **StandardScaler** | Transforms features to have mean=0 and std=1 |
 | **Underfitting** | Model is too simple to capture patterns in data |
 | **Variance** | How much model predictions vary with different training data; high variance leads to overfitting |
@@ -115,6 +118,7 @@ This guide summarizes the key concepts from each part of the regression series. 
 5. What does a VIF value greater than 5 indicate? What about greater than 10?
 6. In the context of polynomial features, what is "structural multicollinearity" and how do you prevent it?
 7. Why does the dummy variable trap require us to drop one category when one-hot encoding?
+8. Why do we apply a log transformation to the SalePrice target variable? What problem does it solve?
 
 ### Part 3: Regularization
 
@@ -153,6 +157,7 @@ This guide summarizes the key concepts from each part of the regression series. 
 5. **VIF > 5**: Moderate correlation concerns. **VIF > 10**: Very high correlation, likely problematic.
 6. **Structural multicollinearity**: Created when squaring or cubing un-standardized features (X and X² are now correlated). Prevent by standardizing before creating polynomials.
 7. **Dummy variable trap**: One category column is perfectly predictable from the others (if all are 0, the dropped category must be 1).
+8. **Log transformation**: Applied to right-skewed SalePrice to reduce the effect of extreme values; helps normalize the distribution, improves model fit, and stabilizes variance (especially important for predicting high-value homes)
 
 ### Part 3 Answers
 
