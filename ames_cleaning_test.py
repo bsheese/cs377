@@ -15,8 +15,7 @@ def load_and_clean_ames(
     house_area_threshold: int = 4000,
     fix_garage_year: bool = True,
     add_garage_features: bool = True,
-    one_hot_encode: bool = False,
-    encode_categories_as_codes: bool = True
+    one_hot_encode: bool = False
 ) -> pd.DataFrame:
     """
     Load and clean the Ames Housing dataset.
@@ -28,7 +27,6 @@ def load_and_clean_ames(
         fix_garage_year: Whether to cap garage year built at 2010
         add_garage_features: Whether to create garage_attached and garage_finished flags
         one_hot_encode: Whether to one-hot encode categorical variables
-        encode_categories_as_codes: Whether to encode categories as integer codes (for tree models)
     
     Returns:
         Cleaned DataFrame ready for modeling
@@ -112,10 +110,6 @@ def load_and_clean_ames(
     # Optional: One-hot encode remaining categoricals
     if one_hot_encode:
         df = pd.get_dummies(df, columns=df.select_dtypes(include='category').columns, drop_first=True)
-    elif encode_categories_as_codes:
-        # Convert category columns to numeric codes for tree models
-        for col in df.select_dtypes(include='category').columns:
-            df[col] = df[col].cat.codes
     
     return df
 
