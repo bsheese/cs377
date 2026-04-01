@@ -1,6 +1,5 @@
-
 import ipywidgets as widgets
-from IPython.display import display
+from IPython.display import display, Markdown, clear_output
 import random
 
 class QuizApp:
@@ -18,9 +17,12 @@ class QuizApp:
         # UI Elements
         self.header = widgets.HTML(f"<h2>{self.title}</h2>")
         self.progress = widgets.HTML()
-        self.question_text = widgets.HTML()
+        
+        # Use Output widgets for Math/Markdown support
+        self.question_output = widgets.Output()
+        self.feedback_output = widgets.Output()
+        
         self.options = widgets.RadioButtons(layout={'width': 'max-content'})
-        self.feedback = widgets.HTML()
         
         # Buttons
         self.btn_back = widgets.Button(description="Back", button_style='warning', icon='arrow-left')
@@ -37,10 +39,10 @@ class QuizApp:
         self.ui = widgets.VBox([
             self.header, 
             self.progress, 
-            self.question_text, 
+            self.question_output,  # Markdown/Math will render here
             self.options, 
             self.controls, 
-            self.feedback
+            self.feedback_output   # Markdown/Math will render here
         ])
         
         self.update_ui()
@@ -49,12 +51,16 @@ class QuizApp:
         if self.index < len(self.data):
             q = self.data[self.index]
             
+            # Update Progress and Options
             self.progress.value = f"<b>Question {self.index + 1} of {len(self.data)}</b>"
-            # No hardcoded colors - works in Dark and Light mode
-            self.question_text.value = f"<div style='font-size: 16px; padding: 15px 0;'>{q['question']}</div>"
-            
             self.options.options = self.shuffled_options[self.index]
             
+            # Render Question Text with Math support
+            with self.question_output:
+                clear_output(wait=True)
+                display(Markdown(q['question']))
+            
+            # Logic for answered vs unanswered
             if self.user_answers[self.index] is not None:
                 self.options.value = self.user_answers[self.index]
                 self.options.disabled = True
@@ -66,7 +72,8 @@ class QuizApp:
                 self.options.disabled = False
                 self.btn_submit.disabled = False
                 self.btn_next.disabled = True
-                self.feedback.value = ""
+                with self.feedback_output:
+                    clear_output()
 
             self.btn_back.disabled = (self.index == 0)
         else:
@@ -74,14 +81,20 @@ class QuizApp:
 
     def show_feedback_message(self, selected):
         correct = self.data[self.index]['answer']
-        if selected == correct:
-            self.feedback.value = "<div style='padding: 10px; border-left: 5px solid #28a745;'><b>✅ Correct!</b></div>"
-        else:
-            self.feedback.value = f"<div style='padding: 10px; border-left: 5px solid #dc3545;'><b>❌ Incorrect.</b><br>Correct answer: <b>{correct}</b></div>"
+        with self.feedback_output:
+            clear_output(wait=True)
+            if selected == correct:
+                display(Markdown("---"))
+                display(Markdown("> **✅ Correct!**"))
+            else:
+                display(Markdown("---"))
+                display(Markdown(f"> **❌ Incorrect.**  \n> Correct answer: **{correct}**"))
 
     def on_submit(self, b):
         if self.options.value is None:
-            self.feedback.value = "<span style='color:red;'>⚠️ Please select an option!</span>"
+            with self.feedback_output:
+                clear_output()
+                display(Markdown("<span style='color:red;'>⚠️ Please select an option!</span>"))
             return
         self.user_answers[self.index] = self.options.value
         self.update_ui()
@@ -98,11 +111,15 @@ class QuizApp:
         score = sum(1 for i, ans in enumerate(self.user_answers) if ans == self.data[i]['answer'])
         pct = (score / len(self.data)) * 100
         
+        with self.question_output:
+            clear_output()
+        with self.feedback_output:
+            clear_output()
+            
         self.ui.children = [widgets.HTML(f"""
             <div style="text-align: center; padding: 20px;">
                 <h2>Quiz Finished!</h2>
                 <h1 style="font-size: 50px;">{pct:.1f}%</h1>
                 <p style="font-size: 18px;">You scored <b>{score}</b> out of <b>{len(self.data)}</b></p>
-                <p>Close and reopen the quiz to try again.</p>
             </div>
         """)]
