@@ -23,7 +23,7 @@
 10. In your own words, what is "optimistic bias" and why does it occur when you select hyperparameters based on cross-validation scores?
 11. The notebook explains that nested CV uses the full dataset (not a train/test split). Why is this an advantage? What does it buy you compared to the train/test approach used in Sections 2-3?
 12. In the nested CV code, `GridSearchCV` is passed as the estimator to `cross_val_score`. Trace through what happens on a single outer fold: what does the inner loop do, and what does the outer loop do with the result?
-13. The notebook states that nested CV is computationally expensive. For a 5-fold outer loop, 5-fold inner loop, and ElasticNet with 4 alpha values and 5 l1_ratio values, how many total Ridge/Lasso fits occur? How many ElasticNet fits? (Hint: count carefully -- each inner GridSearchCV fit involves all parameter combinations across all inner folds.)
+13. The notebook states that nested CV is computationally expensive. For a 5-fold outer loop, 5-fold inner loop, and ElasticNet with 4 alpha values and 5 l1_ratio values, how many total fits occur? 
 14. Why might different outer folds select different "best" hyperparameters? What does it mean if they do?
 
 ## Comparing Approaches
