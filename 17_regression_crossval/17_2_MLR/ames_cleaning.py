@@ -48,6 +48,7 @@ def load_and_clean_ames(
             df['garage_attached'] = np.where(df['Garage Type'] == 'Attchd', 1, 0)
         if 'Garage Finish' in df.columns:
             df['garage_finished'] = np.where(df['Garage Finish'] != 'Unf', 1, 0)
+            df['garage_unfinished'] = np.where(df['Garage Finish'] == 'Unf', 1, 0)
     
     # Drop list of uninformative columns
     drop_list = [
