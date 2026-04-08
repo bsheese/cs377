@@ -286,9 +286,6 @@ The first and most important split in a decision tree. Determines the single mos
 ### Safe Drop Pattern
 A coding practice where columns are dropped only if they exist in the DataFrame, preventing errors when the cleaning pipeline is run on different versions of the dataset.
 
-### SHAP Values
-An advanced method for explaining individual predictions by attributing the prediction to each feature's contribution. Provides both global and local interpretability for complex models.
-
 ### Sigmoid Function
 The S-shaped function σ(z) = 1 / (1 + e^(-z)) that maps any real number to a value between 0 and 1. Used in logistic regression to convert a linear combination of features into a probability.
 

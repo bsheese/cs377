@@ -356,8 +356,6 @@
 
 35. `Central Air` achieved 7.86% importance despite being a binary feature. Why might a simple yes/no feature score so highly?
 
-36. The notebook mentions that partial dependence plots or SHAP values are the "natural next step" after feature importance. What question do they answer that feature importance alone cannot?
-
 ### Correlated Features and Feature Importance
 
 37. `Gr Liv Area` has a VIF of 118 (extreme multicollinearity) but only 2.98% feature importance. Why does a highly predictive feature receive such a low importance score?

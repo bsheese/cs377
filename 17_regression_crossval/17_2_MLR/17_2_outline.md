@@ -263,7 +263,7 @@ This document provides a complete outline of all topics covered across the five 
 - Limitation: tells you *what* not *how* (no direction or shape information)
 - Correlated features problem: model picks one, the other gets no credit
 - Gr Liv Area: VIF = 118 but only 2.98% importance
-- Next steps: partial dependence plots or SHAP values
+
 
 ### XGBoost Hyperparameter Tuning: Nested Cross-Validation
 - Inner loop: 3 folds, 12 hyperparameter combinations
