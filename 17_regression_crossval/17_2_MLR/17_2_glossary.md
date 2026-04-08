@@ -210,10 +210,6 @@ A scikit-learn tool that chains together multiple processing steps (e.g., scalin
 ### Polynomial Features
 Features created by raising existing features to a power (e.g., X², X³) or multiplying features together (interaction terms). Allow linear models to capture non-linear relationships.
 
-
-### Principal Component Analysis (PCA)
-A dimensionality reduction technique that finds the directions in the data that capture the most variance. Used to project high-dimensional data into 2D for visualization.
-
 ---
 ## R
 
@@ -274,6 +270,9 @@ Multicollinearity created by the way features are constructed, such as including
 Dividing the dataset into a training set (typically 80%) used to fit the model and a test set (typically 20%) used to evaluate generalization performance.
 
 ### Type I Error
+In classification, a false positive — predicting the positive class when the actual label is negative.
+
+### Type II Error
 In classification, a false negative — predicting the negative class when the actual label is positive.
 
 ---
