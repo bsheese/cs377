@@ -4,36 +4,38 @@ This document provides a complete outline of all topics covered across the six n
 
 ---
 
-## 18_1_0: Classification Foundations
+## 18_1_1: Classification Foundations
 
 **Dataset:** South German Credit (`credit-g`) — 1000 rows, 21 features, binary target (good/bad credit), ~70/30 class distribution.
 
-### Why Not Linear Regression?
-- Unbounded predictions vs. bounded probabilities
-- The sigmoid (logistic) function: formula and properties
-- Visualizing the S-curve: squashing any input into [0, 1]
-- Bridging linear regression and probability
+### Why Gradient Boosting?
+- Unlike linear regression, classification requires bounded probabilities
+- XGBoost uses gradient boosting: sequential trees that correct errors
+- Each tree makes threshold-based splits on features
+- Ensemble of trees produces probability predictions
 
 ### Class Imbalance and the Accuracy Paradox
 - Class distribution visualization
 - The naive baseline: always predicting the majority class
 - Why accuracy is deceptive on imbalanced data
+- The "accuracy paradox" explained with concrete example
 
-### Data Preparation for Logistic Regression
-- Binary encoding of the target variable
+### Data Preparation for XGBoost
+- Binary encoding of the target variable (good=0, bad=1)
 - One-hot encoding of categorical features (`drop_first=True`)
 - Stratified train-test split (preserving class ratios)
-- Feature scaling with `StandardScaler` (why gradient descent needs it)
+- Note: Tree-based models do NOT require feature scaling
 
 ### Training the Model
-- Maximum Likelihood Estimation (MLE): making observed data "most likely"
-- `class_weight='balanced'`: compensating for class imbalance
+- Gradient boosting: sequential tree correction
+- `scale_pos_weight`: compensating for class imbalance (ratio of negatives/positives)
+- Key parameters: n_estimators, max_depth, learning_rate
 
-### Interpreting Model Coefficients
-- Coefficients in log-odds units
-- Converting to odds ratios: `exp(β)`
-- Standardized features → directly comparable coefficients
-- Top 5 positive and top 5 negative drivers of default risk
+### Interpreting Feature Importance
+- Importance based on gain (loss reduction), cover (samples affected), frequency (times used)
+- Top 5 and bottom 5 features by importance
+- Unlike log-odds, importance doesn't tell direction (positive/negative effect)
+- Direction requires additional analysis (e.g., partial dependence plots)
 
 ### Probabilities and the Decision Threshold
 - Hard predictions (`.predict()`) vs. soft predictions (`.predict_proba()`)
@@ -43,10 +45,11 @@ This document provides a complete outline of all topics covered across the six n
 
 ### Basic Model Evaluation
 - Model accuracy vs. naive baseline
+- Interpretation: what the 3% improvement actually means
 
 ---
 
-## 18_1_1: Confusion Matrix and Basic Metrics
+## 18_1_2: Confusion Matrix and Basic Metrics
 
 **Dataset:** South German Credit (`credit-g`)
 
@@ -77,7 +80,7 @@ This document provides a complete outline of all topics covered across the six n
 
 ---
 
-## 18_1_2: ROC, AUC, and Threshold Tuning
+## 18_1_3: ROC, AUC, and Threshold Tuning
 
 **Dataset:** South German Credit (`credit-g`)
 
@@ -85,7 +88,7 @@ This document provides a complete outline of all topics covered across the six n
 - True Positive Rate (TPR = recall) vs. False Positive Rate (FPR = 1 − specificity)
 - Reading the curve: perfect model, random model, "knee" of the curve
 - AUC interpretation: probability of correctly ranking a random positive above a random negative
-- Concrete AUC example
+- Concrete AUC example with 0.79
 
 ### Precision-Recall Curves
 - Why ROC can be over-optimistic on imbalanced data
@@ -105,29 +108,25 @@ This document provides a complete outline of all topics covered across the six n
 
 ---
 
-## 18_1_3: Model Selection via Cross-Validation
+## 18_1_4: Model Selection via Cross-Validation
 
 **Dataset:** South German Credit (`credit-g`)
 
 ### Model Competition
 - Why cross-validation over a single train/test split
-- Four competitors: Logistic Regression, Decision Tree, Random Forest, SVM (RBF)
+- Four competitors: XGBoost, Decision Tree, Random Forest, SVM (RBF)
 - Scoring on both accuracy and F1
 - Boxplot visualization of CV score distributions
 - Interpreting variance: model stability across folds
 - Which model won and why
 
-### Regularization and Feature Selection
-- L2 (Ridge): shrinks all coefficients, keeps all features
-- L1 (Lasso): zeroes out coefficients, performs automatic feature selection
-- ElasticNet: mix of L1 and L2
-- Comparing coefficient plots across penalty types
-- How many features each penalty zeroes out
-- Feature selection sensitivity to penalty type
+### Note on Regularization
+- Regularization (L1/L2/ElasticNet) is NOT covered in this notebook
+- For XGBoost regularization parameters, see 18_5 (Ensemble Methods)
 
 ---
 
-## 18_1_4: Multiclass Classification
+## 18_1_5: Multiclass Classification
 
 **Dataset:** Wine (`load_wine`) — 178 rows, 13 chemical features, 3 cultivar classes.
 
@@ -151,7 +150,7 @@ This document provides a complete outline of all topics covered across the six n
 
 ---
 
-## 18_1_5: Decision Boundaries and Feature Importance
+## 18_1_6: Decision Boundaries and Feature Importance
 
 **Dataset:** Wine (`load_wine`)
 
@@ -171,18 +170,18 @@ This document provides a complete outline of all topics covered across the six n
 - Training accuracy labels on each subplot
 - Geometric model behaviors summary table
 
-### Multiclass Confusion Matrix (Random Forest)
+### Multiclass Confusion Matrix (XGBoost/Random Forest)
 - Training on all 13 features (not PCA-reduced)
 - Interpreting off-diagonal confusion: which cultivars share chemical properties?
 
 ### Feature Importance
-- `feature_importances_` from Random Forest
+- `feature_importances_` from tree-based models
 - Percentage labels on each bar
 - Top 3 features and their chemical interpretation
 - Proline, color intensity, flavanoids: why they differentiate cultivars
 
 ### Full Series Recap
-- Parts 1–5 summary
+- Parts 1–6 summary
 - Practical takeaway: model selection workflow
 - Forward look to 18_2 (Logistic Regression deep dive) and 18_5 (Ensemble methods)
 
@@ -194,11 +193,10 @@ These concepts appear throughout multiple notebooks:
 
 | Theme | Notebooks |
 |---|---|
-| **Class imbalance** | 18_1_0, 18_1_1, 18_1_2, 18_1_3 |
-| **Threshold tuning** | 18_1_0, 18_1_1, 18_1_2 |
-| **Precision/Recall trade-off** | 18_1_1, 18_1_2, 18_1_4 |
-| **Cross-validation** | 18_1_3 |
-| **Regularization** | 18_1_0, 18_1_3 |
-| **Confusion matrices** | 18_1_1, 18_1_4, 18_1_5 |
-| **Macro vs. weighted averaging** | 18_1_1, 18_1_4 |
-| **Feature importance** | 18_1_0 (coefficients), 18_1_5 (tree importances) |
+| **Class imbalance** | 18_1_1, 18_1_2, 18_1_3, 18_1_4 |
+| **Threshold tuning** | 18_1_1, 18_1_2, 18_1_3 |
+| **Precision/Recall trade-off** | 18_1_2, 18_1_3, 18_1_5 |
+| **Cross-validation** | 18_1_4 |
+| **Confusion matrices** | 18_1_2, 18_1_5, 18_1_6 |
+| **Macro vs. weighted averaging** | 18_1_2, 18_1_5 |
+| **Feature importance** | 18_1_1 (XGBoost gain), 18_1_6 (tree importances) |

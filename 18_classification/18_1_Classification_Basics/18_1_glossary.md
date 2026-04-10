@@ -29,14 +29,8 @@ The practice of assigning real-world dollar costs to different types of classifi
 
 ## C
 
-### C Parameter
-The inverse of regularization strength in logistic regression. A smaller C means stronger regularization (more penalty on coefficients); a larger C means weaker regularization. Controls the trade-off between fitting the training data well and keeping coefficients small.
-
 ### Class Imbalance
 A situation where the classes in a dataset are not equally represented (e.g., 70% good credit, 30% bad credit). Imbalance can cause models to be biased toward the majority class and makes accuracy a poor evaluation metric.
-
-### Class Weight (Balanced)
-A parameter in scikit-learn classifiers that automatically adjusts the penalty for misclassifying each class inversely proportional to its frequency. Gives the minority class more weight during training, helping the model pay more attention to it.
 
 ### Classification Report
 A scikit-learn function that prints precision, recall, f1-score, and support for each class, along with macro, weighted, and (optionally) micro averages. Provides a comprehensive view of per-class model performance.
@@ -64,8 +58,8 @@ A parameter in one-hot encoding (`drop_first=True`) that removes the first categ
 
 ## E
 
-### ElasticNet
-A regularization penalty that combines L1 (Lasso) and L2 (Ridge) penalties, controlled by the `l1_ratio` parameter. Can zero out some coefficients (like Lasso) while maintaining stability when features are correlated (like Ridge).
+### Ensemble
+A machine learning technique that combines multiple models to produce better predictions than any single model. Random Forest and XGBoost are ensemble methods that aggregate predictions from many decision trees.
 
 ---
 
@@ -81,20 +75,24 @@ A case where the model predicts negative (Good credit) but the actual label is p
 A case where the model predicts positive (Bad credit / Default) but the actual label is negative (Good credit). In the credit context: wrongly denying a loan to a good customer.
 
 ### Feature Importance
-A measure of how much each input feature contributes to a model's predictions. For tree-based models, it is computed as the total reduction in impurity (Gini or entropy) attributed to splits on that feature across all trees, normalized to sum to 1.0.
+A measure of how much each input feature contributes to a model's predictions. For tree-based models like XGBoost and Random Forest, it is computed based on gain (loss reduction), cover (samples affected), or frequency (times used). Normalized to sum to 1.0.
 
 ### Feature Scaling
-Transforming features so they are on a comparable scale (typically mean=0, std=1). Required for logistic regression (gradient descent converges faster) and SVM (distance-based kernels). Not required for tree-based models.
+Transforming features so they are on a comparable scale (typically mean=0, std=1). Required for logistic regression (gradient descent converges faster) and SVM (distance-based kernels). Not required for tree-based models like XGBoost.
 
-### Feature Selection
-The process of selecting a subset of input features that are most relevant to the prediction task. L1 regularization (Lasso) performs automatic feature selection by zeroing out coefficients for irrelevant features.
+---
+
+## G
+
+### Gain (Feature Importance)
+In XGBoost, a measure of feature importance based on how much a feature contributes to reducing the loss function (improving predictions) when making splits. Higher gain means the feature has a larger impact on the model's performance.
+
+### Gradient Boosting
+A machine learning technique that builds models sequentially, where each new model corrects the errors of the previous ones. XGBoost is a popular gradient boosting implementation that uses decision trees as base learners.
 
 ---
 
 ## H
-
-### Harmonic Mean
-A type of average that is more sensitive to small values than the arithmetic mean. For two numbers a and b: `2ab / (a + b)`. Used in the F1-score because it ensures that both precision and recall must be high for the F1 to be high.
 
 ### Hard Prediction
 A discrete class label (0 or 1, Good or Bad) produced by applying the decision threshold to a probability. Contrasts with soft prediction (probability).
@@ -110,27 +108,21 @@ A classification algorithm that predicts the class of a new point by looking at 
 
 ## L
 
-### L1 Regularization (Lasso)
-A penalty that adds the sum of absolute coefficient values to the loss function. Can set coefficients exactly to zero, effectively performing automatic feature selection.
-
-### L2 Regularization (Ridge)
-A penalty that adds the sum of squared coefficient values to the loss function. Shrinks all coefficients toward zero but rarely sets them exactly to zero. Keeps all features in the model.
-
-### Log-Odds
-The natural logarithm of the odds ratio. The unit in which logistic regression coefficients are expressed. A coefficient of β means that a one-unit increase in the feature changes the log-odds of the positive class by β.
-
-### Logistic Regression
-A linear classification model that uses the sigmoid function to map a linear combination of features into a probability between 0 and 1. Despite the name, it is a classifier, not a regressor.
+### Learning Rate
+In gradient boosting (XGBoost), a hyperparameter that controls how much each tree contributes to the final prediction. A lower learning rate requires more trees but typically produces better generalization.
 
 ---
 
 ## M
 
 ### Macro Average
-An averaging strategy that computes the metric (precision, recall, or f1) separately for each class, then takes the simple (unweighted) average. Treats all classes equally regardless of how many samples each has. Useful when you care equally about performance on minority and majority classes.
+An averaging strategy that computes the metric (precision, recall, or f1) separately for each class, then takes the simple (unweighted) average. Treats all classes as equally important, regardless of how many samples each has. Useful when you care equally about performance on minority and majority classes.
 
-### Maximum Likelihood Estimation (MLE)
-The method used to train logistic regression. It finds the coefficients that make the observed labels in the training data the "most likely" outcome — maximizing the product of predicted probabilities for the actual classes.
+### Max Depth
+In tree-based models (XGBoost, Decision Tree, Random Forest), a hyperparameter that limits how deep the trees can grow. Deeper trees can capture more complex patterns but are more prone to overfitting.
+
+### Meshgrid
+A visualization technique that creates a grid of points across feature space, then predicts the class for each point to visualize decision boundaries. Used in the decision boundaries notebook to show how different models carve up the feature space.
 
 ### Micro Average
 An averaging strategy that computes the metric globally across all samples, aggregating TP, FP, and FN across all classes before calculating precision/recall. For single-label classification, micro precision and micro recall are both equal to accuracy.
@@ -142,15 +134,15 @@ A classification problem with more than two classes (e.g., 3 wine cultivars). Re
 
 ## N
 
+### n_estimators
+In ensemble models (XGBoost, Random Forest), the number of trees in the ensemble. More trees typically improve performance but increase computation time.
+
 ### Naive Baseline
 See **Baseline (Naive)**.
 
 ---
 
 ## O
-
-### Odds Ratio
-The ratio of the probability of an event occurring to the probability of it not occurring. Computed as `e^β` where β is the logistic regression coefficient. An odds ratio of 1.65 means the odds of the positive class increase by 65% for each standard deviation increase in the feature.
 
 ### One-Hot Encoding
 A technique for converting categorical variables into binary (0/1) columns. Each category becomes its own column, with 1 indicating presence and 0 indicating absence.
@@ -175,11 +167,11 @@ A plot of precision vs. recall as the decision threshold varies from 0 to 1. Mor
 
 ## R
 
+### Random Forest
+An ensemble learning method that builds multiple decision trees during training and outputs the class that is the mode of the classes (or mean prediction) of the individual trees. Reduces variance compared to a single decision tree.
+
 ### Recall (Sensitivity)
 The proportion of actual positives that the model correctly identifies: `TP / (TP + FN)`. Measures coverage — of all the people who actually defaulted, what percentage did we catch?
-
-### Regularization
-A technique that adds a penalty on coefficient size to the loss function, preventing overfitting. L1 (Lasso) and L2 (Ridge) are the two most common types.
 
 ### ROC Curve (Receiver Operating Characteristic)
 A plot of the True Positive Rate (recall) against the False Positive Rate (1 − specificity) as the decision threshold varies from 0 to 1. The curve shows the trade-off between catching positives and generating false alarms. A perfect model hugs the top-left corner; a random model follows the diagonal.
@@ -188,20 +180,17 @@ A plot of the True Positive Rate (recall) against the False Positive Rate (1 −
 
 ## S
 
-### Sigmoid Function (Logistic Function)
-The S-shaped function `σ(z) = 1 / (1 + e^(-z))` that maps any real number to a value between 0 and 1. Used in logistic regression to convert a linear combination of features into a probability.
+### scale_pos_weight
+A parameter in XGBoost used to handle class imbalance. It scales the weight of the positive class (minority) relative to the negative class. Calculated as: (number of negatives) / (number of positives).
 
 ### Soft Prediction
 A probability value between 0 and 1 produced by `.predict_proba()`. Represents the model's confidence that an instance belongs to the positive class. Contrasts with hard prediction (class label).
 
 ### Softmax (Multinomial)
-A multiclass strategy that produces K output probabilities that sum to 1.0, trained as a single optimization problem. Unlike OvR, the classes compete against each other directly. This is the default multiclass strategy in modern scikit-learn.
+A multiclass strategy that produces K output probabilities that sum to 1.0, trained as a single optimization problem. Unlike OvR, the classes compete against each other directly. This is the default multiclass strategy in modern XGBoost.
 
 ### Specificity
 The proportion of actual negatives that the model correctly identifies: `TN / (TN + FP)`. Equal to 1 − FPR. Measures how well the model avoids false alarms.
-
-### StandardScaler
-A scikit-learn transformer that standardizes features to have mean=0 and standard deviation=1.
 
 ### Stratified Split
 A train-test split that preserves the class distribution in both the training and test sets. For a 70/30 dataset, both splits will have approximately 70% negative and 30% positive samples.
@@ -244,6 +233,13 @@ In the context of cross-validation, the spread of scores across the k folds. Hig
 
 ### Weighted Average
 An averaging strategy that computes the metric for each class, then takes a weighted average where each class is weighted by its support (number of samples). Reflects overall performance on the dataset population. When classes are balanced, weighted and macro averages are similar.
+
+---
+
+## X
+
+### XGBoost
+eXtreme Gradient Boosting — a powerful tree-based ensemble algorithm. Instead of fitting a single model, it builds an ensemble of decision trees sequentially, where each new tree corrects the errors of the previous ones. Uses scale_pos_weight to handle class imbalance.
 
 ---
 
