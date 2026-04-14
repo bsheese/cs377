@@ -113,62 +113,13 @@
 
 ---
 
-## 18_1_4: Model Selection via Cross-Validation
-
-### Cross-Validation Model Competition
-
-55. Why is 5-fold cross-validation preferred over a single train/test split for model comparison? What does it tell you that a single split cannot?
-56. In the model competition, each model is scored on both accuracy and F1. Why is it important to look at both metrics? What would it mean if a model had high accuracy but low F1?
-57. The boxplots show the spread of scores across the 5 folds. What does a wide box tell you about a model's stability? Why might a Decision Tree have a wider box than a Random Forest?
-58. If the Random Forest has the highest mean F1 but also the widest spread, would you still choose it over a slightly lower but more consistent model? What factors would influence your decision?
-59. The model competition compares XGBoost, Decision Tree, Random Forest, and SVM (RBF). Why might XGBoost perform well on credit default data?
-
-### Note on Regularization
-
-60. The notebook does NOT cover L1/L2/ElasticNet regularization. Why might this topic have been omitted? Where would you go to learn about regularization for XGBoost?
-
----
-
-## 18_1_5: Multiclass Classification
+## 18_1_4: Multiclass Classification
 
 ### The Multiclass Problem
 
 61. What fundamentally changes when you move from binary classification (2 classes) to multiclass classification (3+ classes)? Why can't you just use the same binary approach?
-
-### OvR vs. Softmax
-
-62. In One-vs-Rest, each binary classifier asks "Is this class i or not class i?" What happens if two classifiers both output high probabilities for the same sample? How is the final decision made?
-63. Softmax forces all K output probabilities to sum to 1.0. How does this change the way the model thinks about the classes compared to OvR?
-64. XGBoost uses Softmax (multiclass) natively. How does this differ from using OvR explicitly?
-65. If OvR and Softmax give very different accuracy scores on the same dataset, what might this suggest about the relationships between the classes?
-
-### Multiclass Evaluation
-
 66. In a 3×3 confusion matrix, the diagonal contains correct predictions. What do the off-diagonal cells represent?
 67. Macro average treats all classes equally. Weighted average weights by sample count. Micro average computes globally. Why are macro and weighted averages similar when classes are roughly balanced?
 68. Imagine a 4-class dataset with distribution 200/50/50/50. A model gets all 200 of class 0 right but misses every sample from the other three classes. What are the macro, weighted, and micro recall scores?
 69. When would micro averaging give a very different result from macro averaging? Which one should you report in a scientific paper, and which one should you report to a business stakeholder?
 
----
-
-## 18_1_6: Decision Boundaries and Feature Importance
-
-### PCA and Dimensionality Reduction
-
-70. PCA finds the directions in the data that capture the most variance. What does "variance" mean in this context, and why is it a useful criterion for choosing projection directions?
-71. If PC1 captures 55% of the variance and PC2 captures 25%, together they capture 80%. What does the missing 20% represent, and could it contain important information for classification?
-72. If you increased PCA to 3 components, how much more variance would you capture? Could you still visualize decision boundaries? How?
-
-### Decision Boundaries
-
-73. Describe how decision boundaries differ in shape for: Logistic Regression, Decision Tree, and KNN.
-74. Decision tree boundaries are "axis-aligned" — composed of horizontal and vertical steps. Why does this happen? What would a diagonal boundary require from a tree?
-75. KNN produces wavy, irregular boundaries. Why is KNN able to capture such complex shapes? What is the risk of boundaries that are too complex?
-76. If you increased K in KNN from 5 to 50, what would happen to the decision boundaries? Would they become smoother or more jagged? Why?
-
-### Feature Importance
-
-77. The notebook uses XGBoost's feature importance (based on gain). How does this differ from Random Forest's impurity-based importance?
-78. If a feature accounts for 35% of the total feature importance, does this mean the feature alone can classify with 35% accuracy? Explain why or why not.
-79. Feature importance tells you *which* features matter but not *how* they affect the prediction. If you wanted to know whether higher values of a feature increase or decrease the probability of a class, what additional analysis would you need?
-80. Two features that are highly correlated will share importance between them — neither will appear as dominant. How does this affect your interpretation of the importance chart?
