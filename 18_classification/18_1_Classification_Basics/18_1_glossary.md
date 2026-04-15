@@ -1,6 +1,6 @@
 # 18_1 Classification Basics — Glossary
 
-This document defines all technical and conceptual terms used across the six notebooks in the 18_1 Classification Basics series.
+This document defines all technical and conceptual terms used across the four notebooks in the 18_1 Classification Basics series.
 
 ---
 
@@ -38,15 +38,9 @@ A scikit-learn function that prints precision, recall, f1-score, and support for
 ### Confusion Matrix
 A table that cross-tabulates actual class labels against predicted class labels. For binary classification, it has four cells: TP, TN, FP, FN. For K-class classification, it is a K×K grid. The diagonal contains correct predictions; off-diagonal cells show which classes the model confuses.
 
-### Cross-Validation (k-Fold)
-A technique for evaluating model performance by splitting the training data into k folds, training on k−1 folds and validating on the remaining fold, then repeating k times so each fold serves as the validation set once. The average across all k folds gives a more reliable performance estimate than a single train/test split.
-
 ---
 
 ## D
-
-### Decision Boundary
-The surface in feature space that separates regions predicted as different classes. For logistic regression, this is a straight line (or hyperplane). For decision trees, it is a set of axis-aligned rectangles. For KNN, it can be highly irregular and non-linear.
 
 ### Decision Threshold
 The probability cutoff used to convert a soft prediction (probability) into a hard prediction (class label). By default, sklearn uses 0.5: if P(positive) ≥ 0.5, predict positive; otherwise predict negative. Moving the threshold changes the precision-recall trade-off.
@@ -99,13 +93,6 @@ A discrete class label (0 or 1, Good or Bad) produced by applying the decision t
 
 ---
 
-## K
-
-### K-Nearest Neighbors (KNN)
-A classification algorithm that predicts the class of a new point by looking at the K closest points in the training set and taking a majority vote. Makes local decisions based on nearby points rather than learning a global rule. No training phase — all computation happens at prediction time.
-
----
-
 ## L
 
 ### Learning Rate
@@ -118,23 +105,15 @@ In gradient boosting (XGBoost), a hyperparameter that controls how much each tre
 ### Macro Average
 An averaging strategy that computes the metric (precision, recall, or f1) separately for each class, then takes the simple (unweighted) average. Treats all classes as equally important, regardless of how many samples each has. Useful when you care equally about performance on minority and majority classes.
 
-### Max Depth
-In tree-based models (XGBoost, Decision Tree, Random Forest), a hyperparameter that limits how deep the trees can grow. Deeper trees can capture more complex patterns but are more prone to overfitting.
-
-### Meshgrid
-A visualization technique that creates a grid of points across feature space, then predicts the class for each point to visualize decision boundaries. Used in the decision boundaries notebook to show how different models carve up the feature space.
-
 ### Micro Average
 An averaging strategy that computes the metric globally across all samples, aggregating TP, FP, and FN across all classes before calculating precision/recall. For single-label classification, micro precision and micro recall are both equal to accuracy.
 
 ### Multiclass Classification
-A classification problem with more than two classes (e.g., 3 wine cultivars). Requires strategies like One-vs-Rest or Softmax to extend binary classifiers.
+A classification problem with more than two classes (e.g., Normal/Suspect/Pathological fetal health). Requires strategies like One-vs-Rest or Softmax to extend binary classifiers.
 
 ---
 
-## N
-
-### n_estimators
+## n_estimators
 In ensemble models (XGBoost, Random Forest), the number of trees in the ensemble. More trees typically improve performance but increase computation time.
 
 ### Naive Baseline
@@ -147,15 +126,9 @@ See **Baseline (Naive)**.
 ### One-Hot Encoding
 A technique for converting categorical variables into binary (0/1) columns. Each category becomes its own column, with 1 indicating presence and 0 indicating absence.
 
-### One-vs-Rest (OvR)
-A multiclass strategy that trains K separate binary classifiers, one for each class (Class i vs. Not-Class i). The final prediction is the class whose classifier outputs the highest probability.
-
 ---
 
 ## P
-
-### PCA (Principal Component Analysis)
-A dimensionality reduction technique that finds the directions (principal components) in the data that capture the most variance. PC1 captures the most variance; PC2 captures the most remaining variance orthogonal to PC1, and so on. Used to project high-dimensional data into 2D for visualization.
 
 ### Precision
 The proportion of positive predictions that are actually correct: `TP / (TP + FP)`. Measures reliability — when the model says "positive," how often is it right?
@@ -166,9 +139,6 @@ A plot of precision vs. recall as the decision threshold varies from 0 to 1. Mor
 ---
 
 ## R
-
-### Random Forest
-An ensemble learning method that builds multiple decision trees during training and outputs the class that is the mode of the classes (or mean prediction) of the individual trees. Reduces variance compared to a single decision tree.
 
 ### Recall (Sensitivity)
 The proportion of actual positives that the model correctly identifies: `TP / (TP + FN)`. Measures coverage — of all the people who actually defaulted, what percentage did we catch?
@@ -186,9 +156,6 @@ A parameter in XGBoost used to handle class imbalance. It scales the weight of t
 ### Soft Prediction
 A probability value between 0 and 1 produced by `.predict_proba()`. Represents the model's confidence that an instance belongs to the positive class. Contrasts with hard prediction (class label).
 
-### Softmax (Multinomial)
-A multiclass strategy that produces K output probabilities that sum to 1.0, trained as a single optimization problem. Unlike OvR, the classes compete against each other directly. This is the default multiclass strategy in modern XGBoost.
-
 ### Specificity
 The proportion of actual negatives that the model correctly identifies: `TN / (TN + FP)`. Equal to 1 − FPR. Measures how well the model avoids false alarms.
 
@@ -197,9 +164,6 @@ A train-test split that preserves the class distribution in both the training an
 
 ### Support
 The number of actual instances of each class in the dataset (or test set). Reported in the classification report. Used to compute weighted averages.
-
-### SVM (Support Vector Machine)
-A classification algorithm that finds the hyperplane that maximally separates classes. With an RBF (radial basis function) kernel, it can capture complex non-linear boundaries.
 
 ---
 
@@ -219,13 +183,6 @@ See **False Positive (FP)**.
 
 ### Type II Error
 See **False Negative (FN)**.
-
----
-
-## V
-
-### Variance (Model)
-In the context of cross-validation, the spread of scores across the k folds. High variance means the model's performance depends heavily on which specific samples end up in each fold — a sign of instability. Low variance means the model performs consistently regardless of the data split.
 
 ---
 

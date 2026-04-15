@@ -1,6 +1,6 @@
 # 18_1 Classification Basics — Topic Outline
 
-This document provides a complete outline of all topics covered across the six notebooks in the 18_1 Classification Basics series.
+This document provides a complete outline of all topics covered across the notebooks in the 18_1 Classification Basics series.
 
 ---
 
@@ -108,82 +108,37 @@ This document provides a complete outline of all topics covered across the six n
 
 ---
 
-## 18_1_4: Model Selection via Cross-Validation
+## 18_1_4: Multiclass Classification
 
-**Dataset:** South German Credit (`credit-g`)
-
-### Model Competition
-- Why cross-validation over a single train/test split
-- Four competitors: XGBoost, Decision Tree, Random Forest, SVM (RBF)
-- Scoring on both accuracy and F1
-- Boxplot visualization of CV score distributions
-- Interpreting variance: model stability across folds
-- Which model won and why
-
-### Note on Regularization
-- Regularization (L1/L2/ElasticNet) is NOT covered in this notebook
-- For XGBoost regularization parameters, see 18_5 (Ensemble Methods)
-
----
-
-## 18_1_5: Multiclass Classification
-
-**Dataset:** Wine (`load_wine`) — 178 rows, 13 chemical features, 3 cultivar classes.
+**Dataset:** Cardiotocography (`fetch_openml` data_id=1560) — 2126 rows, 35 features, 3 fetal health classes.
 
 ### The Multiclass Problem
 - Transitioning from binary to 3+ classes
-- Dataset properties and class distribution
+- Dataset properties and class distribution (Normal/Suspect/Pathological)
+- Class imbalance: ~78% Normal, ~15% Suspect, ~7% Pathological
 
-### Multiclass Strategies
-- One-vs-Rest (OvR): K independent binary classifiers
-- Softmax (Multinomial): K outputs that sum to 1.0
-- Comparing OvR and Softmax accuracy
-- Visualizing OvR probability distributions per classifier
-- Reading the OvR histograms: overlap = confusion
+### The 3×3 Confusion Matrix
+- Diagonal = correct predictions
+- Off-diagonal = misclassifications
+- Clinical interpretation: false alarms vs. fatal misses
 
 ### Multiclass Evaluation
-- 3×3 confusion matrix: diagonal = correct, off-diagonal = confusion
-- Classification report for 3 classes
+- Per-class precision, recall, f1-score
+- Support: number of samples per class
 - Macro vs. weighted vs. micro averaging
-- When each averaging strategy matters (concrete 90/10 example)
+- When each averaging strategy matters
 - Identifying which classes are hardest to distinguish
 
 ---
 
-## 18_1_6: Decision Boundaries and Feature Importance
+## Supporting Materials
 
-**Dataset:** Wine (`load_wine`)
-
-### PCA for Dimensionality Reduction
-- Why we can't visualize 13 dimensions
-- PCA: finding directions of maximum variance
-- Explained variance ratio: how much structure is preserved in 2D
-- Caveat: boundaries in PC space are approximations of true 13D boundaries
-
-### Visualizing Decision Boundaries
-- The meshgrid prediction technique
-- Three models compared:
-  - **Logistic Regression:** straight-line (linear) boundaries
-  - **Decision Tree:** axis-aligned rectangular boundaries ("staircase")
-  - **KNN:** wavy, local, non-linear boundaries
-- KNN explained: classifying by nearest neighbors
-- Training accuracy labels on each subplot
-- Geometric model behaviors summary table
-
-### Multiclass Confusion Matrix (XGBoost/Random Forest)
-- Training on all 13 features (not PCA-reduced)
-- Interpreting off-diagonal confusion: which cultivars share chemical properties?
-
-### Feature Importance
-- `feature_importances_` from tree-based models
-- Percentage labels on each bar
-- Top 3 features and their chemical interpretation
-- Proline, color intensity, flavanoids: why they differentiate cultivars
-
-### Full Series Recap
-- Parts 1–6 summary
-- Practical takeaway: model selection workflow
-- Forward look to 18_2 (Logistic Regression deep dive) and 18_5 (Ensemble methods)
+| File | Description |
+|------|-------------|
+| `18_1_2_x_exercise.ipynb` | Practice notebook applying concepts from Notebooks 1 & 2 on Adult Census Income dataset |
+| `18_1_practice_quiz.ipynb` | Practice quiz for assessment |
+| `18_1_discussion_questions.md` | Discussion questions for the topic |
+| `18_1_glossary.md` | Key terminology definitions |
 
 ---
 
@@ -192,11 +147,10 @@ This document provides a complete outline of all topics covered across the six n
 These concepts appear throughout multiple notebooks:
 
 | Theme | Notebooks |
-|---|---|
+|-------|------------|
 | **Class imbalance** | 18_1_1, 18_1_2, 18_1_3, 18_1_4 |
 | **Threshold tuning** | 18_1_1, 18_1_2, 18_1_3 |
-| **Precision/Recall trade-off** | 18_1_2, 18_1_3, 18_1_5 |
-| **Cross-validation** | 18_1_4 |
-| **Confusion matrices** | 18_1_2, 18_1_5, 18_1_6 |
-| **Macro vs. weighted averaging** | 18_1_2, 18_1_5 |
-| **Feature importance** | 18_1_1 (XGBoost gain), 18_1_6 (tree importances) |
+| **Precision/Recall trade-off** | 18_1_2, 18_1_3, 18_1_4 |
+| **Confusion matrices** | 18_1_2, 18_1_4 |
+| **Macro vs. weighted averaging** | 18_1_2, 18_1_4 |
+| **Feature importance** | 18_1_1 |
