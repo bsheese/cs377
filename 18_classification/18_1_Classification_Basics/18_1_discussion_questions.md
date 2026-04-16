@@ -7,7 +7,7 @@
 ### Why Gradient Boosting?
 
 1. The notebook uses XGBoost (gradient boosting) rather than logistic regression. Why might gradient boosting be more effective for complex classification tasks like credit default prediction?
-2. XGBoost builds an ensemble of decision trees sequentially, with each tree correcting the errors of the previous ones. How does this differ from a single decision tree?
+2. How does XGBoost differ from a single decision tree?
 3. What is the purpose of the `scale_pos_weight` parameter in XGBoost? How does it help with class imbalance?
 4. If you have 700 good credit customers and 300 bad credit customers, what should `scale_pos_weight` be set to? Why does this help the model learn better from the minority class?
 
@@ -23,18 +23,16 @@
 9. Why must the target variable ('good'/'bad') be converted to numeric (0/1) before training XGBoost?
 10. What is the purpose of `drop_first=True` in one-hot encoding? What would happen if you omitted it?
 11. Why is a stratified train-test split important for imbalanced datasets? What could go wrong with a simple random split?
-12. The notebook notes that tree-based models like XGBoost do NOT require feature scaling. Why is feature scaling unnecessary for tree-based models, but required for logistic regression and SVM?
+12. The notebook notes that tree-based models like XGBoost do NOT require feature scaling. Why is feature scaling unnecessary for tree-based models?
 
 ### Interpreting Feature Importance
 
 13. XGBoost provides feature importance scores based on "gain" (loss reduction), "cover" (samples affected), and "frequency" (times used). What does a high gain score tell you about a feature?
 14. If a feature has a very low importance score (near zero), does this mean the feature is useless? Explain.
-15. How would you determine whether a high-importance feature increases or decreases credit risk? What additional analysis would you need?
 
 ### Probabilities and the Decision Threshold
 
 16. What is the difference between `.predict()` and `.predict_proba()`? When would you use each?
-17. The overlap analysis shows that actual defaulters scored below 0.5. What does this mean in business terms?
 18. The mean probability for good customers is around 0.30, while for defaulters it's around 0.65. What does the gap between these two means tell you about the model's discriminative ability?
 19. If the two probability distributions overlapped completely (both centered at 0.5), what would this tell you about the model?
 
@@ -46,7 +44,6 @@
 
 20. Given a confusion matrix `[[180, 20], [30, 70]]`, identify the TP, TN, FP, and FN values. Which class is the "positive" class?
 21. In the credit default context, what is the real-world consequence of a false positive? Of a false negative?
-22. Why is it called a "confusion" matrix? What is the model "confused" about?
 23. If a model produces a confusion matrix of `[[210, 0], [0, 90]]`, what does this tell you about its performance? Is this realistic for a credit risk model?
 
 ### Precision and Recall
@@ -73,7 +70,7 @@
 ### The Threshold Trade-Off
 
 36. If you raise the decision threshold from 0.5 to 0.7, what happens to precision? To recall? To the number of false positives? To the number of false negatives?
-37. Why does the notebook defer the full threshold analysis to the next notebook rather than covering it here?
+
 
 ---
 
@@ -107,7 +104,7 @@
 ### Business Cost Sensitivity
 
 51. If a false negative costs $5,000 and a false positive costs $500, would you expect the cost-optimal threshold to be higher or lower than 0.5? Why?
-52. The notebook compares three thresholds: default (0.5), Youden's J, and cost-optimal. In what scenario would all three give the same threshold?
+52. In what scenario would the default (0.5), Youden's J, and cost-optimal all give the same threshold?
 53. If you doubled the cost of a false negative from $5,000 to $10,000, what would happen to the cost-optimal threshold? Would it move up or down?
 54. Why is the cost curve approach more practically useful than Youden's J for real-world decision-making?
 
@@ -119,7 +116,7 @@
 
 61. What fundamentally changes when you move from binary classification (2 classes) to multiclass classification (3+ classes)? Why can't you just use the same binary approach?
 66. In a 3×3 confusion matrix, the diagonal contains correct predictions. What do the off-diagonal cells represent?
-67. Macro average treats all classes equally. Weighted average weights by sample count. Micro average computes globally. Why are macro and weighted averages similar when classes are roughly balanced?
-68. Imagine a 4-class dataset with distribution 200/50/50/50. A model gets all 200 of class 0 right but misses every sample from the other three classes. What are the macro, weighted, and micro recall scores?
-69. When would micro averaging give a very different result from macro averaging? Which one should you report in a scientific paper, and which one should you report to a business stakeholder?
+67. Macro average treats all classes equally. Weighted average weights by sample count. Why are macro and weighted averages similar when classes are roughly balanced?
+68. Imagine a 4-class dataset with distribution 200/50/50/50. A model gets all 200 of class 0 right but misses every sample from the other three classes. What are the macro and weighted recall scores?
+
 
