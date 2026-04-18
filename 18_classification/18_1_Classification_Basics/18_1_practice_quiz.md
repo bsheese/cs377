@@ -32,11 +32,10 @@
 ### Question 7
 **XGBoost builds an ensemble of decision trees:**
 
-**Options:**
-- In parallel, all at once
-- Sequentially, with each tree correcting the errors of previous trees
-- Randomly, with no particular order
-- From the bottom up, starting with the root node
+Sequentially, correcting errors from prior trees - sequential approach fixing all prior mistakes
+- Sequentially, correcting errors from prior trees
+- Sequentially, fixing errors from earlier trees
+- Random selection without specific order
 
 **Answer:** Sequentially, with each tree correcting the errors of previous trees
 
@@ -46,10 +45,10 @@
 **Why is stratified splitting important for imbalanced datasets?**
 
 **Options:**
-- It makes the training set larger than the test set
+- It makes training and test sets proportionally equal
 - It ensures both train and test sets have the same class proportions
-- It automatically balances the class weights
-- It removes all minority class samples to simplify training
+- It automatically balances the class weights during training
+- It removes minority class samples to simplify training
 
 **Answer:** It ensures both train and test sets have the same class proportions
 
@@ -99,7 +98,7 @@
 ### Question 4
 **Why does F1-score use harmonic mean instead of arithmetic mean?**
 
-**Options:**
+Harmonic mean gives more weight to lower values, penalizing extreme imbalances significantly
 - Harmonic mean is faster to compute
 - Harmonic mean gives more weight to lower values, penalizing extreme imbalances
 - Arithmetic mean cannot handle percentages
@@ -179,7 +178,7 @@
 ### Question 1
 **An AUC of 0.79 means:**
 
-**Options:**
+The model correctly ranks a random positive above a random negative 79% of the time
 - The model correctly classifies 79% of samples
 - The model correctly ranks a random positive above a random negative 79% of the time
 - 79% of predictions are true positives
@@ -270,7 +269,7 @@
 ### Question 8
 **A wide box in a cross-validation boxplot indicates:**
 
-**Options:**
+The model's performance varies significantly across different data splits because tree depth matters
 - The model is always accurate
 - The model's performance varies significantly across different data splits
 - The model has high bias
@@ -283,10 +282,10 @@
 ### Question 9
 **Why do we score models on both accuracy AND F1?**
 
-**Options:**
+Accuracy is often misleading on imbalanced datasets; F1 reveals minority class handling quality
 - F1 is always more important than accuracy
 - Accuracy can be misleading on imbalanced data; F1 reveals how well the model handles the minority class
-- Accuracy is required by law
+- Accuracy is not always reliable; F1 provides a better measure for imbalanced classes
 - They always give the same result
 
 **Answer:** Accuracy can be misleading on imbalanced data; F1 reveals how well the model handles the minority class
@@ -296,7 +295,7 @@
 ### Question 12
 **If Random Forest has the highest mean F1 but also the widest spread, you should:**
 
-**Options:**
+Consider mean performance and stability; choose slightly lower but highly consistent models
 - Always choose it because it has the highest mean
 - Consider both mean performance and stability; a slightly lower but more consistent model might be preferable
 - Choose the lowest variance model regardless of mean
@@ -363,10 +362,11 @@
 ### Question 7
 **When would macro and weighted averages give very different results?**
 
-**Options:**
-- When the dataset is perfectly balanced
+When classes have very different sample sizes and performance varies significantly across
 - When classes have very different sample sizes and performance varies significantly across classes
-- When using binary classification
+- When the dataset is perfectly balanced
+- When classes have similar sample sizes and performance
+- When using binary classification only
 - When using OvR strategy
 
 **Answer:** When classes have very different sample sizes and performance varies significantly across classes
@@ -389,11 +389,11 @@
 ### Question 14
 **Does feature importance tell you the direction (positive/negative) of the effect?**
 
-**Options:**
-- Yes, always
+No, it only tells you which features matter, not how they affect predictions in practice
 - No, it only tells you which features matter, not how they affect predictions
-- Only for binary features
-- Only for numerical features
+- No, it shows importance, not direction of impact
+- Only for binary inputs
+- Only for numeric inputs
 
 **Answer:** No, it only tells you which features matter, not how they affect predictions
 

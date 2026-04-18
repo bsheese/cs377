@@ -46,6 +46,8 @@ This document provides a complete outline of all topics covered across the noteb
 ### Basic Model Evaluation
 - Model accuracy vs. naive baseline
 - Interpretation: what the 3% improvement actually means
+- Feature Engineering Pipeline: one-hot encoding with `pd.get_dummies()`, column name cleaning with `re.sub()`, `drop_first=True` for multicollinearity avoidance
+- Model.score() method usage for comprehensive evaluation
 
 ---
 
@@ -77,6 +79,10 @@ This document provides a complete outline of all topics covered across the noteb
 ### The Threshold Trade-Off (Preview)
 - Moving the threshold: conservative vs. sensitive
 - Teaser for ROC curves and systematic threshold optimization
+
+### Confusion Matrix Visualization and Business Cost
+- Confusion matrix visualization using `plt.imshow()` and cell annotations
+- Business cost framework: assigning costs to false positives and false negatives
 
 ---
 
@@ -126,7 +132,7 @@ This document provides a complete outline of all topics covered across the noteb
 - Per-class precision, recall, f1-score
 - Support: number of samples per class
 - Macro vs. weighted vs. micro averaging
-- When each averaging strategy matters
+- When each averaging strategy matters: macro treats all classes equally, weighted accounts for class imbalance, micro aggregates globally
 - Identifying which classes are hardest to distinguish
 
 ---
@@ -154,3 +160,12 @@ These concepts appear throughout multiple notebooks:
 | **Confusion matrices** | 18_1_2, 18_1_4 |
 | **Macro vs. weighted averaging** | 18_1_2, 18_1_4 |
 | **Feature importance** | 18_1_1 |
+| **Feature Engineering Pipeline** | All notebooks |
+
+### Feature Engineering Pipeline
+A unified view of preprocessing steps across all notebooks:
+1. Target encoding: `good=0, bad=1`
+2. Categorical encoding: `pd.get_dummies()` with `drop_first=True`
+3. Column name cleaning: `re.sub(r"[<>[\]]", "_", col)` for XGBoost compatibility
+4. Train-test split: `train_test_split(..., stratify=y)`
+5. Scale_pos_weight calculation: `(negatives/positives)` ratio |
