@@ -126,6 +126,9 @@ See **Baseline (Naive)**.
 ### One-Hot Encoding
 A technique for converting categorical variables into binary (0/1) columns. Each category becomes its own column, with 1 indicating presence and 0 indicating absence.
 
+### One-vs-Rest (OvR)
+A strategy for extending binary classifiers to multiclass problems. For K classes, K separate binary classifiers are trained (e.g., Normal vs. Not-Normal, Suspect vs. Not-Suspect, etc.), and the class with the highest confidence wins. An alternative to the softmax approach.
+
 ---
 
 ## P
@@ -150,11 +153,17 @@ A plot of the True Positive Rate (recall) against the False Positive Rate (1 −
 
 ## S
 
+### Sample Weight
+A per-sample weight assigned during training to control how much each sample contributes to the model's learning. Used to handle class imbalance by giving higher weights to minority class samples. In scikit-learn, `compute_sample_weight('balanced', y)` automatically calculates weights inversely proportional to class frequency. This is the general-purpose version of `scale_pos_weight` that works with any model and any number of classes.
+
 ### scale_pos_weight
-A parameter in XGBoost used to handle class imbalance. It scales the weight of the positive class (minority) relative to the negative class. Calculated as: (number of negatives) / (number of positives).
+A parameter in XGBoost used to handle class imbalance in binary classification. It scales the weight of the positive class (minority) relative to the negative class. Calculated as: (number of negatives) / (number of positives). For multiclass imbalance, use `sample_weight` instead.
 
 ### Soft Prediction
 A probability value between 0 and 1 produced by `.predict_proba()`. Represents the model's confidence that an instance belongs to the positive class. Contrasts with hard prediction (class label).
+
+### Softmax
+A function that converts a vector of raw model outputs into a valid probability distribution (all values between 0 and 1, summing to 1.0). Used by XGBoost (`objective='multi:softprob'`) and neural networks for multiclass classification. Each class gets a probability, and the predicted class is whichever has the highest value.
 
 ### Specificity
 The proportion of actual negatives that the model correctly identifies: `TN / (TN + FP)`. Equal to 1 − FPR. Measures how well the model avoids false alarms.

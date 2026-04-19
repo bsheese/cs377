@@ -116,24 +116,62 @@ This document provides a complete outline of all topics covered across the noteb
 
 ## 18_1_4: Multiclass Classification
 
-**Dataset:** Cardiotocography (`fetch_openml` data_id=1560) — 2126 rows, 35 features, 3 fetal health classes.
+**Dataset:** Cardiotocography (`fetch_openml` data_id=1560) — 2126 rows, 35 features (V1-V35), 3 fetal health classes.
 
-### The Multiclass Problem
-- Transitioning from binary to 3+ classes
+### Bridge from Binary to Multiclass
+- Recap of Parts 1-3 binary toolkit (confusion matrix, precision/recall, ROC, thresholds)
+- Transition to 3+ classes on a new clinical dataset
 - Dataset properties and class distribution (Normal/Suspect/Pathological)
-- Class imbalance: ~78% Normal, ~15% Suspect, ~7% Pathological
+- Class imbalance: ~78% Normal, ~14% Suspect, ~8% Pathological
+- Explicit naive baseline computation (always predict Normal = 77.8%)
+
+### How Multiclass Classification Works
+- Softmax: model outputs probability for each class, predicted class = highest probability
+- `multi:softprob` objective in XGBoost
+- One-vs-Rest (OvR) as an alternative strategy (conceptual mention)
+
+### A Simple Model Falls Into the Trap
+- Decision Tree (max_depth=2): limited capacity, biased toward majority class
+- 93% accuracy but misses 31% of Pathological cases ("Fatal Misses")
+- Comparison to naive baseline: accuracy sounds good but hides dangerous errors
 
 ### The 3×3 Confusion Matrix
 - Diagonal = correct predictions
 - Off-diagonal = misclassifications
-- Clinical interpretation: false alarms vs. fatal misses
+- Clinical interpretation: False Alarms vs. Fatal Misses
+- Reading specific rows to trace where each class's errors go
 
-### Multiclass Evaluation
+### XGBoost Comparison
+- XGBoost (100 trees): 99% accuracy, catches nearly all minority class cases
+- Side-by-side confusion matrix comparison
+- Ensemble approach recovers minority class patterns that a shallow tree misses
+
+### Per-Class Metrics in Multiclass
+- Precision and recall computed separately for each class
+- How to read per-class metrics: "Recall for Pathological = (correctly predicted Pathological) / (all actual Pathological)"
+- Guided walkthrough of both classification reports
+
+### Multiclass Averaging Strategies
 - Per-class precision, recall, f1-score
 - Support: number of samples per class
+- Manual calculation of Macro F1 vs. Weighted F1
 - Macro vs. weighted vs. micro averaging
 - When each averaging strategy matters: macro treats all classes equally, weighted accounts for class imbalance, micro aggregates globally
-- Identifying which classes are hardest to distinguish
+- The gap between Weighted F1 and Macro F1 as the "signature of the imbalance trap"
+
+### Addressing Imbalance with Sample Weights
+- `compute_sample_weight('balanced', y)` from sklearn
+- Weights inversely proportional to class frequency
+- Retraining a Decision Tree with balanced weights: improved Macro F1
+- Brief mention of other strategies: oversampling (SMOTE), undersampling, cost-sensitive learning
+- Connection to `scale_pos_weight` from Part 1
+
+### Practical Checklist
+- Check class distribution first
+- Compare accuracy to naive baseline
+- Inspect confusion matrix for dangerous misclassifications
+- Report Macro F1 alongside accuracy
+- Consider sample weighting for minority classes
 
 ---
 
@@ -142,7 +180,9 @@ This document provides a complete outline of all topics covered across the noteb
 | File | Description |
 |------|-------------|
 | `18_1_2_x_exercise.ipynb` | Practice notebook applying concepts from Notebooks 1 & 2 on Adult Census Income dataset |
-| `18_1_practice_quiz.ipynb` | Practice quiz for assessment |
+| `18_1_4_x_Exercise_Two_Parts.ipynb` | Two-part exercise: binary (Thoracic Surgery) and multiclass (Contraceptive Method Choice) |
+| `18_1_5_x_credit_card_fraud.ipynb` | Capstone exercise: credit card fraud detection with extreme class imbalance |
+| `18_1_practice_quiz.md` | Practice quiz for assessment |
 | `18_1_discussion_questions.md` | Discussion questions for the topic |
 | `18_1_glossary.md` | Key terminology definitions |
 
@@ -159,6 +199,7 @@ These concepts appear throughout multiple notebooks:
 | **Precision/Recall trade-off** | 18_1_2, 18_1_3, 18_1_4 |
 | **Confusion matrices** | 18_1_2, 18_1_4 |
 | **Macro vs. weighted averaging** | 18_1_2, 18_1_4 |
+| **Sample weighting / imbalance mitigation** | 18_1_1 (`scale_pos_weight`), 18_1_4 (`compute_sample_weight`) |
 | **Feature importance** | 18_1_1 |
 | **Feature Engineering Pipeline** | All notebooks |
 
