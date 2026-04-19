@@ -112,11 +112,28 @@
 
 ## 18_1_4: Multiclass Classification
 
-### The Multiclass Problem
+### From Binary to Multiclass
 
 61. What fundamentally changes when you move from binary classification (2 classes) to multiclass classification (3+ classes)? Why can't you just use the same binary approach?
-66. In a 3×3 confusion matrix, the diagonal contains correct predictions. What do the off-diagonal cells represent?
-67. Macro average treats all classes equally. Weighted average weights by sample count. Why are macro and weighted averages similar when classes are roughly balanced?
-68. Imagine a 4-class dataset with distribution 200/50/50/50. A model gets all 200 of class 0 right but misses every sample from the other three classes. What are the macro and weighted recall scores?
+62. In binary classification, the model outputs one probability. In multiclass, it outputs a probability for each class using softmax. Explain in your own words how the predicted class is chosen from these probabilities.
+63. What is the difference between One-vs-Rest (OvR) and softmax for multiclass classification? When might you prefer one over the other?
+
+### The 3x3 Confusion Matrix
+
+64. In a 3×3 confusion matrix, the diagonal contains correct predictions. What do the off-diagonal cells represent?
+65. In the fetal health example, why is predicting "Normal" when the fetus is actually "Pathological" (a Fatal Miss) more dangerous than predicting "Pathological" when the fetus is actually "Normal" (a False Alarm)?
+66. A shallow Decision Tree achieves 93% accuracy on a dataset where 78% of samples are Normal. Why is the 15% improvement over the naive baseline less impressive than it appears?
+
+### Multiclass Metrics and Averaging
+
+67. What does "Recall for the Pathological class" mean in plain English? How do you read it from the confusion matrix?
+68. Macro average treats all classes equally. Weighted average weights by sample count. Why are macro and weighted averages similar when classes are roughly balanced, but diverge when classes are imbalanced?
+69. Imagine a 4-class dataset with distribution 200/50/50/50. A model gets all 200 of class 0 right but misses every sample from the other three classes. What are the macro and weighted recall scores?
+70. The scikit-learn classification report shows "accuracy" instead of "micro avg." Why are these the same number in standard multiclass problems?
+
+### Handling Imbalance
+
+71. `compute_sample_weight('balanced', y)` assigns higher weights to samples from rare classes. Why does this help the model learn minority class patterns?
+72. In the notebook, sample weighting improved the Decision Tree's Macro F1 from 0.87 to 0.94. But XGBoost achieved 0.98 without any sample weighting. Does this mean sample weighting is unnecessary? When might it be critical?
 
 

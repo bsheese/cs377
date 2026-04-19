@@ -308,32 +308,6 @@ Consider mean performance and stability; choose slightly lower but highly consis
 ## 18_1_4: Multiclass Classification
 
 ### Question 1
-**Why don't Decision Trees and Random Forests require feature scaling?**
-
-**Options:**
-- They are immune to overfitting
-- They use information gain, not distances
-- Scaling is done automatically inside the algorithm
-- Scaling would reduce accuracy
-
-**Answer:** They use information gain, not distances
-
----
-
-### Question 2
-**Which XGBoost parameter controls how many trees are in the ensemble?**
-
-**Options:**
-- max_depth
-- learning_rate
-- n_estimators
-- subsample
-
-**Answer:** n_estimators
-
----
-
-### Question 5
 **In a 3x3 confusion matrix, the diagonal contains:**
 
 **Options:**
@@ -346,7 +320,7 @@ Consider mean performance and stability; choose slightly lower but highly consis
 
 ---
 
-### Question 6
+### Question 2
 **Macro average treats all classes:**
 
 **Options:**
@@ -359,43 +333,68 @@ Consider mean performance and stability; choose slightly lower but highly consis
 
 ---
 
-### Question 7
+### Question 3
 **When would macro and weighted averages give very different results?**
 
-When classes have very different sample sizes and performance varies significantly across
+**Options:**
 - When classes have very different sample sizes and performance varies significantly across classes
 - When the dataset is perfectly balanced
 - When classes have similar sample sizes and performance
 - When using binary classification only
-- When using OvR strategy
 
 **Answer:** When classes have very different sample sizes and performance varies significantly across classes
 
+---
 
-
-### Question 11
-**Decision tree boundaries are:**
+### Question 4
+**In multiclass classification, how does XGBoost produce predictions for 3+ classes?**
 
 **Options:**
-- Straight lines (hyperplanes)
-- Axis-aligned rectangles (horizontal and vertical steps)
-- Wavy and irregular curves
-- Diagonal lines only
+- It uses a single probability and multiple thresholds
+- It uses softmax to output a probability for each class, and predicts the class with the highest probability
+- It always uses One-vs-Rest with separate binary models
+- It randomly assigns classes based on feature values
 
-**Answer:** Axis-aligned rectangles (horizontal and vertical steps)
+**Answer:** It uses softmax to output a probability for each class, and predicts the class with the highest probability
 
 ---
 
-### Question 14
-**Does feature importance tell you the direction (positive/negative) of the effect?**
+### Question 5
+**A model achieves 93% accuracy on a dataset where 78% of samples belong to one class. The Macro F1 is 0.87 and the Weighted F1 is 0.93. Which metric best reveals the model's weakness on minority classes?**
 
-No, it only tells you which features matter, not how they affect predictions in practice
-- No, it only tells you which features matter, not how they affect predictions
-- No, it shows importance, not direction of impact
-- Only for binary inputs
-- Only for numeric inputs
+**Options:**
+- Accuracy (93%)
+- Weighted F1 (0.93)
+- Macro F1 (0.87)
+- All three metrics tell the same story
 
-**Answer:** No, it only tells you which features matter, not how they affect predictions
+**Answer:** Macro F1 (0.87)
+
+---
+
+### Question 6
+**What does `compute_sample_weight('balanced', y)` do?**
+
+**Options:**
+- Removes minority class samples to balance the dataset
+- Assigns higher weights to rare class samples so the model pays more attention to them during training
+- Duplicates minority class samples to create a balanced dataset
+- Scales feature values based on class frequency
+
+**Answer:** Assigns higher weights to rare class samples so the model pays more attention to them during training
+
+---
+
+### Question 7
+**In a fetal health classification model, which error is the most dangerous?**
+
+**Options:**
+- Predicting Normal when actually Suspect (under-monitoring)
+- Predicting Pathological when actually Normal (false alarm)
+- Predicting Normal when actually Pathological (fatal miss)
+- Predicting Suspect when actually Normal (minor false alarm)
+
+**Answer:** Predicting Normal when actually Pathological (fatal miss)
 
 ---
 
