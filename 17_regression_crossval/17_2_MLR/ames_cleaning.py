@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder
+import warnings
 
 def load_and_clean_ames(
     url: str = "https://raw.githubusercontent.com/bsheese/CSDS125ExampleData/master/data_housing_ames.txt",
@@ -47,12 +50,10 @@ def load_and_clean_ames(
     
     # 6. Statistical Imputation
     numeric_cols = df_train.select_dtypes(include=np.number).columns
-    cols_with_na = numeric_cols[df_train[numeric_cols].isna().any()].tolist()
+    imputer = SimpleImputer(strategy='median')
     
-    for col in cols_with_na:
-        median_val = df_train[col].median()
-        df_train[col] = df_train[col].fillna(median_val)
-        df_test[col] = df_test[col].fillna(median_val)
+    df_train[numeric_cols] = imputer.fit_transform(df_train[numeric_cols])
+    df_test[numeric_cols] = imputer.transform(df_test[numeric_cols])
         
     # 7. Transform Skewed Variables
     df_train['Log_SalePrice'] = np.log(df_train['SalePrice'])
@@ -83,24 +84,28 @@ def load_and_clean_ames(
         df_test['Garage Finish'] = df_test['Garage Finish'].map(garage_map).fillna(0)
         
     # 10. Nominal Encoding (One-Hot)
-    nominal_cols = ['Neighborhood', 'Foundation', 'MS Zoning', 'Bldg Type', 'Central Air']
-    existing_nominal = [c for c in nominal_cols if c in df_train.columns]
+    nominal_cols = df_train.select_dtypes(include=['object', 'category']).columns.tolist()
     
-    df_combined = pd.concat([df_train, df_test])
-    df_combined = pd.get_dummies(df_combined, columns=existing_nominal, drop_first=True)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        encoder = OneHotEncoder(drop='first', handle_unknown='ignore', sparse_output=False)
+        encoded_train = encoder.fit_transform(df_train[nominal_cols])
+        encoded_test = encoder.transform(df_test[nominal_cols])
+        
+    encoded_cols = encoder.get_feature_names_out(nominal_cols)
     
-    objects_to_drop = df_combined.select_dtypes(include='object').columns
-    df_combined = df_combined.drop(objects_to_drop, axis=1)
+    df_encoded_train = pd.DataFrame(encoded_train, columns=encoded_cols, index=df_train.index)
+    df_encoded_test = pd.DataFrame(encoded_test, columns=encoded_cols, index=df_test.index)
     
-    df_train = df_combined.loc[df_train.index].copy()
-    df_test = df_combined.loc[df_test.index].copy()
+    df_train = df_train.drop(nominal_cols, axis=1).join(df_encoded_train)
+    df_test = df_test.drop(nominal_cols, axis=1).join(df_encoded_test)
     
     # 11. Multicollinearity Drop
     if 'Garage Area' in df_train.columns and 'Garage Cars' in df_train.columns:
         df_train = df_train.drop('Garage Area', axis=1)
         df_test = df_test.drop('Garage Area', axis=1)
         
-    # Split into X and y
+    # 12. Separate Features (X) and Target (y)
     X_train = df_train.drop('Log_SalePrice', axis=1)
     y_train = df_train['Log_SalePrice']
     X_test = df_test.drop('Log_SalePrice', axis=1)
