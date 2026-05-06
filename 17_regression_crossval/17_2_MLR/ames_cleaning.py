@@ -1,128 +1,117 @@
 import pandas as pd
 import numpy as np
-
-def safe_drop(df: pd.DataFrame, drop_list: list[str]) -> pd.DataFrame:
-    """Safely drops columns from a DataFrame if they exist."""
-    existing_cols_to_drop = [col for col in drop_list if col in df.columns]
-    if existing_cols_to_drop:
-        df = df.drop(existing_cols_to_drop, axis=1)
-    return df
-
+from sklearn.model_selection import train_test_split
 
 def load_and_clean_ames(
     url: str = "https://raw.githubusercontent.com/bsheese/CSDS125ExampleData/master/data_housing_ames.txt",
-    drop_outliers: bool = True,
-    house_area_threshold: int = 4000,
-    fix_garage_year: bool = True,
-    add_garage_features: bool = True,
-    one_hot_encode: bool = False
-) -> pd.DataFrame:
+    test_size: float = 0.2,
+    random_state: int = 42
+):
     """
-    Load and clean the Ames Housing dataset.
-    
-    Args:
-        url: URL to the Ames Housing data file
-        drop_outliers: Whether to remove houses with Gr Liv Area > threshold
-        house_area_threshold: Maximum living area to keep (default 4000)
-        fix_garage_year: Whether to cap garage year built at 2010
-        add_garage_features: Whether to create garage_attached and garage_finished flags
-        one_hot_encode: Whether to one-hot encode categorical variables
-    
-    Returns:
-        Cleaned DataFrame ready for modeling
+    Load, clean, and split the Ames Housing dataset following MLR best practices.
+    Returns: X_train, X_test, y_train, y_test
     """
     # Load data
     df = pd.read_csv(url, sep='\t')
     
-    # Remove outliers (large houses sold for little due to inheritance)
-    if drop_outliers:
-        df = df.loc[df['Gr Liv Area'] < house_area_threshold, :].copy()
+    # 1. Drop Identifiers
+    df = df.drop(['Order', 'PID'], axis=1, errors='ignore')
     
-    # Fix future garage year built
-    if fix_garage_year and 'Garage Yr Blt' in df.columns:
-        df.loc[df['Garage Yr Blt'] > 2010, 'Garage Yr Blt'] = 2010
+    # 2. Correct Data Types
+    df['MS SubClass'] = df['MS SubClass'].astype(str)
     
-    # Create garage features
-    if add_garage_features:
-        if 'Garage Type' in df.columns:
-            df['garage_attached'] = np.where(df['Garage Type'] == 'Attchd', 1, 0)
-        if 'Garage Finish' in df.columns:
-            df['garage_finished'] = np.where(df['Garage Finish'] != 'Unf', 1, 0)
-            df['garage_unfinished'] = np.where(df['Garage Finish'] == 'Unf', 1, 0)
-    
-    # Drop list of uninformative columns
-    drop_list = [
-        'Order', 'PID',
-        'Pool QC', 'Pool Area', 'Misc Feature', 'Misc Val',
-        'Alley', 'Fence', 'Mas Vnr Type',
-        'Bsmt Qual', 'Bsmt Cond', 'Bsmt Exposure', 'BsmtFin Type 1', 'BsmtFin Type 2',
-        'Fireplace Qu',
-        'Neighborhood', 'MS Subclass', 'Mo Sold',
-        'Kitchen Qual', 'Exter Qual', 'Heating QC',
-        'Garage Qual', 'Garage Cond', 'Garage Type', 'Garage Finish',
-        'Street', 'Land Contour', 'Utilities', 'Land Slope',
-        'Condition 1', 'Condition 2', 'Roof Matl', 'Exter Cond',
-        'Heating', 'Central Air', 'Electrical', 'Functional',
-        'Paved Drive', 'Sale Type',
-        'Exterior 1st', 'Exterior 2nd',
-        'Mas Vnr Area'
-    ]
-    df = safe_drop(df, drop_list)
-    
-    # Collapse high-cardinality categoricals (>50% single value to binary flag)
-    for col in df.select_dtypes(include=['object']).columns:
-        if df[col].value_counts(normalize=True, dropna=False).max() > 0.50:
-            top_value = df[col].value_counts(normalize=True, dropna=False).index[0]
-            df[col + '_' + top_value] = np.where(df[col] == top_value, 1, 0)
-            df = safe_drop(df, [col])
-    
-    # Handle Foundation - collapse rare categories
-    if 'Foundation' in df.columns:
-        df.loc[~df['Foundation'].isin(['PConc', 'CBlock']), 'Foundation'] = 'Other'
-    
-    # Convert object columns to category dtype
-    for col in df.select_dtypes('object').columns:
-        df[col] = df[col].astype('category')
-    
-    # Convert binary columns to bool
-    for col in df.columns:
-        if df[col].value_counts().shape[0] == 2:
-            df[col] = df[col].astype('bool')
-    
-    # Drop highly uniform numeric columns (>90% single value)
-    for col in df.select_dtypes(include=np.number).columns:
-        if df[col].value_counts(normalize=True, dropna=False).max() > 0.90:
-            df = safe_drop(df, [col])
-    
-    # Convert near-zero numerics to binary (>80% single value, >2 unique values)
-    for col in df.select_dtypes(include=np.number).columns:
-        if df[col].value_counts(normalize=True, dropna=False).max() > 0.80:
-            if len(df[col].unique()) > 2:
-                df[col] = np.where(df[col] > 0, 1, 0)
-            df[col] = df[col].astype('boolean')
-    
-    # Fill numeric NaN with median
-    num_cols_with_na = df.select_dtypes(include=np.number).columns[
-        df.select_dtypes(include=np.number).isnull().any()
-    ].tolist()
-    for col in num_cols_with_na:
-        df[col] = df[col].fillna(df[col].median())
-    
-    # Optional: One-hot encode remaining categoricals
-    if one_hot_encode:
-        df = pd.get_dummies(df, columns=df.select_dtypes(include='category').columns, drop_first=True)
-    else:
-        # Convert category columns to numeric codes for tree models
-        for col in df.select_dtypes(include='category').columns:
-            df[col] = df[col].cat.codes
-    
-    return df
+    # 3. Resolve Meaningful NAs
+    bsmt_cols = ['Bsmt Qual', 'Bsmt Cond', 'Bsmt Exposure', 'BsmtFin Type 1', 'BsmtFin Type 2']
+    for col in bsmt_cols:
+        if col in df.columns:
+            df[col] = df[col].fillna('None')
+            
+    garage_cols = ['Garage Type', 'Garage Finish', 'Garage Qual', 'Garage Cond']
+    for col in garage_cols:
+        if col in df.columns:
+            df[col] = df[col].fillna('None')
+            
+    if 'Fireplace Qu' in df.columns:
+        df['Fireplace Qu'] = df['Fireplace Qu'].fillna('None')
 
+    # Drop uninformative columns to keep things simple
+    sparse_drops = ['Pool QC', 'Pool Area', 'Misc Feature', 'Misc Val', 'Alley', 'Fence']
+    constant_drops = ['Street', 'Utilities', 'Condition 2', 'Roof Matl', 'Heating', 'Low Qual Fin SF', '3Ssn Porch']
+    df = df.drop(sparse_drops + constant_drops + ['Garage Yr Blt'], axis=1, errors='ignore')
+    
+    # 4. Train/Test Split
+    df_train, df_test = train_test_split(df, test_size=test_size, random_state=random_state)
+    
+    # 5. Remove Extreme Outliers (Train set only)
+    df_train = df_train[df_train['Gr Liv Area'] <= 4000].copy()
+    
+    # 6. Statistical Imputation
+    numeric_cols = df_train.select_dtypes(include=np.number).columns
+    cols_with_na = numeric_cols[df_train[numeric_cols].isna().any()].tolist()
+    
+    for col in cols_with_na:
+        median_val = df_train[col].median()
+        df_train[col] = df_train[col].fillna(median_val)
+        df_test[col] = df_test[col].fillna(median_val)
+        
+    # 7. Transform Skewed Variables
+    df_train['Log_SalePrice'] = np.log(df_train['SalePrice'])
+    df_test['Log_SalePrice'] = np.log(df_test['SalePrice'])
+    
+    df_train = df_train.drop('SalePrice', axis=1)
+    df_test = df_test.drop('SalePrice', axis=1)
+    
+    # 8. Create Synergistic Features
+    df_train['Total_Square_Footage'] = df_train['1st Flr SF'] + df_train['2nd Flr SF'] + df_train['Total Bsmt SF']
+    df_test['Total_Square_Footage'] = df_test['1st Flr SF'] + df_test['2nd Flr SF'] + df_test['Total Bsmt SF']
+    
+    df_train = df_train.drop(['1st Flr SF', '2nd Flr SF', 'Total Bsmt SF'], axis=1)
+    df_test = df_test.drop(['1st Flr SF', '2nd Flr SF', 'Total Bsmt SF'], axis=1)
+    
+    # 9. Ordinal Encoding
+    quality_map = {'Ex': 5, 'Gd': 4, 'TA': 3, 'Fa': 2, 'Po': 1, 'None': 0}
+    ordinal_cols = ['Exter Qual', 'Kitchen Qual', 'Heating QC', 'Bsmt Qual', 'Fireplace Qu']
+    
+    for col in ordinal_cols:
+        if col in df_train.columns:
+            df_train[col] = df_train[col].map(quality_map).fillna(3)
+            df_test[col] = df_test[col].map(quality_map).fillna(3)
+            
+    garage_map = {'Fin': 3, 'RFn': 2, 'Unf': 1, 'None': 0}
+    if 'Garage Finish' in df_train.columns:
+        df_train['Garage Finish'] = df_train['Garage Finish'].map(garage_map).fillna(0)
+        df_test['Garage Finish'] = df_test['Garage Finish'].map(garage_map).fillna(0)
+        
+    # 10. Nominal Encoding (One-Hot)
+    nominal_cols = ['Neighborhood', 'Foundation', 'MS Zoning', 'Bldg Type', 'Central Air']
+    existing_nominal = [c for c in nominal_cols if c in df_train.columns]
+    
+    df_combined = pd.concat([df_train, df_test])
+    df_combined = pd.get_dummies(df_combined, columns=existing_nominal, drop_first=True)
+    
+    objects_to_drop = df_combined.select_dtypes(include='object').columns
+    df_combined = df_combined.drop(objects_to_drop, axis=1)
+    
+    df_train = df_combined.loc[df_train.index].copy()
+    df_test = df_combined.loc[df_test.index].copy()
+    
+    # 11. Multicollinearity Drop
+    if 'Garage Area' in df_train.columns and 'Garage Cars' in df_train.columns:
+        df_train = df_train.drop('Garage Area', axis=1)
+        df_test = df_test.drop('Garage Area', axis=1)
+        
+    # Split into X and y
+    X_train = df_train.drop('Log_SalePrice', axis=1)
+    y_train = df_train['Log_SalePrice']
+    X_test = df_test.drop('Log_SalePrice', axis=1)
+    y_test = df_test['Log_SalePrice']
+    
+    return X_train, X_test, y_train, y_test
 
 def get_colab_download_code(module_url: str = None) -> str:
     """Return the code needed to download and import this module in Colab."""
     if module_url is None:
-        module_url = "https://raw.githubusercontent.com/bsheese/cs377/main/17_regression_crossval/ames_cleaning.py"
+        module_url = "https://raw.githubusercontent.com/bsheese/cs377/main/17_regression_crossval/17_2_MLR/ames_cleaning.py"
     return f'''import urllib.request
 module_url = "{module_url}"
 urllib.request.urlretrieve(module_url, "ames_cleaning.py")
