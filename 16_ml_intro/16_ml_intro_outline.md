@@ -276,16 +276,3 @@ This document provides a complete outline of all topics covered across the five 
 - Excluding false matches with negation
 
 ---
-
-## Cross-Cutting Themes
-
-| Theme | Notebooks |
-|---|---|
-| **ML vs. traditional CS vs. statistics** | 16_1 |
-| **Data quality and preparation** | 16_1, 16_5 |
-| **Supervised learning (classification/regression)** | 16_1 |
-| **Pandas fundamentals** | 16_4, 16_5 |
-| **Index-based selection (.loc vs. .iloc)** | 16_4, 16_5 |
-| **Boolean masking** | 16_4, 16_5 |
-| **Vectorized operations** | 16_3, 16_4, 16_5 |
-| **Copying vs. aliasing** | 16_3, 16_4, 16_5 |
