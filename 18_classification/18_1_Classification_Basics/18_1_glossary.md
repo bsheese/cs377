@@ -1,6 +1,6 @@
 # 18_1 Classification Basics — Glossary
 
-This document defines all technical and conceptual terms used across the four notebooks in the 18_1 Classification Basics series.
+This document defines all technical and conceptual terms used across the six notebooks in the 18_1 Classification Basics series.
 
 ---
 
@@ -30,20 +30,20 @@ The practice of assigning real-world dollar costs to different types of classifi
 ## C
 
 ### Class Imbalance
-A situation where the classes in a dataset are not equally represented (e.g., 70% good credit, 30% bad credit). Imbalance can cause models to be biased toward the majority class and makes accuracy a poor evaluation metric.
+A situation where the classes in a dataset are not equally represented (e.g., 70% good credit, 30% bad credit). Imbalance can cause models to be biased toward the majority class and makes accuracy a poor evaluation metric. In extreme cases (credit card fraud: ~0.17% positive), standard models may achieve near-perfect accuracy while detecting zero fraud cases.
 
 ### Classification Report
 A scikit-learn function that prints precision, recall, f1-score, and support for each class, along with macro, weighted, and (optionally) micro averages. Provides a comprehensive view of per-class model performance.
 
 ### Confusion Matrix
-A table that cross-tabulates actual class labels against predicted class labels. For binary classification, it has four cells: TP, TN, FP, FN. For K-class classification, it is a K×K grid. The diagonal contains correct predictions; off-diagonal cells show which classes the model confuses.
+A table that cross-tabulates actual class labels against predicted class labels. For binary classification, it has four cells: TP, TN, FP, FN. The diagonal contains correct predictions; off-diagonal cells show which classes the model confuses. Visualized with `plt.imshow()` and cell annotations.
 
 ---
 
 ## D
 
 ### Decision Threshold
-The probability cutoff used to convert a soft prediction (probability) into a hard prediction (class label). By default, sklearn uses 0.5: if P(positive) ≥ 0.5, predict positive; otherwise predict negative. Moving the threshold changes the precision-recall trade-off.
+The probability cutoff used to convert a soft prediction (probability) into a hard prediction (class label). By default, sklearn uses 0.5: if P(positive) ≥ 0.5, predict positive; otherwise predict negative. Moving the threshold changes the precision-recall trade-off. Selected via Youden's J, business cost analysis, or default convention.
 
 ### Drop First
 A parameter in one-hot encoding (`drop_first=True`) that removes the first category column to avoid perfect multicollinearity (the dummy variable trap). With K categories, this produces K−1 binary columns instead of K.
@@ -62,11 +62,14 @@ A machine learning technique that combines multiple models to produce better pre
 ### F1-Score
 The harmonic mean of precision and recall: `F1 = 2 × (precision × recall) / (precision + recall)`. Provides a single number that balances both metrics. Punishes extreme imbalances — a model with perfect precision but near-zero recall gets a near-zero F1.
 
+### F-Beta Score
+A generalization of the F1-score that weights recall more (beta > 1) or less (beta < 1) than precision. The F2-score (beta=2) weights recall twice as much as precision, useful when missing positive cases is especially costly — such as fraud detection or disease screening.
+
 ### False Negative (FN) / Type II Error
-A case where the model predicts negative (Good credit) but the actual label is positive (Bad credit / Default). In the credit context: approving a loan to someone who will default.
+A case where the model predicts negative (Good credit) but the actual label is positive (Bad credit / Default). In the credit context: approving a loan to someone who will default. In fraud: missing a fraudulent transaction.
 
 ### False Positive (FP) / Type I Error
-A case where the model predicts positive (Bad credit / Default) but the actual label is negative (Good credit). In the credit context: wrongly denying a loan to a good customer.
+A case where the model predicts positive (Bad credit / Default) but the actual label is negative (Good credit). In the credit context: wrongly denying a loan to a good customer. In fraud: incorrectly flagging a legitimate transaction.
 
 ### Feature Importance
 A measure of how much each input feature contributes to a model's predictions. For tree-based models like XGBoost and Random Forest, it is computed based on gain (loss reduction), cover (samples affected), or frequency (times used). Normalized to sum to 1.0.
@@ -108,16 +111,18 @@ An averaging strategy that computes the metric (precision, recall, or f1) separa
 ### Micro Average
 An averaging strategy that computes the metric globally across all samples, aggregating TP, FP, and FN across all classes before calculating precision/recall. For single-label classification, micro precision and micro recall are both equal to accuracy.
 
-### Multiclass Classification
-A classification problem with more than two classes (e.g., Normal/Suspect/Pathological fetal health). Requires strategies like One-vs-Rest or Softmax to extend binary classifiers.
-
 ---
 
-## n_estimators
+## N
+
+### n_estimators
 In ensemble models (XGBoost, Random Forest), the number of trees in the ensemble. More trees typically improve performance but increase computation time.
 
 ### Naive Baseline
 See **Baseline (Naive)**.
+
+### Nested Cross-Validation
+A two-layer cross-validation approach: the inner loop tunes hyperparameters within each outer training fold, and the outer loop evaluates the tuned model on an independent holdout fold. Provides an unbiased estimate of model performance. Applied to XGBoost hyperparameter tuning in the credit card fraud notebook.
 
 ---
 
@@ -126,8 +131,8 @@ See **Baseline (Naive)**.
 ### One-Hot Encoding
 A technique for converting categorical variables into binary (0/1) columns. Each category becomes its own column, with 1 indicating presence and 0 indicating absence.
 
-### One-vs-Rest (OvR)
-A strategy for extending binary classifiers to multiclass problems. For K classes, K separate binary classifiers are trained (e.g., Normal vs. Not-Normal, Suspect vs. Not-Suspect, etc.), and the class with the highest confidence wins. An alternative to the softmax approach.
+### Out-of-Fold (OOF) Probabilities
+Predicted probabilities for each training sample obtained by predicting using models trained on folds that did not include that sample. Produced during cross-validation. Used for honest threshold selection without data leakage.
 
 ---
 
@@ -154,16 +159,13 @@ A plot of the True Positive Rate (recall) against the False Positive Rate (1 −
 ## S
 
 ### Sample Weight
-A per-sample weight assigned during training to control how much each sample contributes to the model's learning. Used to handle class imbalance by giving higher weights to minority class samples. In scikit-learn, `compute_sample_weight('balanced', y)` automatically calculates weights inversely proportional to class frequency. This is the general-purpose version of `scale_pos_weight` that works with any model and any number of classes.
+A per-sample weight assigned during training to control how much each sample contributes to the model's learning. Used to handle class imbalance by giving higher weights to minority class samples. In scikit-learn, `compute_sample_weight('balanced', y)` automatically calculates weights inversely proportional to class frequency.
 
 ### scale_pos_weight
 A parameter in XGBoost used to handle class imbalance in binary classification. It scales the weight of the positive class (minority) relative to the negative class. Calculated as: (number of negatives) / (number of positives). For multiclass imbalance, use `sample_weight` instead.
 
 ### Soft Prediction
 A probability value between 0 and 1 produced by `.predict_proba()`. Represents the model's confidence that an instance belongs to the positive class. Contrasts with hard prediction (class label).
-
-### Softmax
-A function that converts a vector of raw model outputs into a valid probability distribution (all values between 0 and 1, summing to 1.0). Used by XGBoost (`objective='multi:softprob'`) and neural networks for multiclass classification. Each class gets a probability, and the predicted class is whichever has the highest value.
 
 ### Specificity
 The proportion of actual negatives that the model correctly identifies: `TN / (TN + FP)`. Equal to 1 − FPR. Measures how well the model avoids false alarms.
@@ -205,7 +207,7 @@ An averaging strategy that computes the metric for each class, then takes a weig
 ## X
 
 ### XGBoost
-eXtreme Gradient Boosting — a powerful tree-based ensemble algorithm. Instead of fitting a single model, it builds an ensemble of decision trees sequentially, where each new tree corrects the errors of the previous ones. Uses scale_pos_weight to handle class imbalance.
+eXtreme Gradient Boosting — a powerful tree-based ensemble algorithm. Instead of fitting a single model, it builds an ensemble of decision trees sequentially, where each new tree corrects the errors of the previous ones. Uses `scale_pos_weight` to handle class imbalance.
 
 ---
 
