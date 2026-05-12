@@ -1,6 +1,6 @@
 # 18_1 Classification Basics — Topic Outline
 
-This document provides a complete outline of all topics covered across the notebooks in the 18_1 Classification Basics series.
+This document provides a complete outline of all topics covered across the six notebooks in the 18_1 Classification Basics series.
 
 ---
 
@@ -8,17 +8,18 @@ This document provides a complete outline of all topics covered across the noteb
 
 **Dataset:** South German Credit (`credit-g`) — 1000 rows, 21 features, binary target (good/bad credit), ~70/30 class distribution.
 
-### Why Gradient Boosting?
-- Unlike linear regression, classification requires bounded probabilities
+### Regression vs. Classification
+- Linear regression predicts continuous values; classification predicts discrete categories
+- Classification requires bounded probabilities (0 to 1)
 - XGBoost uses gradient boosting: sequential trees that correct errors
 - Each tree makes threshold-based splits on features
 - Ensemble of trees produces probability predictions
 
 ### Class Imbalance and the Accuracy Paradox
-- Class distribution visualization
+- Class distribution visualization (70/30 split)
 - The naive baseline: always predicting the majority class
 - Why accuracy is deceptive on imbalanced data
-- The "accuracy paradox" explained with concrete example
+- Absolute improvement vs. relative improvement
 
 ### Data Preparation for XGBoost
 - Binary encoding of the target variable (good=0, bad=1)
@@ -30,6 +31,7 @@ This document provides a complete outline of all topics covered across the noteb
 - Gradient boosting: sequential tree correction
 - `scale_pos_weight`: compensating for class imbalance (ratio of negatives/positives)
 - Key parameters: n_estimators, max_depth, learning_rate
+- Training with and without class weighting for comparison
 
 ### Interpreting Feature Importance
 - Importance based on gain (loss reduction), cover (samples affected), frequency (times used)
@@ -45,9 +47,8 @@ This document provides a complete outline of all topics covered across the noteb
 
 ### Basic Model Evaluation
 - Model accuracy vs. naive baseline
-- Interpretation: what the 3% improvement actually means
-- Feature Engineering Pipeline: one-hot encoding with `pd.get_dummies()`, column name cleaning with `re.sub()`, `drop_first=True` for multicollinearity avoidance
-- Model.score() method usage for comprehensive evaluation
+- Absolute improvement (e.g., +6%) vs. relative improvement (e.g., +9%)
+- When to use each interpretation
 
 ---
 
@@ -65,6 +66,8 @@ This document provides a complete outline of all topics covered across the noteb
 - Precision: reliability of positive predictions (TP / TP + FP)
 - Recall: sensitivity — how many actual positives were caught (TP / TP + FN)
 - The precision-recall trade-off
+- Word association trick: "Precision = positive predictive value"
+- The "denominator trick" — precision denominator is predicted positives, recall denominator is actual positives
 
 ### The F1-Score
 - Harmonic mean of precision and recall
@@ -75,103 +78,135 @@ This document provides a complete outline of all topics covered across the noteb
 - Per-class precision, recall, and f1-score
 - Support: number of samples per class
 - Macro average vs. weighted average: when to use each
+- How to read per-class metrics and identify model weaknesses
 
 ### The Threshold Trade-Off (Preview)
 - Moving the threshold: conservative vs. sensitive
 - Teaser for ROC curves and systematic threshold optimization
 
-### Confusion Matrix Visualization and Business Cost
-- Confusion matrix visualization using `plt.imshow()` and cell annotations
-- Business cost framework: assigning costs to false positives and false negatives
+---
+
+## 18_1_3: Examples and Practice
+
+**Dataset:** Adult Census Income — binary target (income >50K or ≤50K).
+
+### Applying Concepts from Notebooks 1 & 2
+- Load and explore a new dataset
+- Examine target variable distribution (imbalance check)
+- Data preparation: encoding, splitting, class weighting
+
+### Modeling Pipeline
+- Train XGBoost on the Adult dataset
+- Confusion matrix analysis with business interpretation
+- Precision, recall, and F1-score evaluation
+- Full classification report
+
+### Feature Importance
+- Interpreting which features drive income predictions
+- Top contributing features and their practical meaning
+
+### Probability Distribution Analysis
+- Reading the probability distribution by actual class
+- Understanding model confidence and separation quality
+
+### Summary
+- End-to-end application of concepts from the first two notebooks
+- Confirmation that the classification workflow generalizes across datasets
 
 ---
 
-## 18_1_3: ROC, AUC, and Threshold Tuning
+## 18_1_4: ROC, AUC, and Threshold Tuning
 
 **Dataset:** South German Credit (`credit-g`)
 
 ### The ROC Curve
 - True Positive Rate (TPR = recall) vs. False Positive Rate (FPR = 1 − specificity)
-- Reading the curve: perfect model, random model, "knee" of the curve
+- Reading the curve: perfect model (top-left), random model (diagonal)
 - AUC interpretation: probability of correctly ranking a random positive above a random negative
-- Concrete AUC example with 0.79
+- AUC grading scale: 0.5 (random) → 0.7–0.8 (acceptable) → 0.8–0.9 (excellent) → 1.0 (perfect)
 
 ### Precision-Recall Curves
 - Why ROC can be over-optimistic on imbalanced data
 - PR curve baseline: the positive class prevalence
 - When to prefer PR curves over ROC curves
 
-### Youden's J Statistic
-- Formula: J = TPR − FPR
-- Finding the mathematically optimal threshold
+### Finding the Optimal Decision Threshold
+- Youden's J Statistic: J = TPR − FPR (maximizes distance from diagonal)
 - Comparing Youden's J to the default 0.5 threshold
 
 ### Business Cost Sensitivity
 - Assigning dollar costs to false positives and false negatives
 - Computing total cost at each threshold
-- Comparing three thresholds: default (0.5), Youden's J, cost-optimal
 - The cost curve visualization
+- Comparing three thresholds: default (0.5), Youden's J, cost-optimal
+
+### Summary
+- Three threshold selection methods: default, statistical, business-driven
+- Evaluation tools: ROC curve, PR curve, cost curve
 
 ---
 
-## 18_1_4: Multiclass Classification
+## 18_1_5: Credit Card Fraud Detection
 
-**Dataset:** Cardiotocography (`fetch_openml` data_id=1560) — 2126 rows, 35 features (V1-V35), 3 fetal health classes.
+**Dataset:** Credit Card Fraud (OpenML 1597) — 284,807 transactions, 31 features, extreme imbalance (~0.17% fraudulent).
 
-### Bridge from Binary to Multiclass
-- Recap of Parts 1-3 binary toolkit (confusion matrix, precision/recall, ROC, thresholds)
-- Transition to 3+ classes on a new clinical dataset
-- Dataset properties and class distribution (Normal/Suspect/Pathological)
-- Class imbalance: ~78% Normal, ~14% Suspect, ~8% Pathological
-- Explicit naive baseline computation (always predict Normal = 77.8%)
+### The Imbalance Problem
+- Extreme class imbalance: far more severe than the credit dataset
+- Naive baseline accuracy exceeds 99.8%
+- XGBoost struggles: high precision but near-zero recall for fraud
 
-### How Multiclass Classification Works
-- Softmax: model outputs probability for each class, predicted class = highest probability
-- `multi:softprob` objective in XGBoost
-- One-vs-Rest (OvR) as an alternative strategy (conceptual mention)
+### Model Evaluation on Fraud Data
+- Confusion matrix reveals the imbalance trap
+- Performance on fraud class (Class 1) is very poor without intervention
+- Macro vs. weighted averages diverge dramatically
+- Practical business impact: most fraudulent transactions go undetected
 
-### A Simple Model Falls Into the Trap
-- Decision Tree (max_depth=2): limited capacity, biased toward majority class
-- 93% accuracy but misses 31% of Pathological cases ("Fatal Misses")
-- Comparison to naive baseline: accuracy sounds good but hides dangerous errors
+### Precision-Recall Analysis
+- Skipping ROC in favor of PR curves for extreme imbalance
+- PR AUC and the PR curve shape
+- The F-Beta Score: weighting recall more heavily than precision
+  - F2-Score: beta=2 means recall counts twice as much as precision
+  - Finding the "sweet spot" where F-beta peaks
 
-### The 3×3 Confusion Matrix
-- Diagonal = correct predictions
-- Off-diagonal = misclassifications
-- Clinical interpretation: False Alarms vs. Fatal Misses
-- Reading specific rows to trace where each class's errors go
+### Business Cost Analysis
+- Consistent cost values for false positives vs. false negatives
+- Out-of-Fold (OOF) probabilities for honest evaluation
+- Three approaches to threshold selection:
+  - Youden's J Statistic (statistical balanced approach)
+  - Cost-based optimization (business-driven approach)
+  - The "generalization gap" between OOF and test set
+- Comparing recommendations from data-driven vs. business-driven thresholds
 
-### XGBoost Comparison
-- XGBoost (100 trees): 99% accuracy, catches nearly all minority class cases
-- Side-by-side confusion matrix comparison
-- Ensemble approach recovers minority class patterns that a shallow tree misses
+### Recommendations for Improvement
+- Strategies to address the extreme imbalance
+- Connection to hyperparameter tuning (next notebook)
 
-### Per-Class Metrics in Multiclass
-- Precision and recall computed separately for each class
-- How to read per-class metrics: "Recall for Pathological = (correctly predicted Pathological) / (all actual Pathological)"
-- Guided walkthrough of both classification reports
+---
 
-### Multiclass Averaging Strategies
-- Per-class precision, recall, f1-score
-- Support: number of samples per class
-- Manual calculation of Macro F1 vs. Weighted F1
-- Macro vs. weighted vs. micro averaging
-- When each averaging strategy matters: macro treats all classes equally, weighted accounts for class imbalance, micro aggregates globally
-- The gap between Weighted F1 and Macro F1 as the "signature of the imbalance trap"
+## 18_1_6: Credit Card Fraud — Hyperparameter Tuning with Nested Cross-Validation
 
-### Addressing Imbalance with Sample Weights
-- `compute_sample_weight('balanced', y)` from sklearn
-- Weights inversely proportional to class frequency
-- Retraining a Decision Tree with balanced weights: improved Macro F1
-- Brief mention of other strategies: oversampling (SMOTE), undersampling, cost-sensitive learning
-- Connection to `scale_pos_weight` from Part 1
+**Dataset:** Credit Card Fraud (OpenML 1597)
 
-### Practical Checklist
-- Check class distribution first
-- Compare accuracy to naive baseline
-- Inspect confusion matrix for dangerous misclassifications
-- Report Macro F1 alongside accuracy
-- Consider sample weighting for minority classes
+### Hyperparameter Tuning with GridSearchCV
+- Systematically searching for optimal XGBoost parameters
+- Parameter grid: max_depth, learning_rate, n_estimators, scale_pos_weight, subsample, etc.
+- Why tuning matters more for the fraud dataset than the credit dataset
+
+### Nested Cross-Validation
+- Why standard CV overestimates performance when hyperparameters are tuned on the same data
+- Inner loop: grid search within each outer training fold
+- Outer loop: honest evaluation on held-out test folds
+- Interpreting nested CV results for the fraud model
+
+### Final Model Evaluation
+- Building the final production model with optimal parameters
+- Evaluating on the held-out test set
+- Summary of improvement over the untuned baseline
+
+### Key Takeaways
+- Hyperparameter tuning can significantly improve recall on the minority class
+- Nested CV provides honest performance estimates
+- The complete classification workflow: from raw data to tuned, evaluated model
 
 ---
 
@@ -179,9 +214,6 @@ This document provides a complete outline of all topics covered across the noteb
 
 | File | Description |
 |------|-------------|
-| `18_1_2_x_exercise.ipynb` | Practice notebook applying concepts from Notebooks 1 & 2 on Adult Census Income dataset |
-| `18_1_4_x_Exercise_Two_Parts.ipynb` | Two-part exercise: binary (Thoracic Surgery) and multiclass (Contraceptive Method Choice) |
-| `18_1_5_x_credit_card_fraud.ipynb` | Capstone exercise: credit card fraud detection with extreme class imbalance |
 | `18_1_practice_quiz.md` | Practice quiz for assessment |
 | `18_1_discussion_questions.md` | Discussion questions for the topic |
 | `18_1_glossary.md` | Key terminology definitions |
@@ -190,23 +222,15 @@ This document provides a complete outline of all topics covered across the noteb
 
 ## Cross-Cutting Themes
 
-These concepts appear throughout multiple notebooks:
-
 | Theme | Notebooks |
-|-------|------------|
-| **Class imbalance** | 18_1_1, 18_1_2, 18_1_3, 18_1_4 |
-| **Threshold tuning** | 18_1_1, 18_1_2, 18_1_3 |
-| **Precision/Recall trade-off** | 18_1_2, 18_1_3, 18_1_4 |
-| **Confusion matrices** | 18_1_2, 18_1_4 |
-| **Macro vs. weighted averaging** | 18_1_2, 18_1_4 |
-| **Sample weighting / imbalance mitigation** | 18_1_1 (`scale_pos_weight`), 18_1_4 (`compute_sample_weight`) |
-| **Feature importance** | 18_1_1 |
-| **Feature Engineering Pipeline** | All notebooks |
-
-### Feature Engineering Pipeline
-A unified view of preprocessing steps across all notebooks:
-1. Target encoding: `good=0, bad=1`
-2. Categorical encoding: `pd.get_dummies()` with `drop_first=True`
-3. Column name cleaning: `re.sub(r"[<>[\]]", "_", col)` for XGBoost compatibility
-4. Train-test split: `train_test_split(..., stratify=y)`
-5. Scale_pos_weight calculation: `(negatives/positives)` ratio |
+|---|---|
+| **Class imbalance** | 18_1_1, 18_1_2, 18_1_3, 18_1_4, 18_1_5, 18_1_6 |
+| **Threshold tuning** | 18_1_1, 18_1_2, 18_1_4, 18_1_5 |
+| **Precision/Recall trade-off** | 18_1_2, 18_1_3, 18_1_4, 18_1_5 |
+| **Confusion matrices** | 18_1_2, 18_1_3, 18_1_5 |
+| **Classification report** | 18_1_2, 18_1_3, 18_1_5 |
+| **Feature importance** | 18_1_1, 18_1_3, 18_1_5 |
+| **Business cost analysis** | 18_1_2, 18_1_4, 18_1_5 |
+| **Out-of-fold probabilities** | 18_1_5 |
+| **Nested cross-validation** | 18_1_6 |
+| **F-Beta Score** | 18_1_5 (fraud detection) |

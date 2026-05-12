@@ -1,299 +1,332 @@
-# 17_2 Regression Cross-Validation — Topic Outline
+# 17_2 MLR and Regularization — Topic Outline
 
-This document provides a complete outline of all topics covered across the five notebooks in the 17_2 Regression Cross-Validation series.
+This document provides a complete outline of all topics covered across the six notebooks in the 17_2 MLR and Regularization series.
 
 ---
 
-## 17_2_4_1: Data Cleaning
+## 17_2_1_1: Data Cleaning
 
 **Dataset:** Ames Housing — 2,930 observations, 82 features. Goal: clean and prepare for multiple linear regression.
 
-### Examine the Dataframe
+### Purpose of this Notebook
+- Why data cleaning matters for regression quality
+- Under-cleaning (noise in, garbage out) vs. over-cleaning (data loss)
+
+### Typical Checks
 - Using `.info()` to inspect column types and non-null counts
-- Identifying the mix of numeric and categorical features
+- Identifying numeric vs. categorical feature mix
 
-### Remove Obviously Uninformative Features
-- Dropping unique identifiers (`Order`, `PID`)
-- Removing columns with only one unique value (constant features)
-- Removing duplicate rows and rows where all values are NaN
+### Common Remediation Approaches
+- Consistent units/scales: converting between square feet, acres, etc.
+- Handling impossible values: zero living area, negative values
+- Types of outliers and diagnostics for detecting them
 
-### Yolked Variables
-- Definition: paired features where a categorical "None" always corresponds to a numeric 0
-- Why yolked variables create redundancy and confuse the model
-- Resolving yolked variables:
-  - Dropping redundant pairs entirely (Pool QC/Pool Area, Garage Yr Blt)
-  - Combining into binary indicators (`garage_attached`, `garage_unfinished`)
-  - Handling false positives in automated detection
+### Common Transformations
+- Log, square root, Box-Cox for skewed distributions
+- Why transformations matter for inference
+- Important note: interpretation changes after transformation
 
-### Cleaning Categorical Features
-- Dropping categories where one category accounts for >70% of values
-- Collapsing dominant categories (>50%) into binary columns instead of full one-hot encoding
-- Grouping rare categories into "Other" (e.g., Foundation → PConc, CBlock, Other)
-- Dropping features with too many categories to avoid exploding one-hot columns (Exterior 1st/2nd)
+### Cleaning Specifically with MLR in Mind
+- Unlike simple regression, MLR assumes linear additivity
+- Feature interactions and multicollinearity awareness
 
-### Cleaning Numeric Features
-- Converting highly zero-dominant features (>90%) to boolean
-- Dropping features with one value accounting for >90% of observations
-- Handling features that are mostly zero but potentially valuable (Mas Vnr Area)
+### Handling Missing and Extreme Values (Train-Set Only)
 - Median imputation for missing numeric values
+- Why you must fit imputation on the training set only
 
-### Conclusion
-- DataFrame reduced from 82 to ~38 columns
-- Why different modeling techniques require different levels of data cleaning
-- Trade-offs of aggressive vs. conservative feature dropping
+### Feature Engineering
+- Creating interaction terms
+- Binning continuous variables
+- Domain-specific feature construction
 
----
+### Encoding Categoricals for the Algorithm
+- One-hot encoding with `pd.get_dummies()` and `drop_first=True`
+- The Dummy Variable Trap: perfect multicollinearity from redundant columns
+- Handling high-cardinality categoricals
 
-## 17_2_4_2: Forward/Backward Selection, Cross-Validation, and Feature Engineering
-
-**Dataset:** Ames Housing (cleaned from Part 1). Goal: select features and diagnose model problems.
-
-### One-Hot Encoding
-- Converting categorical features to binary columns with `drop_first=True`
-- The Dummy Variable Trap: perfect multicollinearity from redundant category columns
-
-### How Forward and Backward Selection Work
-- **Forward Selection:** Start with no features, add one at a time based on CV improvement
-  - Mini-example with 3 features (A, B, C)
-  - `n_features_to_select='auto'`: stops when no feature improves the score
-- **Backward Selection:** Start with all features, remove the least useful one at a time
-  - Trade-offs: forward is faster; backward can catch missed interactions
-
-### The Selection and Evaluation Function
-- Pipeline: `StandardScaler` → `SequentialFeatureSelector` → `LinearRegression`
-- Why the pipeline prevents data leakage (scaler fit only on training folds)
-- Using only 2 CV folds to keep computation manageable
-
-### The Modeling Workflow
-- Encapsulating train-test split, CV, feature selection, evaluation, and residual plotting
-- Running both forward and backward selection to compare results
-
-### Interpreting Results
-- **Negative coefficient for Bedroom AbvGr:** holding square footage constant, more bedrooms means smaller rooms → lower value
-- **Heteroscedastic residuals:** funnel-shaped error pattern (errors grow with price)
-  - Caused by right-skewed SalePrice distribution
-  - Violates linear regression assumptions; confidence intervals unreliable
-- **Multicollinearity teaser:** correlated features may confuse the selection process
-
-### Improving the Model: Log Transform
-- Why log-transforming the target helps: converts absolute errors to percentage errors
-- Before vs. after: CV R² improves modestly (0.86 → 0.89), test R² jumps (0.88 → 0.93)
-- Why the test score improvement is larger: stabilized variance across price ranges
-- Coefficients now in log-units (~12.0) rather than dollars (~180,000)
-
-### Add Polynomials to Model Non-Linear Features
-- Why X² allows the regression line to bend while still being "linear" regression
-- Three examples: Overall Qual (accelerating premium), Bedroom AbvGr (cramped room penalty), Garage Area (diminishing returns)
-- Always include the base linear term with the squared term
-- Standardize before squaring to avoid structural multicollinearity
-- Forward selection drops all polynomial features — doesn't mean they're useless, just that they don't add enough *additional* power
-
-### Assessing Multicollinearity with VIF
-- VIF interpretation: 1 = no correlation, >5 = moderate concern, >10 = severe
-- Full feature set: Gr Liv Area VIF = 118 (extreme)
-- Reduced feature set: no VIF above 5 (forward selection filtered redundancy)
-- But multicollinearity may have affected the selection process itself
-- Correlation heatmap: Garage Cars vs. Garage Area at r = 0.89
+### Target Variable Housekeeping
+- Log-transforming the target (SalePrice) to reduce skew
+- Why log transforms stabilize variance across price ranges
 
 ### Summary
-- Model achieves R² ≈ 0.93 with log-transformed target
-- Three remaining issues: multicollinearity, possible missed features, polynomial features dropped
-- Tease: Part 3 addresses all three with regularization
+- DataFrame reduced from 82 to ~38 columns after cleaning
+- Why different modeling techniques require different levels of cleaning
+- Trade-offs of aggressive vs. conservative feature dropping
+- Cleaned data feeds into Part 2 for feature selection
 
 ---
 
-## 17_2_4_3: Regularization
+## 17_2_1_2: Forward/Backward Selection and VIF
 
-**Dataset:** Ames Housing (cleaned). Goal: use Ridge, Lasso, and ElasticNet to handle multicollinearity and prevent overfitting.
+**Dataset:** Ames Housing (cleaned from Part 1). Goal: select features, assess multicollinearity.
 
-### Preliminaries
-- Feature selection and evaluation function (same pipeline as Part 2)
-- Modeling workflow function
-- Baseline: OLS with forward selection (for comparison)
+### Feature Shortlisting
+- Speeding up selection by pre-filtering the feature set
+- Removing near-constant and highly correlated features first
+
+### Forward Selection
+- Start with no features, add one at a time based on CV improvement
+- Test each feature individually, add the best one, repeat
+- `n_features_to_select='auto'`: stops when improvement becomes small
+- Mini-example: stepping through feature-by-feature addition
+- Advantage: computationally efficient for large feature sets
+- Limitation: once a feature is added, it can never be removed
+
+### Backward Selection
+- Start with all features, remove the least useful one at a time
+- Test each feature individually, remove the worst one, repeat
+- Stop when further removal hurts performance
+- Advantage: can catch interactions that forward selection misses
+- Limitation: more computationally expensive
+
+### The Evaluation Pipeline
+- Pipeline: `StandardScaler` → `SequentialFeatureSelector` → `LinearRegression`
+- Why the pipeline prevents data leakage (scaler fit only on training folds)
+
+### Interpreting Results
+- Exceptional model performance with selected features
+- The "Big Three" value drivers: Overall Qual, Gr Liv Area, Garage Area
+- Logic check: positive vs. negative coefficient signs
+- Selection efficiency: how many features were kept
+
+### Assessing Multicollinearity with VIF
+- VIF interpretation: 1 = no correlation, >5 = moderate, >10 = severe
+- "The overlapping signals" problem: correlated features inflate variance
+- Recommended steps: drop one of a correlated pair, monitor remaining VIF values
+- Drop one of the "size" variables (Gr Liv Area vs. Garage Area)
+- Monitor `Overall Qual` and `Year Built` for remaining collinearity
+
+### Summary
+- Model achieves strong $R^2$ with a compact feature set
+- Multicollinearity still present — teases regularization as a solution
+
+---
+
+## 17_2_1_3: Regularization (Ridge, Lasso, ElasticNet)
+
+**Dataset:** Ames Housing (cleaned). Goal: use regularization to handle multicollinearity and prevent overfitting.
+
+### The 225-Feature Headache
+- After one-hot encoding, the feature set explodes
+- OLS becomes unstable or impossible with more features than observations
+- Regularization provides a solution
+
+### Building a Professional Evaluation Workflow
+- Preventing data leakage with Pipelines
+- Solving the "Log-Dollar Illusion": evaluating in original dollar units
+- The professional evaluation function: pipeline + CV + scoring
+- Establishing the OLS baseline
 
 ### Ridge Regression (L2 Regularization)
 - Penalty: sum of squared coefficients
 - Shrinks coefficients toward zero but never exactly to zero
-- Benefits:
-  - Handles multicollinearity by distributing weight across correlated features
-  - More stable than OLS when features are correlated
-  - Keeps all features in the model
-- Limitations:
-  - Doesn't perform feature selection (all features retained)
-  - Coefficients lose traditional interpretability (can't say "each sq ft adds $X")
-  - Requires feature scaling
+- Benefits: handles multicollinearity, stable coefficients, keeps all features
+- Limitations: no feature selection, coefficients lose interpretability, requires scaling
 
 ### Lasso Regression (L1 Regularization)
 - Penalty: sum of absolute coefficients
 - Can set coefficients exactly to zero (automatic feature selection)
-- Benefits:
-  - Performs feature selection automatically
-  - Produces simpler, more interpretable models
-  - Handles high-dimensional data well
-- Limitations:
-  - With correlated features, picks one at random and drops the rest
-  - Unstable feature selection when features are highly correlated
-  - If alpha is too high, drops ALL features (predicts only the intercept)
+- Benefits: performs feature selection, simpler interpretable models
+- Limitations: with correlated features, picks one at random, unstable
 
-### ElasticNet
+### ElasticNet (Hybrid)
 - Combines L1 and L2 penalties, controlled by `l1_ratio`
-- l1_ratio = 0 → pure Ridge; l1_ratio = 1 → pure Lasso; l1_ratio = 0.5 → equal mix
-- Benefits:
-  - Guarantees performance at least as good as Ridge or Lasso alone
-  - Handles correlated features better than Lasso (Ridge component)
-  - Still performs feature selection (Lasso component)
-  - Popular in bioinformatics, genomics, econometrics
-- Limitations:
-  - Two hyperparameters to tune (alpha + l1_ratio)
-  - Still assumes linear relationships
-  - Less interpretable than simple linear regression
+- l1_ratio = 0 → pure Ridge; l1_ratio = 1 → pure Lasso
+- Benefits: guaranteed performance, handles correlated features
+- Limitations: two hyperparameters to tune, "double shrinkage" bias
 
-### Model Comparison Summary
-- Ridge: keeps all 38 features, stable coefficients
-- Lasso: keeps only 22 features, similar test R² to Ridge
-- ElasticNet: balances between the two
-- On full one-hot encoded data (276 features): Ridge keeps 272, Lasso/ElasticNet much more selective
-- Trade-off: predictive accuracy vs. interpretability
+### Model Comparison
+- Ridge is the new champion on this dataset
+- Why Lasso and ElasticNet lag: feature set already well-filtered
+- Computational cost of 2D search for ElasticNet
+
+### Diagnostics
+- Residual analysis: checking for remaining bias
+- Identifying model weaknesses
+
+### Feature Interpretation
+- Understanding standardized coefficients (Beta weights)
+- Extracting the "top move-makers" for business
+- Visualizing feature importance
+- Business impact and recommendations
+
+### Interim Reflection: Choosing a Regularization Strategy
+- Computational cost of 2D search
+- "Double shrinkage" bias
+- Explicit business or design constraints
+- Occam's Razor in $N \gg P$ scenarios
+- Deep learning and optimization defaults
 
 ---
 
-## 17_2_4_4: Grid Search, Nested Cross-Validation, and Learning Curves
+## 17_2_1_4: Hyperparameter Tuning and Nested Cross-Validation
 
-**Dataset:** Ames Housing (cleaned). Goal: systematically find optimal hyperparameters and get unbiased performance estimates.
+**Dataset:** Ames Housing (cleaned). Goal: tune hyperparameters, understand nested CV and learning curves.
 
-### Why Tune Hyperparameters?
-- Alpha controls regularization strength: too low = overfitting, too high = underfitting
-- The "Goldilocks" zone: not too much, not too little penalty
+### What Are Hyperparameters?
+- Configuration settings chosen before training (alpha, l1_ratio)
+- Distinguished from parameters (coefficients) learned during training
+- The goal: balancing the bias-variance tradeoff
+- Finding the "Goldilocks" zone: not too much, not too little penalty
 
-### 1. Visualizing the Bias-Variance Tradeoff (Manual Tuning)
-- Looping through alpha values and plotting training R² vs. CV R²
-- Training R² falls steadily as alpha increases (more constraint)
-- CV R² rises then falls, peaking at the optimal alpha
-- The gap between curves indicates overfitting
-
-### 2. Automated Tuning with GridSearchCV
+### Grid Search
 - Systematically testing all hyperparameter combinations
 - Pipeline with scaler prevents data leakage
+- The "Double Underscore" Pipeline Rule: `estimator__param`
 - `refit=True`: retrains on full training set with best params
-- Ridge: 8 alphas × 5 folds = 40 fits
-- Lasso: 8 alphas × 5 folds = 40 fits
-- ElasticNet: 4 alphas × 5 l1_ratios × 5 folds = 100 fits
 
-### 3. Final Evaluation on Test Set
-- Ridge, Lasso, and ElasticNet achieve nearly identical test R² scores
-- Why: remaining features after dropping strongest predictors are weakly informative
+### Tuning Ridge
+- Ridge test performance: modest gain from tuning (metric barely moves)
+- Interpreting the flat plateau: model is already well-calibrated
 
-### The Problem with Our Test Set Score
-- The best alpha was selected because it performed well on *those specific* CV folds
-- Test set score is slightly inflated (optimistic bias)
-- Same overfitting problem as feature selection: picking the best option partly picks up noise
+### Tuning Lasso — The Redemption Arc
+- Looping through alpha values, plotting training $R^2$ vs. CV $R^2$
+- Training $R^2$ falls as alpha increases
+- CV $R^2$ rises then falls, peaking at the optimal alpha
+- The gap between curves indicates overfitting
+
+### Evaluating the Tuned ElasticNet
+- The computational cost of a 2D grid
+- Interpreting the ElasticNet mix
+
+### Final Leaderboard and Test Evaluation
+- Ridge, Lasso, ElasticNet on the unseen test set
+- Why Ridge consistently leads
 
 ### Nested Cross-Validation
-- **Inner Loop:** GridSearchCV tunes hyperparameters within each outer training fold
-- **Outer Loop:** Evaluates the tuned model on an independent holdout fold
-- Visual diagram: 5 outer folds, each with its own inner CV search
-- Concrete trace: Outer Fold 1 trains on 2,340 houses, inner loop finds best alpha, evaluates on 585 held-out houses
-- Key insight: `cross_val_score` treats `GridSearchCV` as a single estimator
-- Each outer fold gets independently tuned hyperparameters
-- Comparison table: train/test + GridSearchCV vs. nested CV (scores, bias, variance, cost)
+- **The Problem:** tuning hyperparameters on the same data used for evaluation creates optimistic bias
+- **The Solution:** an outer loop for evaluation + an inner loop for tuning
+- Visual overview: 5 outer folds, each with its own inner CV grid search
+- What actually happens in each outer fold: trains on one subset, inner loop finds best params, evaluates on held-out fold
+- Why this is unbiased: the test fold is never seen during tuning
+- Comparing the two approaches: standard CV vs. nested CV
+- Code implementation and result interpretation
 
 ### Learning Curves
-- **Overfitting (High Variance):** Training score high, validation score much lower; gap between curves
-- **Underfitting (High Bias):** Both scores converge at a low value; adding data won't help
-- **Need More Data:** Validation score still climbing, hasn't plateaued
+- Plotting training and validation scores as training set size increases
+- **Overfitting (High Variance):** training score high, validation low, large gap
+- **Underfitting (High Bias):** both scores converge at a low value
+- **Need More Data:** validation score still climbing, hasn't plateaued
 
 ### Conclusion
-- Moved from guessing alpha to systematically finding optimal values
-- GridSearchCV automates the search; nested CV gives honest performance estimates
-- Learning curves diagnose whether the model needs more data, more complexity, or less
+- Hyperparameter tuning: marginal gain on this particular dataset
+- Nested CV: honest, unbiased performance estimate
+- Learning curves: diagnose whether more data helps
 
 ---
 
-## 17_2_4_5: Tree-Based Methods
+## 17_2_1_5: Nested Cross-Validation Deep Dive
+
+**Dataset:** Ames Housing (cleaned). Goal: thorough implementation and deployment of nested CV.
+
+### The Three Levels of Evaluation
+- Level 1: Basic train-test split
+- Level 2: Train/test with cross-validation (standard CV)
+- Level 3: Nested cross-validation
+
+### The Mechanics
+- The Core Idea: separate the data used for tuning from the data used for evaluation
+- Visualizing the nested loops
+- What actually happens in each outer fold
+- Why this is the gold standard for unbiased evaluation
+
+### Implementation
+- Step-by-step implementation of nested cross-validation in Python
+- `cross_val_score` treats `GridSearchCV` as a single estimator
+- Each outer fold gets independently tuned hyperparameters
+- Interpreting the code and results
+- Extracting the "winning" alphas from each outer fold
+
+### Building and Deploying the Final Production Model
+- Step 1: The final grid search (100% of data, not just training folds)
+- Step 2: The "refit" magic — `GridSearchCV` retrains on all data
+- Step 3: Extracting final business insights from the production model
+- Step 4: Saving the model for future deployment
+
+### Conclusion of the Ames MLR Series
+- Recap of the end-to-end MLR pipeline
+- From raw data to production-ready regularized model
+
+---
+
+## 17_2_2: Tree-Based Methods (Regression Trees, Random Forest, Gradient Boosting, XGBoost)
 
 **Dataset:** Ames Housing (cleaned, then raw for robustness test). Goal: explore tree-based models as an alternative to linear regression.
 
 ### Why Trees?
 - Linear models assume straight-line relationships; trees partition data into regions
-- Trees naturally capture diminishing returns, threshold effects, and feature interactions
-- No manual polynomial engineering needed; minimal data cleaning required
+- Trees naturally capture non-linearities, threshold effects, and interactions
+- Minimal data cleaning required — robust to messy data
+- The "20 Questions" analogy
 
 ### How a Regression Tree Works
-- "20 Questions" analogy: binary yes/no questions split data at each node
-- Node: where a question is asked. Branch: yes/no path. Leaf: endpoint prediction (average of samples)
+- Key terminology: root node, decision node, leaf node, branch
 - Split selection: tries every possible split on every feature, picks the one that reduces error most
-- Overfitting problem: unconstrained tree achieves R² = 1.0 on training by memorizing
+- Overfitting problem: unconstrained tree memorizes the training data
 - `max_depth` limits complexity
 
-### Interpreting the Depth Experiment
-- Test R² peaks at depth 7 (0.8319), then declines
-- Depth 3: moderate scores (~0.71-0.75) — underfitting
-- Depth None: training R² = 1.0, test R² = 0.7986 — severe overfitting
-- Same bias-variance pattern as polynomial features in Part 2, but controlled by a single parameter
+### Interpreting Depth Experiment
+- Test $R^2$ peaks at moderate depth, then declines
+- Depth 3: underfitting; Depth None: severe overfitting (train $R^2 = 1.0$)
+- Same bias-variance pattern as polynomial features
 
 ### Visualizing a Single Tree
-- Root node: the first and most important split
+- Reading the tree structure from root to leaves
 - Feature repetition at different depths captures interactions
 - Small-leaf warnings: predictions based on few samples are unreliable
-- Even at depth 5, visualization is becoming difficult to read
 
-### Random Forests: Bagging and Parallelization
-- **Bootstrap Sampling:** each tree trains on a random sample with replacement
-- **Feature Randomness:** `max_features='sqrt'` — each tree considers ~√n features at each split
+### Random Forests (Bagging + Parallelization)
+- **Bootstrap sampling:** each tree trains on a random sample with replacement
+- **Feature randomness:** `max_features='sqrt'` — each tree considers ~√n features per split
 - Variance reduction: averaging diverse, uncorrelated trees cancels out individual overfitting
 - Why `max_depth=None` works in forests: averaging controls overfitting
-- Tuned RF achieves CV R² = 0.8771
+- Tuned RF achieves strong CV performance
 
-### Gradient Boosting: Sequential Refinement
+### Gradient Boosting (Sequential Refinement)
 - Each new tree predicts the *residuals* (errors) of the ensemble so far
 - Process: average prediction → calculate residuals → train tree on residuals → update → repeat
 - Bias reduction (vs. RF's variance reduction)
-- HistGradientBoostingRegressor: histogram binning for speed, native categorical/missing value support
-- Raw-data HGB achieves R² = 0.9449 — nearly identical to cleaned version
+- Robustness test: training on raw, uncleaned data — nearly identical performance
 
-### XGBoost: eXtreme Gradient Boosting
-- Built-in L1/L2 regularization on leaf weights (connecting back to Ridge/Lasso from Part 3)
+### XGBoost (eXtreme Gradient Boosting)
+- Built-in L1/L2 regularization on leaf weights
 - Parallelized feature sorting despite sequential nature
-- Native missing data handling (tests left vs. right at each split)
-- XGBoost test R² = 0.9418
+- Native missing data handling
+- Comparing three boosting approaches: GBM vs. HGB vs. XGBoost
 
 ### Feature Importance
 - Measures total error reduction attributed to each feature across all trees
-- Overall Qual: 45.76% of model's learning
-- Limitation: tells you *what* not *how* (no direction or shape information)
+- Overall Qual dominates (~45% of model's learning)
+- Limitation: tells you *what* not *how* (no direction or shape)
 - Correlated features problem: model picks one, the other gets no credit
-- Gr Liv Area: VIF = 118 but only 2.98% importance
 
-
-### XGBoost Hyperparameter Tuning: Nested Cross-Validation
+### XGBoost Hyperparameter Tuning (Nested Cross-Validation)
 - Inner loop: 3 folds, 12 hyperparameter combinations
-- Outer loop: 5 folds
-- Total: 180 model fits
-- Nested CV R² = 0.9177 ± 0.0195
-- Comparison to Part 4's Ridge nested CV (0.7897): ~13-point improvement
+- Outer loop: 5 folds, 180 total model fits
+- Nested CV $R^2$: competitive with regularized linear models
 
 ### Model Comparison Summary
-- Decision Tree (0.83) → Random Forest (0.88) → HGB (0.94) → XGBoost (0.94) → XGBoost Nested CV (0.92 ± 0.02)
+- Decision Tree → Random Forest → HGB → XGBoost
 - Trade-off: accuracy vs. interpretability vs. computational cost
 
 ### Final Thought
-- OLS = interpretable but sensitive to data quality
+- OLS + Regularization = interpretable but sensitive to data quality
 - XGBoost = not interpretable but robust to messy data
-- Practical takeaway: start with Random Forest, move to boosting if you need the last bit of accuracy
+- Practical takeaway: start with Random Forest, move to boosting if you need more accuracy
 
 ---
 
 ## Cross-Cutting Themes
 
-These concepts appear throughout multiple notebooks:
-
 | Theme | Notebooks |
 |---|---|
-| **Multicollinearity** | 17_2_4_2 (VIF), 17_2_4_3 (Ridge handles it), 17_2_4_5 (feature importance problem) |
-| **Bias-Variance Tradeoff** | 17_2_4_3 (regularization), 17_2_4_4 (alpha tuning), 17_2_4_5 (tree depth) |
-| **Cross-Validation** | 17_2_4_2 (feature selection), 17_2_4_4 (GridSearchCV, nested CV), 17_2_4_5 (nested CV for XGBoost) |
-| **Overfitting** | 17_2_4_2 (polynomials), 17_2_4_3 (regularization), 17_2_4_4 (learning curves), 17_2_4_5 (tree depth) |
-| **Feature Selection** | 17_2_4_2 (forward/backward), 17_2_4_3 (Lasso), 17_2_4_5 (feature importance) |
-| **Log Transformation** | 17_2_4_2 (target), 17_2_4_5 (used throughout tree models) |
-| **Pipelines** | 17_2_4_2 (scaling + selection), 17_2_4_3 (scaling + regularization), 17_2_4_4 (scaling + GridSearchCV) |
-| **Model Comparison** | 17_2_4_3 (Ridge vs. Lasso vs. EN), 17_2_4_4 (tuned models), 17_2_4_5 (tree progression) |
+| **Multicollinearity** | 17_2_1_2 (VIF), 17_2_1_3 (Ridge handles it), 17_2_2 (feature importance problem) |
+| **Bias-Variance Tradeoff** | 17_2_1_3 (regularization), 17_2_1_4 (alpha tuning, nested CV), 17_2_2 (tree depth) |
+| **Cross-Validation** | 17_2_1_2 (feature selection), 17_2_1_4 (GridSearchCV, nested CV), 17_2_1_5 (nested CV deep dive), 17_2_2 (nested CV for XGBoost) |
+| **Overfitting** | 17_2_1_3 (regularization prevents it), 17_2_1_4 (learning curves), 17_2_2 (tree depth) |
+| **Feature Selection** | 17_2_1_2 (forward/backward), 17_2_1_3 (Lasso), 17_2_2 (feature importance) |
+| **Log Transformation** | 17_2_1_1 (target cleaning), 17_2_1_2 (log interpretation) |
+| **Pipelines** | 17_2_1_2 (scaling + selection), 17_2_1_3 (scaling + regularization), 17_2_1_4 (scaling + GridSearchCV) |
+| **Model Comparison** | 17_2_1_3 (Ridge vs. Lasso vs. EN), 17_2_1_4 (tuned models), 17_2_2 (tree progression) |
+| **Data Cleaning** | 17_2_1_1 (full pipeline), 17_2_2 (robustness to messy data) |
+| **One-Hot Encoding** | 17_2_1_1, 17_2_1_3 (feature explosion) |
