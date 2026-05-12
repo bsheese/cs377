@@ -223,17 +223,3 @@ This document provides a complete outline of all topics covered across the six n
 
 ---
 
-## Cross-Cutting Themes
-
-| Theme | Notebooks |
-|---|---|
-| **sklearn vs. statsmodels** | 17_1_1 |
-| **LINE assumptions** | 17_1_3 (introduced), 17_1_5 (fixed with transformation) |
-| **Statistical significance (p-values, CI)** | 17_1_2 |
-| **Influence and leverage** | 17_1_2 (standard error), 17_1_4 (Cook's D) |
-| **Residual diagnostics** | 17_1_3, 17_1_4, 17_1_5 |
-| **Log transformations** | 17_1_5 |
-| **Overfitting / train-test gap** | 17_1_6 |
-| **Bias-variance tradeoff** | 17_1_6 |
-| **Ames Housing dataset** | 17_1_4 (influence) |
-| **MPG dataset** | 17_1_1, 17_1_2, 17_1_3, 17_1_5, 17_1_6 |
