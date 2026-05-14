@@ -2,7 +2,13 @@
 
 This document provides a complete outline of all topics covered across the six notebooks in the 17_1 Simple Linear Regression series.
 
-**Data:** Automobile fuel efficiency (MPG) dataset throughout; Ames Housing introduced in Notebook 4 for influence analysis.
+**Data by notebook:**
+- **17_1_1:** Palmer Penguins (flipper length vs. body mass)
+- **17_1_2:** Palmer Penguins (flipper length vs. body mass)
+- **17_1_3:** Auto MPG (displacement vs. mpg)
+- **17_1_4:** Ames Housing (area vs. price), with synthetic poisoned row
+- **17_1_5:** Gapminder 2007 (GDP vs. life expectancy); Auto MPG revisited
+- **17_1_6:** Ames Housing (baseline); synthetic sin(x) + noise (overfitting demo)
 
 ---
 
@@ -14,23 +20,25 @@ This document provides a complete outline of all topics covered across the six n
 - Two Python libraries, two philosophies, one math
 - Scikit-learn: prediction-focused "fit/predict" API
 - Statsmodels: inference-focused "summary table" API
+- How to choose between them (prediction vs. inference)
 
 ### Paradigm A — Scikit-Learn (The Predictor)
 - `LinearRegression` from `sklearn.linear_model`
-- The #1 beginner error: passing a Series instead of a DataFrame (2D requirement)
+- The #1 beginner error: passing a 1D Series instead of a 2D array (`.reshape(-1, 1)`)
 - `.fit()` and `.predict()` workflow
 - Accessing coefficients: `.coef_`, `.intercept_`
 
 ### Paradigm B — Statsmodels (The Explainer)
-- `ols` from `statsmodels.formula.api`
+- `OLS` from `statsmodels.api`
 - The statsmodels quirk: you must add the intercept yourself using `sm.add_constant()`
 - `.fit()` and `.summary()` workflow
 - Reading the summary table: coefficients, standard errors, p-values, $R^2$
+- Argument order: `OLS(y, X)` vs. sklearn's `fit(X, y)` — and why
 
 ### The Convergence
 - Both libraries produce identical coefficients and $R^2$
-- Scikit-learn is preferred for prediction pipelines
-- Statsmodels is preferred for inference and diagnostics
+- Closed-form formula from 17_0_5 matches both
+- The difference is in the interface and what they report, not in the math
 
 ### Where We're Going Next
 - The summary table includes p-values — what do they mean?
@@ -39,27 +47,33 @@ This document provides a complete outline of all topics covered across the six n
 
 ## 17_1_2: Statistical Significance (Did We Just Get Lucky?)
 
-**Topics:** Null hypothesis, standard error of the slope, p-values, 95% confidence intervals.
+**Topics:** Null hypothesis, standard error of the slope, t-statistic, p-values, 95% confidence intervals — all built from simulation.
 
 ### The Null Hypothesis
 - $H_0$: the true slope is zero (no relationship between x and y)
 - If the null were true, what's the chance we'd see a slope this extreme?
 
 ### The Standard Error — How Much Does the Slope Wiggle?
-- Simulating 2000 parallel universes: resampling to see how much the slope varies
-- The standard error is the standard deviation of the sampling distribution of the slope
-- A small standard error → precise estimate; a large one → noisy estimate
+- Bootstrap: resampling pairs with replacement to simulate repeat samples
+- The standard error is the standard deviation of the bootstrap sampling distribution
+
+### The t-Statistic — Bridging SE and P-Value
+- $t = \hat{\beta}_1 / SE(\hat{\beta}_1)$
+- Confirmed against the summary table value
 
 ### The P-Value — Simulating the Null World
-- If the true slope were zero, how often would random data produce a slope at least as extreme as ours?
+- Permutation test: shuffling y to destroy the x-y relationship
+- Distinction between bootstrap (preserves relationship) and permutation (breaks it)
+- Empirical p-value vs. theoretical p-value
 - The 0.05 convention (and its discontents)
-- p < 0.05: "statistically significant" — but not necessarily practically significant
+- Statistical significance vs. practical significance
 
 ### The 95% Confidence Interval
-- Range of plausible values for the true slope
-- Formula: $\hat{\beta}_1 \pm t^* \cdot SE(\hat{\beta}_1)$
-- If the CI doesn't include zero, the result is statistically significant
-- One careful word about interpretation: not a "95% chance the true value is in here"
+- Bootstrap percentile interval
+- Formula-based CI: $\hat{\beta}_1 \pm t^* \cdot SE(\hat{\beta}_1)$
+- Both methods match statsmodels
+- Correct interpretation of a CI (demonstrated via coverage simulation)
+- Bootstrap percentile method caveat: works best for symmetric distributions
 
 ### Where We're Going Next
 - Significance relies on assumptions — next we check those assumptions
@@ -77,28 +91,31 @@ This document provides a complete outline of all topics covered across the six n
 - **E**qual Variance (Homoscedasticity): residual spread is constant across fitted values
 
 ### L — Linearity
-- Checking with a residuals vs. fitted plot
-- Patterns (curves, fans) indicate violations
+- Checking with `sns.residplot(x, y, lowess=True)`
+- U-shape or curve in residuals = violation
 - No pattern = linearity is plausible
 
 ### I — Independence
 - Most commonly violated with time series data
 - The Durbin–Watson statistic: values near 2 indicate independence
-- Values near 0 indicate positive autocorrelation; near 4 indicate negative
+- Rough critical values for single predictor (~1.7 and ~2.3); zone of indecision
+- DW of 0.926 in MPG data is an artifact of row ordering, not real autocorrelation
 
 ### N — Normality of Residuals
-- Checking with a histogram and a Q-Q plot
-- Reading a Q-Q plot in 30 seconds: points along the diagonal = normal
-- S-shaped curves indicate skew or heavy tails
-- Normality matters for p-values and confidence intervals, not for coefficient estimates
+- Checking with a Q-Q plot (`sm.qqplot`)
+- Reading a Q-Q plot: points on the diagonal = normal; curves = heavy tails or skew
+- A Q-Q plot is more informative than a histogram for assessing normality
+- Central Limit Theorem makes inference robust to mild non-normality with large n
 
 ### E — Equal Variance (Homoscedasticity)
-- Checking with a residuals vs. fitted plot
-- Funnel shape indicates heteroscedasticity (unequal variance)
-- What a failure looks like: residuals spread wider as fitted values increase
+- Checking with residuals vs. fitted scatterplot
+- Funnel shape = heteroscedasticity (unequal variance)
+- Synthetic example isolating a pure funnel (no non-linearity)
+- Applying a log transform to reduce the funnel
+- Quantitative comparison of residual spread at low vs. high fitted values
 
 ### What Do You Do When Assumptions Fail?
-- Transform the variables (log, square root, etc.)
+- Transform variables (log, reciprocal, square root)
 - Use robust standard errors
 - Consider non-linear models
 
@@ -109,36 +126,39 @@ This document provides a complete outline of all topics covered across the six n
 
 ## 17_1_4: Influence, Leverage, and Cook's Distance
 
-**Topics:** Distinguishing leverage from outliers from influence, Cook's Distance, the drop test, ethics of dropping data.
+**Topics:** Distinguishing leverage from outliers from influence, Cook's Distance, the drop test, robust regression as an alternative, ethics of dropping data.
 
 ### The Needle in the Haystack
 - A single data point can dominate the regression line
-- Need tools to identify such points systematically
+- Visual inspection fails with large datasets
 
 ### Leverage ≠ Outlier ≠ Influence
 - **Leverage:** extreme x-value (potential to influence)
 - **Outlier:** unusual y-value given x (large residual)
 - **Influence:** actually changes the coefficients when removed
-- A point can have high leverage but zero influence (if it follows the trend)
+- A point must have both high leverage and a large residual to be influential
+- High leverage alone can still inflate standard errors
 
 ### Hunting in Ames with `.get_influence()`
-- Cook's Distance in one sentence: "how much does the line move if I delete this point?"
-- Cook's D > 1 is a common threshold for concern
-- Finding the suspect programmatically with `.get_influence().cooks_distance`
+- Leverage: `influence.hat_matrix_diag`
+- Studentized residuals: `influence.resid_studentized_external`
+- Cook's Distance: `influence.cooks_distance`
+- Common heuristic: $D_i > 4/n$ flags investigation (not a hard cutoff)
+
+### The Ethics of Dropping Data
+- Cook's Distance is a detective, not an executioner
+- Legitimate reasons to drop: data entry errors, wrong units, instrument failure, different population
+- Illegitimate reasons: "it was hurting my $R^2$" or "it was flagged by Cook's"
+- What to do with genuinely influential points you can't drop:
+  - Report both models (with and without)
+  - Use robust regression (Huber regression demonstrated)
+  - Model what's actually going on (separate models, extra features)
+- Ethics discussion comes **before** the drop test mechanics
 
 ### The Drop Test
 - Manually drop the high-influence point and refit
-- Compare coefficients before and after
-- How much did the slope and intercept change?
-
-### The Ethics of Dropping Data
-- Never drop data just to get a "better" result
-- Legitimate reasons to drop: data entry errors, equipment malfunction, outside the domain of interest
-- What to do with genuinely influential points you can't legitimately drop:
-  - Report both models (with and without)
-  - Use robust regression methods
-  - Collect more data in the influential region
-  - Transform the variable
+- Compare coefficients, standard errors, and $R^2$ before and after
+- Huber regression as a third option between "keep" and "drop"
 
 ### Where We're Going Next
 - If assumptions fail due to non-linearity, we can transform the variables
@@ -147,38 +167,44 @@ This document provides a complete outline of all topics covered across the six n
 
 ## 17_1_5: Transformations (Bending the Line)
 
-**Topics:** Log transformations, log-linear interpretation, the transformation toolkit, fixing a failing model.
+**Topics:** Log transformations, why log works (diminishing returns and the derivative of log), log-linear interpretation, Box-Cox, fixing a failing model.
 
 ### The Failing Model
-- A model that violates LINE assumptions
-- Residuals show a clear pattern: heteroscedasticity, non-linearity, or both
+- Gapminder GDP vs. life expectancy: curved scatterplot, U-shaped residuals
+- Two out of four LINE assumptions broken: L and E
+
+### Why Log?
+- Diminishing returns → the slope decreases as $x$ increases
+- $d/dx \log(x) = 1/x$: log has the same property (steep when small, flat when large)
+- This is why log is the natural choice, not a guess
 
 ### Bend the Data, Not the Line
 - Linear regression requires linearity in the parameters, not in the variables
-- Transform x, y, or both to achieve linearity
+- Transform $x$ or $y$ or both to achieve linearity
 - Most common: log transformation
 
 ### Interpreting a Log-Linear Slope
-- The math in one line: a 1% change in x is associated with a $(\hat{\beta}_1 / 100)$ unit change in y
-- The vocabulary: "elasticity" — the percentage change in y for a 1% change in x
-- Three flavors of log transformation:
-  - **Log-Linear:** log(y) ~ x (interpret: % change in y per unit x)
-  - **Linear-Log:** y ~ log(x) (interpret: change in y per % change in x)
-  - **Log-Log:** log(y) ~ log(x) (interpret: % change in y per % change in x — elasticity)
+- Calculus version: $dy = \beta_1 \cdot dx/x$
+- Algebra version (no calculus needed): $\beta_1 \cdot \log(1.01) \approx \beta_1 / 100$
+- A 1% increase in $x \to +\beta_1/100$ unit change in $y$
+- Three flavors: level-log, log-level, log-log
 
-### The Transformation Toolkit
-- Log, square root, reciprocal, Box-Cox, polynomial
-- When to use each: skew, variance, curvature patterns
+### Box-Cox — Let the Data Choose
+- Automatically finds the best power transformation $\lambda$
+- Special cases: $\lambda = 0$ (log), $\lambda = 0.5$ (sqrt), $\lambda = -1$ (reciprocal)
+- Applied to Gapminder GDP ($\lambda \approx 0$, confirming log) and MPG displacement ($\lambda \approx -0.3$, close to reciprocal)
 
-### Promise Kept — Fixing the MPG Model from 17_1_3
-- Applying a log transformation to the problematic variable
-- Rechecking the LINE assumptions: residuals now well-behaved
-- Before-and-after comparison
+### Fixing the MPG Model from 17_1_3
+- Physics suggests $1/\text{mpg} \propto \text{displacement}$, so $\text{mpg} \approx a + b / \text{displacement}$
+- Verify: $1/\text{mpg}$ is linear in displacement
+- Reciprocal transform eliminates the U-shaped residuals
+- The right metric for a successful transformation is the residual plot, not the $R^2$
 
 ### A Few Honest Warnings
 - Transformations change the question you're answering
 - Interpretability decreases as transformation complexity increases
 - Over-transforming can hide rather than fix problems
+- $R^2$ values across different $y$-scales are not directly comparable
 
 ### Where We're Going Next
 - Does the model perform well on data it hasn't seen before?
@@ -187,39 +213,43 @@ This document provides a complete outline of all topics covered across the six n
 
 ## 17_1_6: The Generalization Test (Train/Test Split)
 
-**Topics:** Train/test split, preventing data leakage, overfitting, the bias-variance tradeoff.
+**Topics:** Train/test split, why test performance differs from training (sampling variation), overfitting, the bias-variance tradeoff.
 
 ### The Cheating Problem
 - Using the same data to fit and evaluate overstates performance
-- The model "cheats" by memorizing the training data
+- The model "cheats" by optimizing for the data it already saw
 
 ### The Train/Test Split
 - `train_test_split` from `sklearn.model_selection`
-- Hold out a portion (typically 20–30%) of the data
-- Fit on train, evaluate on test
-- Test performance is the honest estimate of generalization
+- Arguments: `X, y, test_size, random_state`
+- The golden rule: test data is off-limits for fitting and model selection
+- (Data quality inspection is still allowed)
 
 ### Fit on Train, Score on Both
-- Training $R^2$ is typically higher than test $R^2$
-- Gap between train and test = overfitting signal
-- "But if it's the same in train and test, what's the big deal?" — it shouldn't be the same, the test should be worse
+- Simple model (Ames: 2 parameters, 2930 houses): train and test $R^2$ are essentially equal
+- Multiple random splits show the gap is centered near zero with small variance
+- **Simple models generalize well** — this is the baseline
+- Test $R^2$ can be slightly higher than train $R^2$ due to sampling variation
 
 ### Making Overfitting Visible
-- Adding polynomial features of increasing degree
-- Training $R^2$ steadily rises toward 1.0
-- Test $R^2$ rises then falls (the U-shaped generalization curve)
-- Wait — $R^2$ can be negative? Yes — the model can do worse than the mean
+- Synthetic sin(x) data with polynomial regression of increasing degree
+- What are polynomial features? Design matrix visualization
+- Degree 1: underfitting (high bias)
+- Degree 3: Goldilocks zone
+- Degree 10–20: overfitting (high variance)
+- Training $R^2$ climbs to 1.0; test $R^2$ peaks then collapses
+- $R^2$ can be negative on test data (model does worse than the mean)
 
-### The Bias–Variance Tradeoff in One Page
-- **Bias:** error from oversimplifying (underfitting)
-- **Variance:** error from being too sensitive to training data (overfitting)
-- Simple models: high bias, low variance
-- Complex models: low bias, high variance
-- A one-sentence rule: "The best model is the simplest one that still fits the data well."
+### The Bias–Variance Tradeoff
+- Formula: $\text{Test Error} = \text{Bias}^2 + \text{Variance} + \text{Irreducible Error}$
+- Empirical decomposition across degrees 1–12
+- Bias falls, variance rises, their sum is U-shaped
+- The minimum of the sum corresponds to the best test $R^2$
 
 ### End of the SLR Arc
-- From starting with a single variable to checking significance, assumptions, influence, transformations, and generalization
+- From fitting a line through significance, assumptions, influence, transformations, and generalization
 - All these ideas scale directly to Multiple Linear Regression
+- Next: cross-validation and regularization
 
 ---
 
