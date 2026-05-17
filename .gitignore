@@ -208,3 +208,7 @@ __marimo__/
 
 # Ignore files with .ignore extension
 *.ignore
+
+CLAUDE.md
+
+
