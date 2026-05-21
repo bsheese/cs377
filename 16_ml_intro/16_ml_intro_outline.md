@@ -1,6 +1,6 @@
 # 16 ML Intro — Topic Outline
 
-This document provides a complete outline of all topics covered across the five notebooks in the 16 ML Intro series.
+This document provides a complete outline of all topics covered across the four notebooks in the 16 ML Intro series.
 
 ---
 
@@ -42,53 +42,29 @@ This document provides a complete outline of all topics covered across the five 
 - Formal definitions with DJ/danceability example
 - Tempo and energy as features, danceable/not as target
 
+### Jupyter Notebook Basics
+- Mix of text (Markdown) and code cells
+- Execution order: cell numbers track run sequence; cells share state
+- Run cells top-to-bottom; "Run All" to execute everything in order
+- Restart the kernel if the notebook seems broken
+
+### Supervised Learning Worked Examples
+- **KNN Classifier** — song danceability: features (tempo, energy) → danceable/not
+  - Decision boundary: the region where the model changes its prediction
+  - Prediction confidence / probability (`.predict_proba()`)
+  - Feature scaling with `StandardScaler` before fitting KNN
+- **Linear Regression** — house price from square footage
+  - Model fit, prediction (`\hat{y}`), residual standard deviation as uncertainty
+
 ### Tools for the Course
 - Jupyter Notebooks / Google Colab
 - Python libraries: Pandas, Matplotlib, Seaborn, NumPy, scikit-learn, statsmodels
 
 ---
 
-## 16_2: Introduction to Jupyter Notebooks
-
-**Topics:** How to use notebooks, code cells, text cells, execution order, and troubleshooting.
-
-### What is a Notebook?
-- Mix of text and code cells
-- Text cells use Markdown formatting
-- Code cells run Python and display output
-
-### Code Blocks
-- Writing and executing code
-- Ctrl+Enter and Shift+Enter shortcuts
-- Execution order: cell numbers track run sequence
-- Cells share state: order of execution matters
-
-### Imports and Dependencies
-- Standard imports: `pandas as pd`, `numpy as np`, `seaborn as sns`, `matplotlib.pyplot as plt`
-- Earlier cells must be executed before later cells that depend on them
-
-### Making New Cells
-- Hover to create code or text cells
-- Experiment freely — nothing can be broken permanently
-
-### Text Cells and Markdown
-- Formatting options available in Colab toolbar
-- External Markdown guide reference
-
-### Troubleshooting
-- Run cells sequentially from the top
-- "Run All" to execute everything in order
-- Restart the virtual machine if the notebook seems broken
-
-### Magic Commands
-- `%` prefix for command-line access
-- Not required for this course
-
----
-
 ## 16_3: Introducing Numpy Arrays
 
-**Topics:** List review, array creation, array operations, statistical methods, multi-dimensional arrays.
+**Topics:** List review, array creation, array operations, broadcasting, reshaping, random number generation, statistical methods, multi-dimensional arrays.
 
 ### Python List Review
 - Creating lists, appending, extending
@@ -97,29 +73,41 @@ This document provides a complete outline of all topics covered across the five 
 - Copying vs. aliasing
 
 ### From Lists to Numpy Arrays
+- Comparison of lists, arrays, and Series: features, performance, use cases
 - `np.asarray()` to convert lists
 - Arrays enforce a single data type (unlike lists)
-- Indexing, slicing, and appending work similarly
+- Indexing, slicing, and boolean masking work similarly to lists
 - Type coercion: assigning a float to a string array converts it to string
 
-### Array Arithmetic
+### Array Arithmetic and Broadcasting
 - Adding, subtracting, multiplying, dividing — applied element-wise
 - Lists cannot do this: `list + 4` produces an error
-- Contrast with list multiplication (repetition)
+- **Broadcasting:** applying an operation between arrays of different shapes (e.g., scalar to array, row to 2D matrix); NumPy stretches the smaller shape to match
 
 ### Creating Arrays
 - `np.array()` from Python lists
 - `np.arange()` with start, stop, step
-- `np.zeros()`, `np.ones()`, `np.empty()`
+- `np.zeros()`, `np.ones()`, `np.empty()`, `np.full()`
 - `np.linspace()` for regularly spaced intervals
+
+### Random Number Generation
+- `np.random.seed()` for reproducibility
+- `np.random.randint()`, `np.random.random()`, `np.random.normal()`
+- `np.random.shuffle()`, `np.random.choice()`
+
+### Reshaping Arrays
+- `.reshape()` to change array dimensions
+- `.shape` attribute for inspecting dimensions
+- Arrays from nested lists (multi-dimensional)
 
 ### Statistical Methods
 - Array methods: `.min()`, `.max()`, `.mean()`, `.std()`, `.sum()`
+- Z-score normalization: subtracting mean and dividing by standard deviation
 
-### Multi-Dimensional Arrays
-- Creating with `shape` parameter
-- `.shape` attribute for inspecting dimensions
-- Arrays from nested lists
+### Boolean Masking on Arrays
+- Comparison operators produce boolean arrays
+- Using a boolean array directly to filter: `array[condition]`
+- Computing statistics on filtered subsets
 
 ### Best Practices
 - Don't create empty arrays and append — pre-allocate with `np.zeros()`
@@ -129,7 +117,12 @@ This document provides a complete outline of all topics covered across the five 
 
 ## 16_4: Pandas Series
 
-**Topics:** Series creation, copying vs. aliasing, examining data, selecting data, updating, sorting, operations, string methods.
+**Topics:** Comparing lists/arrays/Series, Series creation, copying vs. aliasing, examining data, selecting data, updating, sorting, operations, string methods.
+
+### Lists, Arrays, and Series — A Comparison
+- Side-by-side comparison of features, performance, and use cases
+- Arrays: homogeneous, fast math, no labels
+- Series: labeled index, heterogeneous-friendly, built-in NaN handling, alignment by label
 
 ### Installing and Importing Pandas
 - Standard import: `import pandas as pd`
@@ -173,6 +166,7 @@ This document provides a complete outline of all topics covered across the five 
 - Element-wise arithmetic: `series + 5`, `series - 5`, `series * 5`, `series / 5`
 - Operations create views, not modifications
 - Reassign to persist changes: `series = series + 5`
+- `.cumsum()` — cumulative sum across the series
 
 ### Basic String Operations
 - String concatenation across a series
@@ -189,10 +183,10 @@ This document provides a complete outline of all topics covered across the five 
 - `ascending=False` for descending order
 - In-place sorting exists but not recommended for this course
 
-### Examples (US State Populations)
-- Creating a state population series
-- Computing percentages of total
-- Iterating to find states accounting for >50% of population
+### Examples
+- Fruit names and weights (index operations)
+- Best-selling books (dtype, string operations)
+- US state populations: computing percentages, finding states accounting for >50% of total with `.cumsum()`
 
 ---
 

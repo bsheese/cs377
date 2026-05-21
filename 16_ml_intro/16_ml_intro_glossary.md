@@ -1,13 +1,13 @@
 # 16 ML Intro — Glossary
 
-This document defines all technical and conceptual terms used across the five notebooks in the 16 ML Intro series.
+This document defines all technical and conceptual terms used across the four notebooks in the 16 ML Intro series.
 
 ---
 
 ## A
 
 ### Array (Numpy Array)
-A grid of values, all of the same data type, indexed by non-negative integers. Unlike Python lists, arrays support element-wise arithmetic operations. Created with `np.array()`, `np.arange()`, `np.zeros()`, `np.ones()`, `np.empty()`, etc.
+A grid of values, all of the same data type, indexed by non-negative integers. Unlike Python lists, arrays support element-wise arithmetic operations. Created with `np.array()`, `np.arange()`, `np.zeros()`, `np.ones()`, `np.empty()`, `np.full()`, etc.
 
 ### Artificial Intelligence
 The broader field of computer science concerned with creating systems that can perform tasks that typically require human intelligence. Machine learning is a subfield of AI.
@@ -17,7 +17,10 @@ The broader field of computer science concerned with creating systems that can p
 ## B
 
 ### Boolean Mask
-A series of `True`/`False` values used to select a subset of data from a Series or DataFrame. The mask is created by applying a comparison operator (e.g., `>`, `==`, `<=`) to a Series, and then passed inside `.loc[]` to filter rows. Multiple masks can be combined with `&` (and), `|` (or), and `~` (not).
+An array or Series of `True`/`False` values used to select a subset of data. Created by applying a comparison operator (e.g., `>`, `==`, `<=`) to an array or Series. With NumPy arrays, the mask is passed directly inside `array[mask]`. With Pandas, it is passed inside `.loc[]` to filter rows. Multiple masks can be combined with `&` (and), `|` (or), and `~` (not).
+
+### Broadcasting
+NumPy's mechanism for applying operations between arrays of different shapes. When an operation involves a scalar and an array, or two arrays whose shapes are compatible, NumPy automatically "stretches" the smaller shape to match the larger one without copying data. Example: adding a single number to every element of a 2D matrix.
 
 ---
 
@@ -48,6 +51,9 @@ When information from outside the training set influences the model during train
 ### DataFrame
 A two-dimensional Pandas data structure with labeled rows and columns. Acts like a spreadsheet. Can be thought of as a collection of Series that share the same index.
 
+### Decision Boundary
+The region in feature space where a classifier changes its prediction from one class to another. For a KNN model trained on two features (e.g., tempo and energy), the decision boundary is the line (or curve) that separates the "danceable" region from the "not danceable" region.
+
 ### dtype (Data Type)
 Specifies the type of data stored in a Series or array. Common dtypes: `int64`, `float64`, `string`, `object` (mixed types), `bool`. Explicit dtype specification can be done with the `dtype=` parameter.
 
@@ -57,6 +63,9 @@ Specifies the type of data stored in a Series or array. Common dtypes: `int64`, 
 
 ### Feature
 An input variable used by a model to make predictions. Represented mathematically as a vector $x$. In the DJ example, tempo and energy are features. Also called a predictor or independent variable.
+
+### Feature Scaling
+Transforming features so they share a common numerical range, typically mean 0 and standard deviation 1 (standardization). Necessary for distance-based algorithms like **K-Nearest Neighbors (KNN)**, which treat all features as equally weighted. In scikit-learn, `StandardScaler` computes $(x - \mu) / \sigma$ for each feature.
 
 ### Fitting
 The process of training a model on data. During fitting, the model learns the mapping from features to target variable. Also called **Training**.
@@ -97,6 +106,13 @@ An interactive computing environment that integrates text, code, and code output
 
 ---
 
+## K
+
+### K-Nearest Neighbors (KNN)
+A supervised learning algorithm that classifies a new data point by looking at the $k$ closest training examples in feature space and taking a majority vote. Used in 16_1 to predict song danceability from tempo and energy. Sensitive to the scale of features, so **Feature Scaling** is applied before fitting. Predictions can include a probability estimate via `.predict_proba()`.
+
+---
+
 ## L
 
 ### `.loc[]`
@@ -108,9 +124,6 @@ Label-based (explicit) indexing for Series and DataFrames. Selects data by index
 
 ### Machine Learning
 A subfield of AI in which algorithms learn patterns from data to make predictions or decisions without being explicitly programmed for every scenario. Prioritizes predictive accuracy, often trading off interpretability.
-
-### Magic Commands
-Special commands in Jupyter/IPython that start with `%` or `%%`. Provide access to system shell, profiling, debugging, and other features beyond standard Python. Not required for this course.
 
 ### Markdown
 A lightweight markup language used to format text cells in Jupyter notebooks. Supports headings, lists, links, bold, italic, code blocks, LaTeX math, and more.
