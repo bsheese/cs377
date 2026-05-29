@@ -216,3 +216,6 @@ AGENTS.md
 writing_sample.md
 **_CRITIQUE.md
 TODO.md
+
+# Generated quiz site (CI rebuilds it)
+_site/

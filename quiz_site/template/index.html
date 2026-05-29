@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CS377 Practice Quizzes</title>
+  <link rel="stylesheet" href="./style.css" />
+  <!-- Math + Markdown rendering (site is hosted, so CDN is fine).
+       All deferred and in dependency order: katex -> marked ->
+       marked-katex-extension -> app.js, so every global is defined
+       before app.js runs. -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+  <script defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer
+          src="https://cdn.jsdelivr.net/npm/marked@13.0.0/marked.min.js"></script>
+  <script defer
+          src="https://cdn.jsdelivr.net/npm/marked-katex-extension@5.1.10/lib/index.umd.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <header>
+    <h1>CS377 · Practice Quizzes</h1>
+    <p class="sub">Pick a topic to start. Quizzes are for self-assessment — your
+      answers stay in your browser and nothing is recorded.</p>
+  </header>
+  <main id="app">Loading…</main>
+  <footer>Generated from the course quiz Markdown. Not graded.</footer>
+</body>
+</html>
