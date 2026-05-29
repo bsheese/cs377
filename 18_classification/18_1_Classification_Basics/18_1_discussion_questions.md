@@ -74,7 +74,7 @@
 
 ---
 
-## 18_1_3: ROC, AUC, and Threshold Tuning
+## 18_1_4: ROC, AUC, and Threshold Tuning
 
 ### The ROC Curve
 
@@ -110,7 +110,9 @@
 
 ---
 
-## 18_1_4: Multiclass Classification
+## Multiclass Classification — preview of module 18_5
+
+*Multiclass classification is not covered by the 18_1 notebooks (this module ends with the credit-card-fraud sequence, Notebooks 5–6). The questions below look ahead to module `18_5`, where multiclass is taught. They are kept here for reference; consider relocating them to the 18_5 materials.*
 
 ### From Binary to Multiclass
 
