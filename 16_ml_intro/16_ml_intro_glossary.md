@@ -188,6 +188,12 @@ A type of machine learning where the model is trained on labeled data (input-out
 ### Target Variable
 The output variable that a supervised learning model aims to predict. Represented mathematically as $y$. Also called the dependent variable, label, or response variable.
 
+### Test Set
+A portion of the labeled data deliberately held back and *not* used during training, so the model can be scored on examples it has never seen. Measuring performance on the training data itself is misleading — a model can memorize its training examples yet fail on new data. Contrast with the **Training** data. See **Train/Test Split**.
+
+### Train/Test Split
+Dividing labeled data into a training set (used to fit the model) and a **Test Set** (held back to evaluate it on unseen examples). scikit-learn's `train_test_split` performs the division. Used in nearly every modeling notebook in the course; it guards against overstating a model's quality by testing it on data it was trained on. Related: **Overfitting**, **Data Leakage**.
+
 ### Training
 The process of exposing an algorithm to data so that it learns patterns and relationships. In supervised learning, training uses labeled data to find the mapping from features to target. Also called **Fitting**.
 
@@ -204,6 +210,9 @@ A type of machine learning where the model is given unlabeled data and must find
 ---
 
 ## V
+
+### `.value_counts()`
+A Pandas method that tallies how many times each unique value appears in a column (or Series), returning the counts sorted from most to least common. The standard tool for inspecting a categorical column — and, in classification, for checking **class balance** (how many examples exist of each category the model must predict).
 
 ### View
 A way of looking at a Series or DataFrame without copying the underlying data. Operations that create views include `.head()`, `.tail()`, boolean masking, and arithmetic. To persist a change, the result must be assigned to a variable.
