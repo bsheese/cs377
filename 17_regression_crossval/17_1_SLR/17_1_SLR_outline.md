@@ -75,6 +75,11 @@ This document provides a complete outline of all topics covered across the six n
 - Correct interpretation of a CI (demonstrated via coverage simulation)
 - Bootstrap percentile method caveat: works best for symmetric distributions
 
+### How Sample Size Affects Everything
+- Larger $n$ shrinks the standard error of the slope, narrowing confidence intervals and inflating the t-statistic
+- The same true effect looks "more significant" (smaller p-value) as $n$ grows
+- Reinforces the distinction between statistical significance and practical significance
+
 ### Where We're Going Next
 - Significance relies on assumptions — next we check those assumptions
 
@@ -91,7 +96,7 @@ This document provides a complete outline of all topics covered across the six n
 - **E**qual Variance (Homoscedasticity): residual spread is constant across fitted values
 
 ### L — Linearity
-- Checking with `sns.residplot(x, y, lowess=True)`
+- Checking with `sns.residplot(x=x, y=y, lowess=True)`
 - U-shape or curve in residuals = violation
 - No pattern = linearity is plausible
 
@@ -188,6 +193,7 @@ This document provides a complete outline of all topics covered across the six n
 - Algebra version (no calculus needed): $\beta_1 \cdot \log(1.01) \approx \beta_1 / 100$
 - A 1% increase in $x \to +\beta_1/100$ unit change in $y$
 - Three flavors: level-log, log-level, log-log
+- Back-transforming predictions to the original scale: Jensen's correction
 
 ### Box-Cox — Let the Data Choose
 - Automatically finds the best power transformation $\lambda$

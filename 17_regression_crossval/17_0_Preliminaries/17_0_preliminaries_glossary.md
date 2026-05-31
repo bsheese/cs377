@@ -16,8 +16,11 @@ Four datasets created by Francis Anscombe that have nearly identical summary sta
 ### Correlation (Pearson's $r$)
 A unitless measure of the strength and direction of a linear relationship between two variables, ranging from −1 (perfect negative) to +1 (perfect positive). Formula: $r = \frac{\text{cov}(x,y)}{s_x s_y}$. Unlike covariance, correlation is independent of measurement scale. Only measures **linear** relationships — a variable can be strongly related to another in a non-linear way and still have $r \approx 0$.
 
+### Correlation vs. Causation
+Correlation measures only that two variables move together — it does **not** establish that one causes the other. Two variables can be correlated because of a third (confounding) variable, or by coincidence. Establishing causation takes more than correlation (for example, a controlled experiment or a careful causal argument). The penguins' flipper length and body mass are strongly correlated ($r \approx 0.87$), but longer flippers do not *cause* greater mass — both increase together as the animal grows.
+
 ### Covariance
-A measure of how two variables change together. Positive covariance means they tend to move in the same direction; negative covariance means they tend to move in opposite directions. Formula: $\frac{\sum(x_i - \bar{x})(y_i - \bar{y})}{N-1}$. Limitation: depends on the units of measurement, so different scales produce incomparable values.
+A measure of how two variables change together. Positive covariance means they tend to move in the same direction; negative covariance means they tend to move in opposite directions. Formula: $\frac{\sum(x_i - \bar{x})(y_i - \bar{y})}{N}$. Limitation: depends on the units of measurement, so different scales produce incomparable values. (As with variance, sample estimates often divide by $N-1$ instead; NumPy's `np.cov` defaults to $N-1$, while the 17_0 notebooks divide by $N$ to keep the focus conceptual.)
 
 ---
 
@@ -119,7 +122,7 @@ The sum of squared deviations from the mean: $\sum(y_i - \bar{y})^2$. Measures t
 ## V
 
 ### Variance ($s^2$)
-The average squared distance of data points from the mean. Formula: $\frac{\sum(y_i - \bar{y})^2}{N-1}$ (sample variance). Units are the square of the original data's units.
+The average squared distance of data points from the mean. Formula: $\frac{\sum(y_i - \bar{y})^2}{N} = \frac{\text{TSS}}{N}$. Units are the square of the original data's units. (You will also see the **sample** formula with $N-1$ in the denominator — *Bessel's correction*. The 17_0 notebooks divide by $N$ to keep the focus on the *average* squared deviation. Watch the library defaults: NumPy's `np.var`/`np.std` divide by $N$, while pandas' `.var()`/`.std()` divide by $N-1$, so they can return slightly different numbers.)
 
 ### Visualization
 The practice of plotting data to reveal patterns, anomalies, and relationships that summary statistics alone cannot capture. Central lesson of the Anscombe's Quartet and Datasaurus Dozen demonstrations.

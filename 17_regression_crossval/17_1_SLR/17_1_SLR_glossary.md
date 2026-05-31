@@ -37,6 +37,9 @@ Special cases: $\lambda = 0$ is log, $\lambda = 0.5$ is a scaled square root, $\
 
 ## C
 
+### Central Limit Theorem (CLT)
+The result that the sampling distribution of a sample mean (or sum) approaches a normal distribution as the sample size grows, regardless of the population's shape. In regression it is why inference (p-values, confidence intervals) stays approximately valid even when residuals are only mildly non-normal, provided $n$ is reasonably large (a rough rule of thumb is $n > 30$). Relevant to the **N** (Normality) assumption.
+
 ### Confidence Interval (95%)
 A range of plausible values for a population parameter (e.g., the true slope). Calculated as $\hat{\beta}_1 \pm t^* \cdot SE(\hat{\beta}_1)$ or via bootstrap percentiles. If the interval does not contain zero, the result is statistically significant at $\alpha = 0.05$.
 
@@ -87,6 +90,16 @@ The degree to which removing a single observation changes the regression coeffic
 
 ### Intercept ($\beta_0$)
 The predicted value of $y$ when all predictors are zero. Often not interpretable directly (e.g., a penguin with zero-length flipper). In statsmodels, must be added with `sm.add_constant()`. In scikit-learn, included by default.
+
+---
+
+## J
+
+### Jarque–Bera Test
+A statistical test for the normality of residuals, based on their skewness and kurtosis. The null hypothesis is that the residuals are normally distributed, so a *small* p-value is evidence *against* normality. Reported in the statsmodels `.summary()` output and read alongside the Q-Q plot to assess the **N** (Normality) assumption. Like any normality test, it can flag trivial departures in large samples, so it complements the plot rather than replacing it.
+
+### Jensen's Correction
+An adjustment applied when back-transforming predictions from a log model to the original scale. Because the mean of a log is not the log of the mean (a consequence of Jensen's inequality), naively exponentiating a log-scale prediction ($e^{\hat{y}}$) systematically *underestimates* the mean on the original scale. Adding a correction term (related to the residual variance) compensates. Relevant whenever you fit a log–level or log–log model and need predictions in original units.
 
 ---
 

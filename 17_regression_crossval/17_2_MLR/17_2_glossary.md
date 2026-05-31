@@ -99,7 +99,7 @@ The process of identifying and retaining only the most useful input features. Me
 A feature selection algorithm that starts with no features and iteratively adds the most useful one at each step, based on cross-validation performance. Stops when adding any further feature no longer improves performance. Computationally efficient but cannot remove features once added.
 
 ### F-Test
-A statistical test used in stepwise selection to determine whether adding or removing a feature significantly improves the model.
+A classical statistical test for whether adding or removing a feature significantly improves a model — the criterion used in *traditional* stepwise selection. Note: the forward/backward selection in 17_2_1_2 does **not** use an F-test; it uses scikit-learn's `SequentialFeatureSelector`, which adds or removes features based on cross-validated score instead.
 
 ---
 
@@ -311,5 +311,5 @@ An optimized implementation of gradient boosting with built-in regularization (L
 
 ## Y
 
-### Yolked Variables
+### Yoked Variables
 Paired features where a categorical feature being "None" always corresponds to a numeric feature being 0. Creates redundancy and can confuse the model. Resolved by dropping or combining the paired features.

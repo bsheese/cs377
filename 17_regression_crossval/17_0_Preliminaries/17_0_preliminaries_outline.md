@@ -29,7 +29,7 @@ This document provides a complete outline of all topics covered across the five 
 - Student exercise: implement TSS from scratch
 
 ### Variance and Standard Deviation
-- Variance: dividing TSS by N (or N−1) — average squared distance from the mean
+- Variance: dividing TSS by N — average squared distance from the mean (sample estimates use N−1, *Bessel's correction*; see the notebook aside)
 - Standard deviation: square root of variance — returns to original units
 - Relationship: standard deviation is the typical distance of a point from the mean
 
@@ -84,7 +84,7 @@ This document provides a complete outline of all topics covered across the five 
 - The "aha" moment: counting which quadrants have more points reveals direction of association
 
 ### Covariance
-- Formula: $\frac{\sum(x_i - \bar{x})(y_i - \bar{y})}{N-1}$
+- Formula: $\frac{\sum(x_i - \bar{x})(y_i - \bar{y})}{N}$ (sample estimates use $N-1$; `np.cov` defaults to $N-1$)
 - Positive covariance: variables move in the same direction
 - Negative covariance: variables move in opposite directions
 - Covariance has a problem: dependent on the units of measurement
