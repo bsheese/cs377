@@ -32,9 +32,9 @@
 
 ### Probabilities and the Decision Threshold
 
-16. What is the difference between `.predict()` and `.predict_proba()`? When would you use each?
-18. The mean probability for good customers is around 0.30, while for defaulters it's around 0.65. What does the gap between these two means tell you about the model's discriminative ability?
-19. If the two probability distributions overlapped completely (both centered at 0.5), what would this tell you about the model?
+15. What is the difference between `.predict()` and `.predict_proba()`? When would you use each?
+16. The mean probability for good customers is around 0.30, while for defaulters it's around 0.65. What does the gap between these two means tell you about the model's discriminative ability?
+17. If the two probability distributions overlapped completely (both centered at 0.5), what would this tell you about the model?
 
 ---
 
@@ -42,35 +42,34 @@
 
 ### The Confusion Matrix
 
-20. Given a confusion matrix `[[180, 20], [30, 70]]`, identify the TP, TN, FP, and FN values. Which class is the "positive" class?
-21. In the credit default context, what is the real-world consequence of a false positive? Of a false negative?
-23. If a model produces a confusion matrix of `[[210, 0], [0, 90]]`, what does this tell you about its performance? Is this realistic for a credit risk model?
+18. Given a confusion matrix `[[180, 20], [30, 70]]`, identify the TP, TN, FP, and FN values. Which class is the "positive" class?
+19. In the credit default context, what is the real-world consequence of a false positive? Of a false negative?
+20. If a model produces a confusion matrix of `[[210, 0], [0, 90]]`, what does this tell you about its performance? Is this realistic for a credit risk model?
 
 ### Precision and Recall
 
-24. Precision answers the question: "When the model says 'default,' how often is it right?" Recall answers: "Of all actual defaulters, how many did we catch?" Why are these two questions different, and why do they often conflict?
-25. Can a model have 100% precision? Can it have 100% recall? Can it have both simultaneously? Under what conditions?
-26. If a bank's priority is to "never approve a loan to someone who will default," which metric should they optimize: precision or recall? Why?
-27. If a bank's priority is to "never turn away a good customer," which metric should they optimize? What is the trade-off?
+21. Precision answers the question: "When the model says 'default,' how often is it right?" Recall answers: "Of all actual defaulters, how many did we catch?" Why are these two questions different, and why do they often conflict?
+22. Can a model have 100% precision? Can it have 100% recall? Can it have both simultaneously? Under what conditions?
+23. If a bank's priority is to "never approve a loan to someone who will default," which metric should they optimize: precision or recall? Why?
+24. If a bank's priority is to "never turn away a good customer," which metric should they optimize? What is the trade-off?
 
 ### The F1-Score
 
-28. Why does the F1-score use the harmonic mean instead of the arithmetic mean? What would happen if we used the arithmetic mean of precision and recall?
-29. A model has precision = 100% and recall = 1%. What is its F1-score? What does this tell you about the model's actual usefulness?
-30. A model has precision = 60% and recall = 60%. Another has precision = 90% and recall = 30%. Which has the higher F1-score? Which would you prefer for a credit risk application?
-31. When would you choose to optimize F1 over optimizing precision or recall individually?
+25. Why does the F1-score use the harmonic mean instead of the arithmetic mean? What would happen if we used the arithmetic mean of precision and recall?
+26. A model has precision = 100% and recall = 1%. What is its F1-score? What does this tell you about the model's actual usefulness?
+27. A model has precision = 60% and recall = 60%. Another has precision = 90% and recall = 30%. Which has the higher F1-score? Which would you prefer for a credit risk application?
+28. When would you choose to optimize F1 over optimizing precision or recall individually?
 
 ### The Classification Report
 
-32. The classification report shows separate precision, recall, and F1 for each class, plus macro and weighted averages. Why are there two different averages? When would they give very different results?
-33. If the 'Good' class has recall = 0.85 and the 'Bad' class has recall = 0.55, what does this tell you about the model's behavior?
-34. What does the "support" column tell you? Why is it important context for interpreting the per-class metrics?
-35. In an extremely imbalanced dataset (99% negative, 1% positive), the weighted average F1 might be 0.95 while the macro average F1 is 0.50. Which one should you trust, and why?
+29. The classification report shows separate precision, recall, and F1 for each class, plus macro and weighted averages. Why are there two different averages? When would they give very different results?
+30. If the 'Good' class has recall = 0.85 and the 'Bad' class has recall = 0.55, what does this tell you about the model's behavior?
+31. What does the "support" column tell you? Why is it important context for interpreting the per-class metrics?
+32. In an extremely imbalanced dataset (99% negative, 1% positive), the weighted average F1 might be 0.95 while the macro average F1 is 0.50. Which one should you trust, and why?
 
 ### The Threshold Trade-Off
 
-36. If you raise the decision threshold from 0.5 to 0.7, what happens to precision? To recall? To the number of false positives? To the number of false negatives?
-
+33. If you raise the decision threshold from 0.5 to 0.7, what happens to precision? To recall? To the number of false positives? To the number of false negatives?
 
 ---
 
@@ -78,64 +77,72 @@
 
 ### The ROC Curve
 
-38. The ROC curve plots TPR (recall) against FPR (1 − specificity). What does it mean for a point on the curve to be in the top-left corner? In the bottom-right corner? On the diagonal?
-39. Why does the ROC curve always start at (0, 0) and end at (1, 1)?
-40. If a model's ROC curve is very close to the diagonal line, what does this tell you about its predictive ability?
-41. Can a model have an ROC curve below the diagonal? What would this mean, and what could you do about it?
+34. The ROC curve plots TPR (recall) against FPR (1 − specificity). What does it mean for a point on the curve to be in the top-left corner? In the bottom-right corner? On the diagonal?
+35. Why does the ROC curve always start at (0, 0) and end at (1, 1)?
+36. If a model's ROC curve is very close to the diagonal line, what does this tell you about its predictive ability?
+37. Can a model have an ROC curve below the diagonal? What would this mean, and what could you do about it?
 
 ### AUC
 
-42. AUC = 0.79 means "the model correctly ranks a random defaulter above a random good customer 79% of the time." Explain this interpretation in your own words with a concrete example.
-43. If Model A has AUC = 0.85 and Model B has AUC = 0.82, can you conclude that Model A is better? What additional information would you need?
-44. Why is AUC described as "threshold-independent"? What advantage does this give you when comparing models?
-45. An AUC of 0.50 means the model is no better than random. What would an AUC of 1.00 mean? Is this achievable in practice?
+38. AUC = 0.79 means "the model correctly ranks a random defaulter above a random good customer 79% of the time." Explain this interpretation in your own words with a concrete example.
+39. If Model A has AUC = 0.85 and Model B has AUC = 0.82, can you conclude that Model A is better? What additional information would you need?
+40. Why is AUC described as "threshold-independent"? What advantage does this give you when comparing models?
+41. An AUC of 0.50 means the model is no better than random. What would an AUC of 1.00 mean? Is this achievable in practice?
 
 ### Precision-Recall Curves
 
-46. Why can the ROC curve be over-optimistic on highly imbalanced datasets? What role do true negatives play in this?
-47. The PR curve baseline is the positive class prevalence. Why is this the baseline, and what does it mean if your PR curve hugs close to this line?
-48. When would you choose to look at a PR curve instead of an ROC curve?
+42. Why can the ROC curve be over-optimistic on highly imbalanced datasets? What role do true negatives play in this?
+43. The PR curve baseline is the positive class prevalence. Why is this the baseline, and what does it mean if your PR curve hugs close to this line?
+44. When would you choose to look at a PR curve instead of an ROC curve?
 
 ### Youden's J Statistic
 
-49. Youden's J = TPR − FPR. Why does maximizing this quantity find the "best" threshold? What trade-off does it implicitly make?
-50. Youden's J assumes that false positives and false negatives are equally costly. In the credit default context, is this a reasonable assumption? Why or why not?
+45. Youden's J = TPR − FPR. Why does maximizing this quantity find the "best" threshold? What trade-off does it implicitly make?
+46. Youden's J assumes that false positives and false negatives are equally costly. In the credit default context, is this a reasonable assumption? Why or why not?
 
 ### Business Cost Sensitivity
 
-51. If a false negative costs $5,000 and a false positive costs $500, would you expect the cost-optimal threshold to be higher or lower than 0.5? Why?
-52. In what scenario would the default (0.5), Youden's J, and cost-optimal all give the same threshold?
-53. If you doubled the cost of a false negative from $5,000 to $10,000, what would happen to the cost-optimal threshold? Would it move up or down?
-54. Why is the cost curve approach more practically useful than Youden's J for real-world decision-making?
+47. If a false negative costs $5,000 and a false positive costs $500, would you expect the cost-optimal threshold to be higher or lower than 0.5? Why?
+48. In what scenario would the default (0.5), Youden's J, and cost-optimal all give the same threshold?
+49. If you doubled the cost of a false negative from $5,000 to $10,000, what would happen to the cost-optimal threshold? Would it move up or down?
+50. Why is the cost curve approach more practically useful than Youden's J for real-world decision-making?
 
 ---
 
-## Multiclass Classification — preview of module 18_5
+## 18_1_5: Credit Card Fraud Detection
 
-*Multiclass classification is not covered by the 18_1 notebooks (this module ends with the credit-card-fraud sequence, Notebooks 5–6). The questions below look ahead to module `18_5`, where multiclass is taught. They are kept here for reference; consider relocating them to the 18_5 materials.*
+### Extreme Imbalance and the Accuracy Trap
 
-### From Binary to Multiclass
+51. The Credit Card Fraud dataset has a 0.17% fraud rate. A model that labels every transaction as "Not Fraud" achieves 99.83% accuracy. In your own words, why is this model completely useless despite its near-perfect accuracy?
+52. In the classification report for the untuned fraud model at the default threshold, accuracy is ~1.00 and weighted average F1 is also very high, yet fraud recall is only ~0.74. Which number most honestly describes the model's usefulness? Why is the weighted average nearly meaningless here?
+53. The fraud notebook deliberately avoids using ROC AUC as the primary evaluation tool. Explain why: what specific property of the False Positive Rate makes the ROC curve look deceptively good when 99.8% of samples are legitimate?
 
-61. What fundamentally changes when you move from binary classification (2 classes) to multiclass classification (3+ classes)? Why can't you just use the same binary approach?
-62. In binary classification, the model outputs one probability. In multiclass, it outputs a probability for each class using softmax. Explain in your own words how the predicted class is chosen from these probabilities.
-63. What is the difference between One-vs-Rest (OvR) and softmax for multiclass classification? When might you prefer one over the other?
+### Precision-Recall Curves and F-Beta Score
 
-### The 3x3 Confusion Matrix
+54. On the fraud dataset, the PR curve baseline is approximately 0.0017 (0.17%). What does this baseline represent? What would it mean if your model's PR curve barely rose above this line?
+55. The F2-score (beta=2) weights recall twice as heavily as precision. In fraud detection, why would you prioritize recall over precision? Give a concrete business example of what a false negative (missed fraud) costs the bank vs. a false positive (incorrectly flagging a legitimate transaction).
+56. The F-Beta score peaks at a specific threshold — below that threshold, recall is high but precision is very low; above it, the reverse is true. What does the peak of the F-Beta curve tell you about the right decision threshold for your specific cost priorities?
 
-64. In a 3×3 confusion matrix, the diagonal contains correct predictions. What do the off-diagonal cells represent?
-65. In the fetal health example, why is predicting "Normal" when the fetus is actually "Pathological" (a Fatal Miss) more dangerous than predicting "Pathological" when the fetus is actually "Normal" (a False Alarm)?
-66. A shallow Decision Tree achieves 93% accuracy on a dataset where 78% of samples are Normal. Why is the 15% improvement over the naive baseline less impressive than it appears?
+### Threshold Selection and OOF Probabilities
 
-### Multiclass Metrics and Averaging
+57. The notebook computes out-of-fold (OOF) probabilities on the training set and uses them to select the cost-optimal threshold, rather than using the test set. Why must threshold selection use training data only? What would go wrong if you selected the threshold using the test set?
+58. If the threshold optimized on OOF training data produces slightly different precision and recall when evaluated on the held-out test set, what does this "generalization gap" tell you? Is some gap expected, and what would a very large gap suggest?
 
-67. What does "Recall for the Pathological class" mean in plain English? How do you read it from the confusion matrix?
-68. Macro average treats all classes equally. Weighted average weights by sample count. Why are macro and weighted averages similar when classes are roughly balanced, but diverge when classes are imbalanced?
-69. Imagine a 4-class dataset with distribution 200/50/50/50. A model gets all 200 of class 0 right but misses every sample from the other three classes. What are the macro and weighted recall scores?
-70. The scikit-learn classification report shows "accuracy" instead of "micro avg." Why are these the same number in standard multiclass problems?
+---
 
-### Handling Imbalance
+## 18_1_6: Cost-Weighted Training and Nested CV
 
-71. `compute_sample_weight('balanced', y)` assigns higher weights to samples from rare classes. Why does this help the model learn minority class patterns?
-72. In the notebook, sample weighting improved the Decision Tree's Macro F1 from 0.87 to 0.94. But XGBoost achieved 0.98 without any sample weighting. Does this mean sample weighting is unnecessary? When might it be critical?
+### Handling Imbalance: Three Approaches
 
+59. By the end of Notebook 6 you have seen three tools for addressing class imbalance: `scale_pos_weight` (training time), a custom cost-weighted objective (training time), and threshold tuning (prediction time). What is the fundamental difference between the training-time approaches and the prediction-time approach? When would you use all three together?
+60. For the fraud dataset, the class ratio is about 499:1 (negative to positive), but the cost ratio is approximately 4.5:1 ($450 FN vs. $100 FP). Why would setting `scale_pos_weight = 499` be a poor choice here? What does the custom cost-weighted objective do differently?
 
+### GridSearch Scorer Design
+
+61. The `total_cost_scorer` function is deliberately shown as a flawed example. The flaw is a hardcoded threshold (`y_prob >= 0.95`) inside the scoring function. Why does using any fixed threshold inside a GridSearch scorer produce misleading model comparisons?
+62. What is the correct scoring metric when using GridSearch to optimize model selection for PR-based performance? Why does `average_precision_score` avoid the hardcoded-threshold problem?
+
+### Nested Cross-Validation
+
+63. In nested cross-validation, what is the purpose of the inner loop? What is the purpose of the outer loop? Why does running `cross_val_score` on a model that was already tuned with GridSearch *overestimate* true generalization performance?
+64. After the full nested CV and hyperparameter tuning pipeline on the fraud dataset, the improvement over the default XGBoost model was very small. Give at least two reasons why small gains over well-tuned defaults are expected even with a systematic grid search.

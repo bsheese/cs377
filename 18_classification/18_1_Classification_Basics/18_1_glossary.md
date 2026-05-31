@@ -45,6 +45,9 @@ A table that cross-tabulates actual class labels against predicted class labels.
 ### Decision Threshold
 The probability cutoff used to convert a soft prediction (probability) into a hard prediction (class label). By default, sklearn uses 0.5: if P(positive) ≥ 0.5, predict positive; otherwise predict negative. Moving the threshold changes the precision-recall trade-off. Selected via Youden's J, business cost analysis, or default convention.
 
+### Denominator Trick
+A memory aid for keeping precision and recall straight. Ask: *what is in the denominator?* Precision's denominator is all **predicted** positives (TP + FP) — it measures how reliable your predictions are. Recall's denominator is all **actual** positives (TP + FN) — it measures how much of reality you caught. If you can remember which denominator belongs to which metric, the formula follows automatically.
+
 ### Drop First
 A parameter in one-hot encoding (`drop_first=True`) that removes the first category column to avoid perfect multicollinearity (the dummy variable trap). With K categories, this produces K−1 binary columns instead of K.
 
@@ -99,7 +102,7 @@ A discrete class label (0 or 1, Good or Bad) produced by applying the decision t
 ## L
 
 ### Learning Rate
-In gradient boosting (XGBoost), a hyperparameter that controls how much each tree contributes to the final prediction. A lower learning rate requires more trees but typically produces better generalization.
+In gradient boosting (XGBoost), a hyperparameter that controls how much each tree's correction is applied at each boosting step. Lower values shrink each tree's contribution, requiring more trees (`n_estimators`) but often producing better generalization. Tuned during hyperparameter search in Notebook 6.
 
 ---
 
@@ -116,7 +119,7 @@ An averaging strategy that computes the metric globally across all samples, aggr
 ## N
 
 ### n_estimators
-In ensemble models (XGBoost, Random Forest), the number of trees in the ensemble. More trees typically improve performance but increase computation time.
+In ensemble models (XGBoost, Random Forest), the number of trees in the ensemble. More trees generally reduce variance but increase training time. Works hand-in-hand with **Learning Rate** — a lower learning rate usually requires a higher `n_estimators` to compensate.
 
 ### Naive Baseline
 See **Baseline (Naive)**.
@@ -138,8 +141,11 @@ Predicted probabilities for each training sample obtained by predicting using mo
 
 ## P
 
+### Positive Predictive Value (PPV)
+Synonym for **Precision**. Often used in medical and diagnostic contexts. Remembering "Precision = Positive Predictive Value" (both start with P and describe the positive prediction) is a useful word-association hook.
+
 ### Precision
-The proportion of positive predictions that are actually correct: `TP / (TP + FP)`. Measures reliability — when the model says "positive," how often is it right?
+The proportion of positive predictions that are actually correct: `TP / (TP + FP)`. Measures reliability — when the model says "positive," how often is it right? See also: **Positive Predictive Value**, **Denominator Trick**.
 
 ### Precision-Recall Curve
 A plot of precision vs. recall as the decision threshold varies from 0 to 1. More informative than the ROC curve for imbalanced datasets because it ignores true negatives. The baseline is the positive class prevalence.

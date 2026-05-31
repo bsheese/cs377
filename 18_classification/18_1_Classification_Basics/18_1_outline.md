@@ -214,7 +214,7 @@ This document provides a complete outline of all topics covered across the six n
 
 | File | Description |
 |------|-------------|
-| `18_1_practice_quiz.md` | Practice quiz for assessment |
+| `18_1_practice_quiz.ipynb` | Practice quiz for assessment |
 | `18_1_discussion_questions.md` | Discussion questions for the topic |
 | `18_1_glossary.md` | Key terminology definitions |
 
