@@ -78,7 +78,7 @@ def load_breast_cancer_data(test_size: float = 0.2, random_state: int = 42):
     df = data.frame
     
     # Separate features and target
-    X = df[data.target_names]
+    X = df[data.feature_names]
     y = data.target
     
     # Train-test split

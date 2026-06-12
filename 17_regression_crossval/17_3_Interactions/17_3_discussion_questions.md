@@ -12,7 +12,7 @@
 
 3. An additive model `charges ~ bmi + smoker` assumes BMI and smoking have independent effects. What exactly does "independent" mean here? Draw a quick sketch of what two parallel lines would look like if this assumption held.
 
-4. A student fits an additive model first and gets R² ≈ 0.65. They then add an interaction term and R² jumps to ≈ 0.83. The student says "the model improved dramatically." Is R² improvement alone sufficient justification for adding complexity? What else should they check?
+4. A student fits an additive model first and gets R² ≈ 0.66. They then add an interaction term and R² jumps to ≈ 0.74. The student says "the model improved dramatically." Is R² improvement alone sufficient justification for adding complexity? What else should they check?
 
 5. Name two other pairs of variables in a health insurance dataset that you'd expect to interact. For each, explain the real-world mechanism that creates the interaction.
 
@@ -20,7 +20,7 @@
 
 6. In the interaction model `charges ~ bmi * smoker`, three coefficients are produced: `bmi`, `smoker[T.yes]`, and `bmi:smoker[T.yes]`. What does each coefficient represent in plain English?
 
-7. The `bmi` coefficient (~7) represents the cost increase per BMI point for **non-smokers**. The `bmi:smoker[T.yes]` coefficient (~1,400) represents the *additional* increase per BMI point for smokers. What is the total increase per BMI point for a smoker?
+7. The `bmi` coefficient (~83) represents the cost increase per BMI point for **non-smokers**. The `bmi:smoker[T.yes]` coefficient (~1,390) represents the *additional* increase per BMI point for smokers. What is the total increase per BMI point for a smoker?
 
 8. If a non-smoker gains 10 BMI points, how much does their predicted cost increase? If a smoker gains the same 10 BMI points, how much does their predicted cost increase? Why is this difference alarming from a public health perspective?
 

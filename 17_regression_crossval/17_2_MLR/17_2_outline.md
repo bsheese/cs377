@@ -13,7 +13,7 @@ This document provides a complete outline of all topics covered across the six n
 - Under-cleaning (noise in, garbage out) vs. over-cleaning (data loss)
 
 ### Typical Checks
-- Using `.info()` to inspect column types and non-null counts
+- Using `.info()`, `.describe()`, and boxplots to inspect types, ranges, and outliers
 - Identifying numeric vs. categorical feature mix
 
 ### Common Remediation Approaches
@@ -35,21 +35,20 @@ This document provides a complete outline of all topics covered across the six n
 - Why you must fit imputation on the training set only
 
 ### Feature Engineering
-- Creating interaction terms
-- Binning continuous variables
-- Domain-specific feature construction
+- Consolidating correlated floor-area columns into `Total_Square_Footage`
+- The deterministic vs. statistical preprocessing distinction (what is safe before the split)
 
 ### Encoding Categoricals for the Algorithm
-- One-hot encoding with `pd.get_dummies()` and `drop_first=True`
+- Ordinal encoding for ranked quality scales; one-hot encoding (`OneHotEncoder`, `drop='first'`, `handle_unknown='ignore'`) for nominal variables
 - The Dummy Variable Trap: perfect multicollinearity from redundant columns
-- Handling high-cardinality categoricals
+- Unseen test-set categories encoded as all zeros
 
 ### Target Variable Housekeeping
 - Log-transforming the target (SalePrice) to reduce skew
 - Why log transforms stabilize variance across price ranges
 
 ### Summary
-- DataFrame reduced from 82 to ~38 columns after cleaning
+- After one-hot encoding, the dataset expands to roughly 225 features
 - Why different modeling techniques require different levels of cleaning
 - Trade-offs of aggressive vs. conservative feature dropping
 - Cleaned data feeds into Part 2 for feature selection
@@ -161,7 +160,7 @@ This document provides a complete outline of all topics covered across the six n
 
 ## 17_2_1_4: Hyperparameter Tuning and Nested Cross-Validation
 
-**Dataset:** Ames Housing (cleaned). Goal: tune hyperparameters, understand nested CV and learning curves.
+**Dataset:** Ames Housing (cleaned). Goal: tune hyperparameters and understand nested CV. (Learning curves are practiced in the 17_2_1_9 capstone exercise.)
 
 ### What Are Hyperparameters?
 - Configuration settings chosen before training (alpha, l1_ratio)
@@ -202,7 +201,7 @@ This document provides a complete outline of all topics covered across the six n
 - Comparing the two approaches: standard CV vs. nested CV
 - Code implementation and result interpretation
 
-### Learning Curves
+### Learning Curves *(practiced in the 17_2_1_9 capstone exercise)*
 - Plotting training and validation scores as training set size increases
 - **Overfitting (High Variance):** training score high, validation low, large gap
 - **Underfitting (High Bias):** both scores converge at a low value
@@ -323,7 +322,7 @@ This document provides a complete outline of all topics covered across the six n
 | **Multicollinearity** | 17_2_1_2 (VIF), 17_2_1_3 (Ridge handles it), 17_2_2 (feature importance problem) |
 | **Bias-Variance Tradeoff** | 17_2_1_3 (regularization), 17_2_1_4 (alpha tuning, nested CV), 17_2_2 (tree depth) |
 | **Cross-Validation** | 17_2_1_2 (feature selection), 17_2_1_4 (GridSearchCV, nested CV), 17_2_1_5 (nested CV deep dive), 17_2_2 (nested CV for XGBoost) |
-| **Overfitting** | 17_2_1_3 (regularization prevents it), 17_2_1_4 (learning curves), 17_2_2 (tree depth) |
+| **Overfitting** | 17_2_1_3 (regularization prevents it), 17_2_1_9 (learning curves), 17_2_2 (tree depth) |
 | **Feature Selection** | 17_2_1_2 (forward/backward), 17_2_1_3 (Lasso), 17_2_2 (feature importance) |
 | **Log Transformation** | 17_2_1_1 (target cleaning), 17_2_1_2 (log interpretation) |
 | **Pipelines** | 17_2_1_2 (scaling + selection), 17_2_1_3 (scaling + regularization), 17_2_1_4 (scaling + GridSearchCV) |

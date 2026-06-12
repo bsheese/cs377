@@ -1,6 +1,6 @@
 # 16 ML Intro — Topic Outline
 
-This document provides a complete outline of all topics covered across the four notebooks in the 16 ML Intro series.
+This document provides a complete outline of all topics covered across the notebooks in the 16 ML Intro series: 16_1, 16_3, 16_4, 16_5, and the 16_9 exercises. (There is no 16_2 — notebook basics are covered inside 16_1.)
 
 ---
 
@@ -55,10 +55,13 @@ This document provides a complete outline of all topics covered across the four 
   - Feature scaling with `StandardScaler` before fitting KNN
 - **Linear Regression** — house price from square footage
   - Model fit, prediction (`\hat{y}`), residual standard deviation as uncertainty
+- **K-Means Clustering** — the same songs without labels
+  - Discovering groups from features alone vs. naming the groups
+  - Side-by-side contrast with the supervised (labeled) view
 
 ### Tools for the Course
 - Jupyter Notebooks / Google Colab
-- Python libraries: Pandas, Matplotlib, Seaborn, NumPy, scikit-learn, statsmodels
+- Python libraries: Pandas, Matplotlib, NumPy, scikit-learn (Seaborn appears in the 16_9 exercises)
 
 ---
 
@@ -87,7 +90,7 @@ This document provides a complete outline of all topics covered across the four 
 ### Creating Arrays
 - `np.array()` from Python lists
 - `np.arange()` with start, stop, step
-- `np.zeros()`, `np.ones()`, `np.empty()`, `np.full()`
+- `np.zeros()`, `np.ones()`, `np.full()`
 - `np.linspace()` for regularly spaced intervals
 
 ### Random Number Generation
@@ -111,7 +114,6 @@ This document provides a complete outline of all topics covered across the four 
 
 ### Best Practices
 - Don't create empty arrays and append — pre-allocate with `np.zeros()`
-- `np.empty()` returns uninitialized memory (garbage values are expected)
 
 ---
 
@@ -133,10 +135,10 @@ This document provides a complete outline of all topics covered across the four 
 - With a custom index
 - dtype inference vs. explicit specification
 
-### Copying Series vs. Creating Views
+### Copying Series vs. Aliasing
 - Alias vs. copy (`series.copy()`)
 - Checking object identity with `is`
-- Views: modifying how we look at data without copying
+- Selection returns a new object; the original is unchanged unless reassigned
 
 ### Examining Series
 - Large series display truncation
@@ -154,7 +156,7 @@ This document provides a complete outline of all topics covered across the four 
 ### Selection by Condition (Boolean Masks)
 - Comparison operators produce boolean series
 - Using a boolean mask with `.loc[]`
-- Combining masks with `|` (or) operator
+- Combining masks with `&` (and) and `|` (or)
 - Single-step vs. multi-step masking
 
 ### Updating Values and Labels
@@ -164,7 +166,7 @@ This document provides a complete outline of all topics covered across the four 
 
 ### Basic Math Operations
 - Element-wise arithmetic: `series + 5`, `series - 5`, `series * 5`, `series / 5`
-- Operations create views, not modifications
+- Operations return a new Series; the original is unchanged
 - Reassign to persist changes: `series = series + 5`
 - `.cumsum()` — cumulative sum across the series
 
@@ -179,7 +181,7 @@ This document provides a complete outline of all topics covered across the four 
 ### Sorting Series
 - `.sort_index()` — sort by index labels
 - `.sort_values()` — sort by values
-- Sorting creates a view; reassign to persist
+- Sorting returns a new Series; reassign to persist
 - `ascending=False` for descending order
 - In-place sorting exists but not recommended for this course
 
@@ -268,5 +270,26 @@ This document provides a complete outline of all topics covered across the four 
 - Finding passengers by age, sex, fare conditions
 - Finding families (Palsson, Sage) with string matching
 - Excluding false matches with negation
+- `regex=False` to treat `.str.contains()` arguments as plain text
+
+---
+
+## 16_9: EDA Workout — Auto MPG Exercises
+
+**Topics:** Integrative fill-in-the-blank exercises applying the 16_3–16_5 skills to the seaborn Auto MPG dataset (398 cars, 1970–1982).
+
+### Task 1 — NumPy
+- `.to_numpy()`, summary statistics (`.mean()`, `.std()`, `.min()`, `.max()`)
+- Boolean masking and statistics on masked subsets
+
+### Task 2 — Pandas Series
+- `.loc[]` label slicing (inclusive stop)
+- `.sort_values(ascending=False)` with `.head()`
+- Boolean masks on a Series
+
+### Task 3 — Pandas DataFrame
+- Creating a derived column from two existing columns
+- Combined boolean masks with `&`
+- Comparing group means with `.loc[]` selection and `.mean()`
 
 ---

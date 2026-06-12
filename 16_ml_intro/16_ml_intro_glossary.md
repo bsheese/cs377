@@ -1,13 +1,16 @@
 # 16 ML Intro — Glossary
 
-This document defines all technical and conceptual terms used across the four notebooks in the 16 ML Intro series.
+This document defines the technical and conceptual terms used across the notebooks in the 16 ML Intro series, plus a few forward-looking terms (marked as such) that become important in later units.
 
 ---
 
 ## A
 
+### Accuracy
+The fraction of predictions a classifier gets right. In scikit-learn, `model.score(X_test, y_test)` reports accuracy for classifiers. Only meaningful when measured on data the model did not train on; see **Test Set**.
+
 ### Array (Numpy Array)
-A grid of values, all of the same data type, indexed by non-negative integers. Unlike Python lists, arrays support element-wise arithmetic operations. Created with `np.array()`, `np.arange()`, `np.zeros()`, `np.ones()`, `np.empty()`, `np.full()`, etc.
+A grid of values, all of the same data type, indexed by non-negative integers. Unlike Python lists, arrays support element-wise arithmetic operations. Created with `np.array()`, `np.arange()`, `np.zeros()`, `np.ones()`, `np.full()`, etc.
 
 ### Artificial Intelligence
 The broader field of computer science concerned with creating systems that can perform tasks that typically require human intelligence. Machine learning is a subfield of AI.
@@ -46,7 +49,7 @@ A copy is an entirely new object with the same values; modifying it does not aff
 ## D
 
 ### Data Leakage
-When information from outside the training set influences the model during training or feature selection, leading to overly optimistic performance estimates. Pipelines in scikit-learn prevent this by fitting transformations (e.g., scaling) only on training folds.
+*(Forward-looking: introduced in depth in unit 17.)* When information from outside the training set influences the model during training or feature selection, leading to overly optimistic performance estimates. Pipelines in scikit-learn prevent this by fitting transformations (e.g., scaling) only on training folds.
 
 ### DataFrame
 A two-dimensional Pandas data structure with labeled rows and columns. Acts like a spreadsheet. Can be thought of as a collection of Series that share the same index.
@@ -108,6 +111,9 @@ An interactive computing environment that integrates text, code, and code output
 
 ## K
 
+### K-Means
+An unsupervised clustering algorithm that groups data points into $k$ clusters by repeatedly assigning each point to the nearest cluster center and re-computing the centers. Used in 16_1 to show that the song groups can be discovered from features alone — without the labels supervised learning requires. The discovered clusters are numbered, not named; interpreting them is up to us.
+
 ### K-Nearest Neighbors (KNN)
 A supervised learning algorithm that classifies a new data point by looking at the $k$ closest training examples in feature space and taking a majority vote. Used in 16_1 to predict song danceability from tempo and energy. Sensitive to the scale of features, so **Feature Scaling** is applied before fitting. Predictions can include a probability estimate via `.predict_proba()`.
 
@@ -129,7 +135,7 @@ A subfield of AI in which algorithms learn patterns from data to make prediction
 A lightweight markup language used to format text cells in Jupyter notebooks. Supports headings, lists, links, bold, italic, code blocks, LaTeX math, and more.
 
 ### Multi-Dimensional Array
-A Numpy array with more than one dimension (e.g., 2D matrix, 3D tensor). Created by passing a nested list to `np.array()` or using the `shape` parameter with `np.zeros()`, `np.ones()`, `np.empty()`. Shape is inspected with the `.shape` attribute.
+A Numpy array with more than one dimension (e.g., 2D matrix, 3D tensor). Created by passing a nested list to `np.array()` or using the `shape` parameter with `np.zeros()` or `np.ones()`. Shape is inspected with the `.shape` attribute.
 
 ---
 
@@ -153,7 +159,7 @@ When a model learns the noise and specific patterns of the training data rather 
 A Python library for data manipulation and analysis. Provides the Series (1D) and DataFrame (2D) data structures, along with tools for reading, cleaning, transforming, and analyzing data. Standard import: `import pandas as pd`.
 
 ### Pipeline (scikit-learn)
-A tool that chains together multiple processing steps (e.g., scaling, feature selection, modeling) into a single estimator. Ensures each step is applied correctly within cross-validation, preventing data leakage.
+*(Forward-looking: introduced in unit 17 and used throughout the course.)* A tool that chains together multiple processing steps (e.g., scaling, feature selection, modeling) into a single estimator. Ensures each step is applied correctly within cross-validation, preventing data leakage.
 
 ---
 
@@ -202,7 +208,7 @@ The process of exposing an algorithm to data so that it learns patterns and rela
 ## U
 
 ### Underfitting
-When a model is too simple to capture the underlying patterns in the data. Results in poor performance on both training data and new data. Contrast with **Overfitting**.
+*(Forward-looking: explored in depth in later units.)* When a model is too simple to capture the underlying patterns in the data. Results in poor performance on both training data and new data. Contrast with **Overfitting**.
 
 ### Unsupervised Learning
 A type of machine learning where the model is given unlabeled data and must find hidden patterns or structures on its own. Common tasks include **Clustering** (grouping similar items) and dimensionality reduction.
@@ -214,15 +220,11 @@ A type of machine learning where the model is given unlabeled data and must find
 ### `.value_counts()`
 A Pandas method that tallies how many times each unique value appears in a column (or Series), returning the counts sorted from most to least common. The standard tool for inspecting a categorical column — and, in classification, for checking **class balance** (how many examples exist of each category the model must predict).
 
-### View
-A way of looking at a Series or DataFrame without copying the underlying data. Operations that create views include `.head()`, `.tail()`, boolean masking, and arithmetic. To persist a change, the result must be assigned to a variable.
+### Vectorization
+Performing an operation on an entire array or Series at once (e.g., `myarray + 4`, `series.str.lower()`) instead of looping element-by-element in Python. Vectorized operations run in compiled C code under the hood, making them dramatically faster than the equivalent Python loop — the main reason to prefer NumPy/Pandas operations over `for` loops.
 
----
-
-## X
-
-### XGBoost (eXtreme Gradient Boosting)
-An optimized gradient boosting library that builds decision tree ensembles sequentially, where each new tree corrects the errors of the previous ones. Known for its speed, regularization, and strong performance on structured/tabular data.
+### View (informal usage)
+In this module, "viewing" data means displaying the result of a selection (e.g., `.head()`, `.tail()`, boolean masking) without changing the original object. These operations return **new objects** — the original Series or DataFrame is left unchanged, and the result is discarded unless assigned to a variable. (Pandas also has a stricter internal notion of memory views vs. copies, which we will meet in later units.)
 
 ---
 

@@ -30,7 +30,7 @@
 
 ---
 
-## 18_2_1_1: Logistic Regression with Titanic
+## 18_2_1: Logistic Regression with Titanic
 
 ### Exploratory Data Analysis
 
@@ -72,7 +72,7 @@
 
 15. The model predicts deaths better than survivals (higher recall for class 0). Why might this happen, given the class imbalance (62% died)?
 
-16. AUC = 0.836. Explain the probabilistic interpretation of AUC in plain English using a concrete example from the Titanic context.
+16. AUC = 0.842. Explain the probabilistic interpretation of AUC in plain English using a concrete example from the Titanic context.
 
 ### Threshold Tuning
 
@@ -84,77 +84,74 @@
 
 ---
 
-## 18_2_1_2: Gender-Stratified Titanic Models
+## 18_2_2: Interpretability — When the Model Must Explain Itself
 
-### Segmentation and Interaction
+### Statsmodels vs. Sklearn
 
-1. Training separate models for men and women is one way to capture gender effects. What's the difference between this approach and adding a gender interaction term to a single model?
+1. Sklearn's `LogisticRegression` and statsmodels' `Logit` fit the same model. What does each library give you that the other does not? Why does the notebook use both?
 
-2. The female model and male model will likely show very different coefficient patterns. If 1st class matters strongly for women but not for men, what does this tell you about the nature of the interaction?
+2. Statsmodels reports a standard error and p-value for every coefficient. What question does a p-value answer about a coefficient? What does it *not* tell you?
 
-3. What is a risk of training on smaller segmented datasets? How does reducing sample size affect coefficient stability?
+### Confidence Intervals and the Forest Plot
 
-4. The baseline survival rate differs between men and women (more women survived). How does this affect the interpretation of precision and recall for each model?
+3. A feature's odds ratio is 1.8 with a 95% CI of [0.9, 3.6]. Another feature's OR is 1.3 with a CI of [1.2, 1.4]. Which estimate should you trust more, and which feature has the stronger *estimated* effect? Why are these different questions?
 
-5. Comparing odds ratios side-by-side across gender models can reveal which features are uniquely predictive for each group. Why might a feature that's important for women be irrelevant for men in the Titanic context?
+4. On the forest plot, features whose CI crosses OR = 1 are drawn in gray. What does crossing 1 mean substantively? Why is OR = 1 (rather than 0) the "no effect" reference line?
 
----
+5. In the Titanic model, `sibspouse` and `parentchild` have wide CIs that cross 1. Does this mean family size has no effect on survival? What is the more careful statement?
 
-## 18_2_9: OpenIntro Exercises (Possums, Challenger, Odds Ratios)
+6. Why is the forest plot drawn on a log-scale x-axis? What would be misleading about plotting odds ratios on a linear axis?
 
-### Why Not Linear Regression (Revisited)
+### LR vs. XGBoost Explanations
 
-1. The exercise asks whether "logistic regression fits a line." Why is this FALSE? What shape does the fitted function produce?
+7. Both models put `sex_f` at the top of their importance rankings, yet the notebook argues they "say very different things." List the three pieces of information the LR odds ratio gives you that XGBoost's gain-based importance does not.
 
-2. Why are residuals not expected to be normally distributed in logistic regression? What does the outcome variable look like compared to linear regression?
+8. XGBoost's feature importances are unsigned. Why can't a tree ensemble's importance score have a direction the way a regression coefficient does?
 
-### Multicollinearity in the Possum Model
+### Regulation and Individual Explanations
 
-3. `head_l` (head length) and `skull_w` (skull width) have a correlation of 0.71. This is described as multicollinearity. What does multicollinearity do to individual coefficient estimates and their p-values?
+9. Under the Equal Credit Opportunity Act, a lender must give specific reasons for denying credit. Walk through how the individual-prediction decomposition (coefficient × scaled feature value) produces such a reason. What is the equivalent procedure for XGBoost, and why is it harder?
 
-4. When `head_l` is removed from the model, `skull_w` becomes more statistically significant. Explain why removing one of two correlated features makes the other one's p-value smaller.
-
-5. AIC is used to compare the full and reduced possum models. Why is AIC more appropriate here than R² or accuracy?
-
-### The Challenger Disaster
-
-6. Engineers had data from previous launches showing O-ring failures at various temperatures. The accident occurred at 31°F — the coldest launch ever attempted. The logistic model predicts ~99.3% probability of failure at 31°F. Why was this trend hard to see from the raw data?
-
-7. The probability curve for O-ring failure shows probability near zero for warm temperatures and near 1 for cold temperatures. Why does the logistic curve naturally capture this threshold behavior?
-
-8. This is a case where the model's output could have been used to prevent a tragedy. What does this example say about the responsibility of data scientists when their models have safety implications?
-
-### Odds Ratios
-
-9. The spam filter coefficient for the word "Winner" is 1.63. The odds ratio is $e^{1.63} \approx 5.10$. What does this mean in plain English?
-
-10. If a coefficient is negative, the odds ratio will be between 0 and 1. What does an odds ratio of 0.3 tell you about the relationship between that feature and the outcome?
+10. The notebook claims a 2% AUC improvement from a black-box model is "often not a legal option" in regulated domains. Construct the cost-benefit argument: when is the accuracy gain worth the interpretability loss, and who gets to decide?
 
 ---
 
-## 18_2_9: Red-Tailed Hawks and LOOCV
+## 18_2_3: From One Neuron to Many — The Bridge to Neural Networks
 
-### Small Sample Challenges
+### LR = One Neuron
 
-1. The hawk dataset has only 65 birds. Why is Leave-One-Out Cross-Validation (LOOCV) preferred over a simple 75/25 train-test split for a dataset this size?
+1. The notebook verifies numerically that `sigmoid(W·x + b)` reproduces sklearn's `predict_proba` to machine precision. What are the neural-network names for W, b, and the sigmoid in this expression?
 
-2. LOOCV trains 65 separate models and averages their scores. What computational tradeoff are you making compared to k-fold CV? When would this tradeoff not be worth making?
+2. If logistic regression *is* a single neuron, what exactly does a neural network add? Where in the network does a "logistic regression" still live?
 
-3. All juvenile (HY) hawks in the dataset happen to be female. How does this age-sex confound affect the model's ability to separate the effects of age and sex?
+### The XOR Problem
 
-### Comparing Models to Domain Knowledge
+3. Explain why no straight line can separate the XOR classes. What accuracy does logistic regression achieve on XOR, and why is that number exactly what you'd expect from a coin flip?
 
-4. Washburn et al. (2022) derived equations from domain expertise for hawk sex classification. A machine learning model trained on local Illinois data achieves similar performance. What does this suggest about the role of ML vs. domain knowledge?
+4. The hidden layer "transforms the input into a new space where the data becomes linearly separable." Explain this idea in your own words. Why does a straight line in the transformed space look like a curve in the original space?
 
-5. The ML logistic regression uses all features together, while the Washburn equations use different variables for different age classes. What are the tradeoffs of each approach?
+### Activation Functions
 
-6. SVM often leads on this dataset despite being more opaque than logistic regression. When would you choose a more interpretable model (logistic regression) over a potentially more accurate model (SVM)?
+5. A colleague proposes using sigmoid activations in every hidden layer "so all the intermediate values are probabilities." What is wrong with this reasoning? What problem does ReLU solve?
 
-### Odds Ratios in Biology
+6. Why is sigmoid still the standard choice for the *output* layer of a binary classifier, even in networks that use ReLU everywhere else?
 
-7. The odds ratio visualization for the hawk model uses a log scale. Why is a log scale appropriate for comparing odds ratios both above and below 1?
+### The Interpretability Tax
 
-8. If mass has the highest odds ratio for the "female" class, what does this tell you biologically? Does a high odds ratio mean mass is the single best predictor? What might complicate this interpretation?
+7. The shallow MLP has 145 parameters vs. logistic regression's 8, yet scores about the same on the Titanic test set. Give two reasons the extra capacity doesn't help here.
 
-9. High multicollinearity exists among the body measurements (all are correlated). How does this affect your interpretation of individual feature odds ratios in the logistic regression?
+8. The notebook calls the loss of interpretability the "interpretability tax." For each of these applications, say whether you would pay it and why: (a) credit scoring, (b) photo tagging, (c) hospital readmission risk, (d) movie recommendations.
 
+---
+
+## 18_2_9: Credit Risk Exercise — Interpretability Constraints
+
+1. The compliance scenario rules out XGBoost before any model is fit. Is this premature? What would you need to know about the regulatory requirement to decide whether a post-hoc explanation tool (like SHAP) could make XGBoost acceptable instead?
+
+2. The exercise one-hot encodes the categorical features with `drop_first=True` for logistic regression, while 18_1 passed them to XGBoost natively. Why does logistic regression need the encoding when XGBoost does not?
+
+3. After fitting, some odds ratios for rare categories have enormous confidence intervals. What does this tell you about how much data supports those coefficients? Should they appear in an adverse action notice?
+
+4. Your forest plot will likely show `checking_status` categories among the strongest predictors — consistent with XGBoost's feature importance in 18_1_1. Why is agreement between two very different models reassuring evidence about the data rather than about either model?
+
+5. If XGBoost achieves higher AUC than your logistic regression on this dataset, write the two-or-three sentence recommendation you would give the bank. Which model do you recommend, and what is the deciding factor?

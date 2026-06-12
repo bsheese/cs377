@@ -26,7 +26,7 @@ An ensemble technique that reduces variance by training multiple models independ
 A Bayesian ensemble method that combines an ensemble of shallow trees with MCMC (Markov Chain Monte Carlo) sampling. Unlike boosting, BART does not build trees sequentially to correct errors — instead, it randomly perturbs the entire ensemble (adding branches, removing splits, changing thresholds) and accepts changes that improve the fit. The key advantage is **uncertainty quantification**: BART provides credible intervals for each prediction.
 
 ### Bias
-See **18_1 Glossary**. In the ensemble context: single trees have low bias (they can fit complex patterns) but high variance. Boosting reduces bias by sequentially correcting errors.
+The error a model makes because it is too simple to capture the true pattern (underfitting). In the ensemble context: single deep trees have low bias (they can fit complex patterns) but high variance. Boosting reduces bias by sequentially correcting errors.
 
 ### Bootstrap Sampling
 Random sampling with replacement from the training data. Each bootstrap sample is the same size as the original dataset but contains some duplicate observations and omits others (~37% of samples are left out on average). Used in bagging and random forests to create diverse training sets.
@@ -39,7 +39,7 @@ Random sampling with replacement from the training data. Each bootstrap sample i
 The degree to which a model's predicted probabilities match actual outcome frequencies. A well-calibrated model that predicts 80% probability of malignancy should be correct about 80% of the time. Random Forests tend to be well-calibrated; Gradient Boosting often produces probabilities that are too extreme.
 
 ### Class Weight (Balanced)
-See **18_1 Glossary: Class Weight (Balanced)**. In 18_5, using `class_weight='balanced'` with Random Forests shifts the decision boundary to catch more malignant tumors at the cost of more false positives (unnecessary biopsies).
+A model option (`class_weight='balanced'`) that re-weights classes inversely to their frequency during training — the per-class analogue of the **Sample Weight** entry in the 18_1 glossary. In 18_5, using `class_weight='balanced'` with Random Forests shifts the decision boundary to catch more malignant tumors at the cost of more false positives (unnecessary biopsies).
 
 ### Confusion Matrix
 See **18_1 Glossary: Confusion Matrix**. In 18_5, the medical interpretation is critical: false negatives = missed cancers, false positives = unnecessary biopsies.
@@ -55,7 +55,7 @@ When two or more features are highly correlated, tree-based models tend to use o
 A decision tree with a single split (max_depth=1). It is a "weak learner" — only slightly better than random guessing. Used as the base learner in AdaBoost because the sequential correction process adds value only when individual learners are weak.
 
 ### Decision Tree
-See **18_1 Glossary**. In 18_5, we contrast classification trees (majority class prediction at leaves, Gini impurity for splits) with the regression trees from 17_2_4_5 (mean prediction at leaves, MSE for splits).
+A model that predicts by asking a sequence of yes/no questions about feature values. In 18_5, we contrast classification trees (majority class prediction at leaves, Gini impurity for splits) with the regression trees from 17_2_2 (mean prediction at leaves, MSE for splits).
 
 ---
 
@@ -91,14 +91,14 @@ A measure of node purity used by decision trees to choose splits. `Gini = 1 - Σ
 An ensemble technique that builds trees sequentially, where each new tree predicts the residuals (errors) of the ensemble so far. The tree's predictions are added to the ensemble, scaled by the learning rate (shrinkage). Reduces bias more effectively than bagging but is more prone to overfitting if not carefully tuned.
 
 ### GridSearchCV
-See **18_1 Glossary** (indirectly, via 17_2_4_4). In 18_5, used to tune hyperparameters for Random Forests (n_estimators, max_depth, max_features) and Gradient Boosting (n_estimators, learning_rate, max_depth).
+Exhaustive hyperparameter search with cross-validation; introduced for regression in 17_2_1_4 and used for classification in 18_1_6. In 18_5, used to tune hyperparameters for Random Forests (n_estimators, max_depth, max_features) and Gradient Boosting (n_estimators, learning_rate, max_depth).
 
 ---
 
 ## H
 
 ### Harmonic Mean
-See **18_1 Glossary: Harmonic Mean**. Used in the F1-score to ensure that both precision and recall must be high for the F1 to be high.
+The reciprocal of the average of reciprocals. Unlike the arithmetic mean, it is dragged toward the smaller of its inputs — which is why the F1-score uses it: both precision and recall must be high for the F1 to be high.
 
 ---
 
@@ -135,10 +135,10 @@ The number of trees in an ensemble model (bagging, random forest, boosting). Mor
 A built-in validation estimate available for bagging-based methods. Because bootstrap sampling leaves out ~37% of data for each tree, those "out-of-bag" samples serve as a validation set. The OOB score is the accuracy on these held-out samples, averaged across all trees. Useful because it eliminates the need for a separate validation set.
 
 ### One-vs-Rest (OvR)
-See **18_1 Glossary: One-vs-Rest (OvR)**. Not directly used in 18_5 (all problems are binary), but mentioned in the context of multiclass extensions.
+A strategy that turns a K-class problem into K binary problems (one classifier per class, "this class vs. everything else"). Not directly used in 18_5 (all problems here are binary), but relevant for multiclass extensions of these models.
 
 ### Overfitting
-See **18_1 Glossary**. In 18_5, demonstrated through the depth experiment: training accuracy reaches 1.0 while test accuracy plateaus or drops. Ensembles (bagging, RF, boosting) are designed to combat overfitting.
+When a model memorizes its training data instead of learning generalizable patterns, so training performance far exceeds test performance. In 18_5, demonstrated through the depth experiment: training accuracy reaches 1.0 while test accuracy plateaus or drops. Ensembles (bagging, RF, boosting) are designed to combat overfitting.
 
 ---
 
@@ -174,7 +174,7 @@ See **18_1 Glossary: ROC Curve**. In 18_5, used to compare the discrimination ab
 See **Learning Rate (Shrinkage)**.
 
 ### Softmax (Multinomial)
-See **18_1 Glossary: Softmax (Multinomial)**. Not used in 18_5 (all problems are binary), but mentioned in the context of multiclass extensions.
+A function that converts K raw scores into K probabilities that sum to 1; see the multiclass unit (18_5_1_Multiclass_Intro in `18_5_MutliClassClassification/`). Not used in this ensemble series (all problems here are binary).
 
 ### Specificity
 See **18_1 Glossary: Specificity**. Equal to 1 − FPR. In the medical context: of all benign tumors, what percentage did the model correctly identify as benign?
@@ -203,7 +203,7 @@ The model correctly predicts malignant and the tumor is actually malignant.
 ## V
 
 ### Variance (Model)
-See **18_1 Glossary: Variance (Model)**. In 18_5, bagging and random forests reduce variance by averaging many diverse trees. The standard deviation of cross-validation scores is a practical measure of variance.
+The error a model makes because it is overly sensitive to the particular training sample it saw — a high-variance model changes substantially when the data changes slightly. In 18_5, bagging and random forests reduce variance by averaging many diverse trees. The standard deviation of cross-validation scores is a practical measure of variance.
 
 ---
 

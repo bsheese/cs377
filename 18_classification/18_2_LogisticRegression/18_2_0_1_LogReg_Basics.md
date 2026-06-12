@@ -234,7 +234,7 @@ In practice, gradient descent continues updating the coefficients until one of t
 Choosing the right learning rate is crucial in gradient descent. If the learning rate is too high, the algorithm might overshoot the maximum point. If it's too low, the algorithm may take too long to converge.
 
 
-### Summary of Maximum Liklihood
+### Summary of Maximum Likelihood
 
 *   Maximum Likelihood Estimation (MLE) is the method used to fit the logistic regression model by finding the coefficients that maximize the likelihood of observing the data.
 *   The likelihood function represents the probability of the observed outcomes given the model's predictions, and we maximize the log-likelihood to find the best coefficients.

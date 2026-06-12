@@ -27,7 +27,7 @@ A measure of how two variables change together. Positive covariance means they t
 ## D
 
 ### Datasaurus Dozen
-A set of twelve datasets created by Alberto Cairo that, like Anscombe's Quartet, have nearly identical summary statistics but look very different when plotted — including one shaped like a dinosaur. Demonstrates that summary statistics alone cannot capture data structure.
+A set of thirteen datasets created by Justin Matejka and George Fitzmaurice (2017) that, like Anscombe's Quartet, have nearly identical summary statistics but look very different when plotted — including one shaped like a dinosaur (based on Alberto Cairo's original Datasaurus drawing). Demonstrates that summary statistics alone cannot capture data structure.
 
 ### Deviation
 The difference between an individual observation and the mean: $y_i - \bar{y}$. Deviations sum to zero (positive and negative cancel out), which is why we square them to measure total variability.

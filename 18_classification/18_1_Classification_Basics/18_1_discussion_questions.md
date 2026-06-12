@@ -13,7 +13,7 @@
 
 ### Class Imbalance and the Accuracy Paradox
 
-5. In the South German Credit dataset, 70% of applicants have good credit and 30% have bad credit. What would be the accuracy of a model that always predicts "Good"? Why is this model useless despite its 70% accuracy?
+5. In the German Credit dataset, 70% of applicants have good credit and 30% have bad credit. What would be the accuracy of a model that always predicts "Good"? Why is this model useless despite its 70% accuracy?
 6. If a dataset had a 95/5 class split, what would the naive baseline accuracy be? How much better than this baseline would a model need to be before you'd consider it useful?
 7. Why is the accuracy paradox especially dangerous in real-world applications like fraud detection or rare disease diagnosis?
 8. The notebook states: "If your model's accuracy isn't significantly better than the majority class percentage, your model hasn't learned anything useful." What does "significantly better" mean in practice? Is 72% vs. 70% significant? What about 80% vs. 70%?
@@ -21,7 +21,7 @@
 ### Data Preparation
 
 9. Why must the target variable ('good'/'bad') be converted to numeric (0/1) before training XGBoost?
-10. What is the purpose of `drop_first=True` in one-hot encoding? What would happen if you omitted it?
+10. Notebook 1 passes categorical columns to XGBoost natively (`enable_categorical=True`), while Notebook 3 one-hot encodes them with `drop_first=True` instead. Why are both approaches valid for XGBoost, and what is the purpose of `drop_first=True` when you do encode? What would happen if you omitted it?
 11. Why is a stratified train-test split important for imbalanced datasets? What could go wrong with a simple random split?
 12. The notebook notes that tree-based models like XGBoost do NOT require feature scaling. Why is feature scaling unnecessary for tree-based models?
 
@@ -33,7 +33,7 @@
 ### Probabilities and the Decision Threshold
 
 15. What is the difference between `.predict()` and `.predict_proba()`? When would you use each?
-16. The mean probability for good customers is around 0.30, while for defaulters it's around 0.65. What does the gap between these two means tell you about the model's discriminative ability?
+16. The mean predicted default probability for good customers is around 0.26, while for actual defaulters it's around 0.57. What does the gap between these two means tell you about the model's discriminative ability?
 17. If the two probability distributions overlapped completely (both centered at 0.5), what would this tell you about the model?
 
 ---
@@ -120,7 +120,7 @@
 ### Precision-Recall Curves and F-Beta Score
 
 54. On the fraud dataset, the PR curve baseline is approximately 0.0017 (0.17%). What does this baseline represent? What would it mean if your model's PR curve barely rose above this line?
-55. The F2-score (beta=2) weights recall twice as heavily as precision. In fraud detection, why would you prioritize recall over precision? Give a concrete business example of what a false negative (missed fraud) costs the bank vs. a false positive (incorrectly flagging a legitimate transaction).
+55. The F2-score (beta=2) weights recall four times as heavily as precision (the weight is beta-squared). In fraud detection, why would you prioritize recall over precision? Give a concrete business example of what a false negative (missed fraud) costs the bank vs. a false positive (incorrectly flagging a legitimate transaction).
 56. The F-Beta score peaks at a specific threshold — below that threshold, recall is high but precision is very low; above it, the reverse is true. What does the peak of the F-Beta curve tell you about the right decision threshold for your specific cost priorities?
 
 ### Threshold Selection and OOF Probabilities

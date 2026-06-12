@@ -13,9 +13,9 @@ This document provides a complete outline of all topics covered across the five 
 - The simplest model: predict the mean for every observation
 
 ### The Simplest Model (The Mean)
-- Scenario: guessing the weight of a randomly selected avocado
+- Scenario: guessing the weight of a penguin you haven't seen, knowing only past measurements
 - The mean as our first and simplest predictor
-- Why the mean minimizes absolute error but not squared error
+- The mean is the single guess that minimizes *squared* error (the median minimizes absolute error)
 
 ### Measuring the Error of the Mean
 - Calculating deviations from the mean: $y_i - \bar{y}$
@@ -64,7 +64,7 @@ This document provides a complete outline of all topics covered across the five 
 - The core principle: extreme x-values allow points to "pull" the regression line toward themselves
 
 ### The Datasaurus Dozen
-- Extension of Anscombe's idea: twelve datasets with identical summary statistics
+- Extension of Anscombe's idea: thirteen datasets with identical summary statistics
 - Visual shapes: dinosaur, circle, star, lines, etc.
 - Reinforces the same lesson: summary statistics alone are insufficient
 

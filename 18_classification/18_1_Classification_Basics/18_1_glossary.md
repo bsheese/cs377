@@ -66,7 +66,7 @@ A machine learning technique that combines multiple models to produce better pre
 The harmonic mean of precision and recall: `F1 = 2 × (precision × recall) / (precision + recall)`. Provides a single number that balances both metrics. Punishes extreme imbalances — a model with perfect precision but near-zero recall gets a near-zero F1.
 
 ### F-Beta Score
-A generalization of the F1-score that weights recall more (beta > 1) or less (beta < 1) than precision. The F2-score (beta=2) weights recall twice as much as precision, useful when missing positive cases is especially costly — such as fraud detection or disease screening.
+A generalization of the F1-score that weights recall more (beta > 1) or less (beta < 1) than precision. The F2-score (beta=2) weights recall four times as much as precision (the weight is beta-squared), useful when missing positive cases is especially costly — such as fraud detection or disease screening.
 
 ### False Negative (FN) / Type II Error
 A case where the model predicts negative (Good credit) but the actual label is positive (Bad credit / Default). In the credit context: approving a loan to someone who will default. In fraud: missing a fraudulent transaction.

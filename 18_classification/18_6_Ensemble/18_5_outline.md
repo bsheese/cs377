@@ -9,7 +9,7 @@ This document provides a complete outline of all topics covered across the five 
 **Dataset:** Wisconsin Breast Cancer — 569 samples, 30 features, binary target (malignant/benign), ~63/37 class distribution.
 
 ### Introduction: Building on What We Know
-- Acknowledges prior tree coverage from 18_1_4 and 18_1_5
+- Acknowledges prior tree coverage from 17_2_2 (regression trees) and the 18_1 classification series
 - Frames 18_5 as a deeper dive into ensemble methods with classification-specific concerns
 - Focus on precision, recall, false negatives in medical diagnosis, and ROC curves
 
@@ -54,7 +54,7 @@ This document provides a complete outline of all topics covered across the five 
 - Adding malignant recall to the depth experiment (dual-axis plot)
 - Best accuracy depth vs. best recall depth — they may differ
 - The gap between training and testing curves = overfitting penalty
-- Same bias-variance pattern as 17_2_4_5 with Ames data, now in classification context
+- Same bias-variance pattern as 17_2_2 with Ames data, now in classification context
 
 ### Beyond Accuracy: Classification Metrics
 - Confusion matrix with labeled cells (TN, FP, FN, TP)
@@ -126,7 +126,7 @@ This document provides a complete outline of all topics covered across the five 
 
 ### Gradient Boosting: Predicting the Residuals
 - How Gradient Boosting works: log-odds prediction → calculate residuals → train tree on residuals → add scaled predictions → repeat
-- Same concept as 17_2_4_5 with Ames Housing data
+- Same concept as 17_2_2 with Ames Housing data
 - Key hyperparameters: n_estimators, learning_rate (shrinkage), max_depth
 - Gradient Boosting accuracy, F1, and malignant recall
 
@@ -143,7 +143,7 @@ This document provides a complete outline of all topics covered across the five 
 ### Comparing All Methods
 - 10-fold CV: Single Tree, Random Forest, AdaBoost, Gradient Boosting
 - Accuracy, F1, malignant recall, and AUC for each
-- Gradient Boosting typically highest accuracy/F1; Random Forest most stable; AdaBoost sensitive to noise
+- AdaBoost edges out Gradient Boosting on accuracy/F1 in this run (GB has the highest recall); Random Forest most stable; AdaBoost is sensitive to noisy data
 
 ### Probability Calibration
 - Why calibration matters in medical contexts
@@ -151,10 +151,10 @@ This document provides a complete outline of all topics covered across the five 
 - Gradient Boosting: often produces extreme probabilities
 - Calibration curves: predicted probability vs. actual fraction of positives
 
-### BART: Bayesian Additive Regression Trees
-- How BART works: ensemble of shallow trees + MCMC perturbation + prior beliefs
+### Note on BART
+- Conceptual position: between Random Forest and Gradient Boosting in accuracy
 - Key advantage: uncertainty quantification (credible intervals)
-- Why BART isn't in the comparison (requires specialized libraries)
+- Why BART isn't in the comparison (requires specialized libraries such as `pymc`/`bartpy`)
 
 ---
 
@@ -163,7 +163,7 @@ This document provides a complete outline of all topics covered across the five 
 **Dataset:** Wisconsin Breast Cancer
 
 ### Nested Cross-Validation for Unbiased Comparison
-- Recall from 17_2_4_4: inner loop tunes, outer loop evaluates
+- Recall from 17_2_1_5: inner loop tunes, outer loop evaluates
 - Outer loop: 5-fold CV; Inner loop: 3-fold CV
 - Computational cost quantified: 450 total model fits across 4 models
 - Hyperparameter grids per model

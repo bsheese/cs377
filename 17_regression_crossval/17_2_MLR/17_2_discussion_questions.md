@@ -2,7 +2,7 @@
 
 ---
 
-## 17_2_4_1: Data Cleaning for Multiple Linear Regression
+## 17_2_1_1: Data Cleaning for Multiple Linear Regression
 
 ### Initial Data Inspection
 
@@ -14,17 +14,17 @@
 
 3. `Order` and `PID` are unique identifiers. If you accidentally left a unique identifier in a regression model, what would happen? What would the model "learn" from it?
 
-4. The notebook checks for columns with only one unique value. Why are monotonic (constant) features useless for modeling?
+4. The notebook checks for columns with only one unique value. Why are constant (zero-variance) features useless for modeling?
 
 5. Duplicate rows and rows where all values are NaN are removed. What could cause duplicate rows to appear in a real dataset? Why might rows with all NaN values exist?
 
-### Yolked Variables
+### Yoked Variables
 
-6. "Yolked features" occur where a categorical feature being "None" always corresponds to a numeric feature being 0 (e.g., no garage means garage area = 0). Why does this create a problem for linear regression?
+6. "Yoked features" occur where a categorical feature being "None" always corresponds to a numeric feature being 0 (e.g., no garage means garage area = 0). Why does this create a problem for linear regression?
 
-7. When resolving yolked variables, why might you choose to drop some features entirely while combining others into binary features?
+7. When resolving yoked variables, why might you choose to drop some features entirely while combining others into binary features?
 
-8. Some automated yolked variable detection might produce false positives. Why might an algorithm incorrectly identify non-yolked features as yolked?
+8. Some automated yoked-variable detection might produce false positives. Why might an algorithm incorrectly identify non-yoked features as yoked?
 
 ### Cleaning Categorical Features
 
@@ -68,7 +68,7 @@
 
 ---
 
-## 17_2_4_2: Forward/Backward Selection, Cross-Validation, and Feature Engineering
+## 17_2_1_2: Forward/Backward Selection, Cross-Validation, and Feature Engineering
 
 ### One-Hot Encoding
 
@@ -118,7 +118,7 @@
 
 17. The Variance Inflation Factor (VIF) measures how much a feature's coefficient variance is inflated due to correlation with other features. Why does high VIF make individual coefficients unreliable, even if the overall model predictions are still accurate?
 
-18. One feature has a VIF of 118 when all numeric features are included, but only 2.84 in a reduced feature set selected by forward selection. What does this tell you about how forward selection interacts with multicollinearity?
+18. A feature can show an extremely high VIF when all numeric features are included, but a modest VIF within the smaller feature set chosen by forward selection. What does this tell you about how forward selection interacts with multicollinearity?
 
 19. Two features are correlated at 0.89. If both features were included in a model, what would you expect to happen to their coefficients compared to including only one?
 
@@ -134,7 +134,7 @@
 
 ---
 
-## 17_2_4_3: Regularization (Ridge, Lasso, ElasticNet)
+## 17_2_1_3: Regularization (Ridge, Lasso, ElasticNet)
 
 ### The Problem with Unregularized Models
 
@@ -202,7 +202,7 @@
 
 ---
 
-## 17_2_4_4: Grid Search, Nested Cross-Validation, and Learning Curves
+## 17_2_1_4: Grid Search, Nested Cross-Validation, and Learning Curves
 
 ### Bias-Variance Tradeoff
 
@@ -266,7 +266,7 @@
 
 ---
 
-## 17_2_4_5: Tree-Based Methods
+## 17_2_1_5: Tree-Based Methods
 
 ### Why Trees?
 
