@@ -24,10 +24,10 @@ Self-serve practice quizzes for every unit are published at
 
 ## Running the notebooks
 
-**In Colab:** open a notebook from GitHub. Datasets are fetched from the web at
-runtime, so most notebooks just run. Notebooks that import a shared cleaning
-module (`ames_cleaning.py`, `classification_cleaning.py`) include a Colab
-download cell near the top.
+**In Colab:** open a notebook from GitHub. Datasets live in this repo's
+`data/` directory and are fetched from it at runtime, so most notebooks just
+run. Notebooks that import a shared cleaning module (`ames_cleaning.py`,
+`classification_cleaning.py`) include a Colab download cell near the top.
 
 **Locally:**
 

@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 
 
 def load_and_clean_titanic(
-    url: str = "https://raw.githubusercontent.com/bsheese/CSDS125ExampleData/master/data_titanic.csv",
+    url: str = "https://raw.githubusercontent.com/bsheese/cs377/main/data/data_titanic.csv",
     test_size: float = 0.2,
     random_state: int = 42
 ):

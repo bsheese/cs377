@@ -7,7 +7,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 def load_and_clean_ames(url, test_size=0.2, random_state=42):
     # Example usage:
-    # url = 'https://raw.githubusercontent.com/bsheese/CSDS125ExampleData/master/data_housing_ames.txt'
+    # url = 'https://raw.githubusercontent.com/bsheese/cs377/main/data/data_housing_ames.txt'
     # X_train_cleaned, X_test_cleaned, y_train_cleaned, y_test_cleaned = load_and_clean_ames(url)
     # print(f"Cleaned X_train shape: {X_train_cleaned.shape}")
     # print(f"Cleaned X_test shape: {X_test_cleaned.shape}")

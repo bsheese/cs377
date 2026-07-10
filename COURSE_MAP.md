@@ -98,3 +98,7 @@ never does.
 - Smoke-test all notebooks: `python smoke_test.py` (see file header for usage).
 - Shared cleaning modules: `17_2_MLR/ames_cleaning.py`,
   `18_classification/classification_cleaning.py`.
+- Datasets are vendored in `data/` and loaded from this repo's raw GitHub URL
+  (course-controlled hosting; changes take effect on push to `main`). Only
+  `sns.load_dataset`, `fetch_openml`, and sklearn-bundled data still come from
+  outside the repo.
