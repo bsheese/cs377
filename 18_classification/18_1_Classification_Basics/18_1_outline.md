@@ -85,7 +85,7 @@ This document provides a complete outline of all topics covered across the six n
 
 ---
 
-## 18_1_3: Examples and Practice
+## 18_1_3: Guided Practice
 
 **Dataset:** Adult Census Income — binary target (income >50K or ≤50K).
 
@@ -217,9 +217,9 @@ This document provides a complete outline of all topics covered across the six n
 
 | Notebook | Description |
 |------|-------------|
-| `18_1_9_1_Bank_Marketing.ipynb` | Full workflow on the UCI Bank Marketing data (45,211 contacts): cleaning, business utility, OOF threshold tuning, nested CV |
-| `18_1_9_2_Hotel_Cancellations.ipynb` | Full workflow on Hotel Booking Demand (119,390 reservations): leakage-aware feature dropping, cost-based thresholds, nested CV |
-| `18_1_9_3_Telco_Churn.ipynb` | Student capstone with TASK cells on IBM Telco Churn (7,043 customers) |
+| `18_1_9_1_Bank_Marketing.ipynb` | **Fully worked example.** Full workflow on the UCI Bank Marketing data (45,211 contacts): cleaning, business utility, OOF threshold tuning, nested CV |
+| `18_1_9_2_Hotel_Cancellations.ipynb` | **Optional extra practice.** Full workflow on Hotel Booking Demand (119,390 reservations): leakage-aware feature dropping, cost-based thresholds, nested CV |
+| `18_1_9_3_Telco_Churn.ipynb` | **The capstone — students drive.** TASK cells on IBM Telco Churn (7,043 customers) |
 | `18_1_9_4_Exercise.ipynb` | Metrics-from-scratch exercise on the breast cancer dataset (confusion matrix, precision/recall/F1, threshold sweep) |
 
 ## Supporting Materials

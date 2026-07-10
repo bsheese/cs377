@@ -1,6 +1,6 @@
 # 18.6 · Ensemble Methods
 
-## 18_5_0: Intro to Ensemble Methods
+## 18_6_0: Intro to Ensemble Methods
 
 ### All ensemble methods share a core idea. What is it?
 - [ ] Train one very deep model that captures all patterns in the data
@@ -98,7 +98,7 @@
 - [x] Boosting reduces bias by sequentially correcting errors, turning weak learners into a strong ensemble
 - [ ] Boosting reduces bias by using deeper trees than those used in bagging
 
-### The 18_5 series uses the Wisconsin Breast Cancer dataset instead of the Ames Housing dataset used in 18_1. Why is this a meaningful change?
+### The 18_6 series uses the Wisconsin Breast Cancer dataset instead of the Ames Housing dataset used in 18_1. Why is this a meaningful change?
 - [ ] Because the breast cancer dataset is larger and provides more reliable results
 - [x] Because breast cancer is a classification problem with asymmetric error costs, requiring different evaluation metrics than the regression problem in 18_1
 - [ ] Because the Ames Housing dataset was too clean to demonstrate real-world challenges
@@ -122,11 +122,11 @@
 - [ ] Each feature votes for its importance score, and the top features make the prediction
 - [ ] Training samples vote on their class label based on their nearest neighbors
 
-### Why does the notebook recommend reviewing the 18_1_5 notebook before starting 18_5?
-- [ ] Because 18_1_5 covers the same dataset and provides the required data cleaning steps
-- [x] Because 18_1_5 introduced tree-based methods that 18_5 builds upon with deeper analysis
-- [ ] Because 18_1_5 contains the mathematical proofs behind ensemble learning methods
-- [ ] Because 18_1_5 includes the BART implementation code reused in 18_5
+### Why does the notebook recommend reviewing the 17_2_2 notebook before starting 18_6?
+- [ ] Because 17_2_2 covers the same dataset and provides the required data cleaning steps
+- [x] Because 17_2_2 introduced tree-based methods that 18_6 builds upon with deeper analysis
+- [ ] Because 17_2_2 contains the mathematical proofs behind ensemble learning methods
+- [ ] Because 17_2_2 includes the BART implementation code reused in 18_6
 
 ### What does 'decorrelate' mean in the context of Random Forests?
 - [ ] Remove correlated features from the dataset before training begins
@@ -170,7 +170,7 @@
 - [ ] A single tree requires feature scaling while ensemble methods do not
 - [ ] A single tree overfits every dataset while ensemble methods never overfit
 
-## 18_5_1: Decision Trees — The Foundation
+## 18_6_1: Decision Trees — The Foundation
 
 ### In a classification tree, what does each leaf node predict?
 - [ ] The mean of target values in the leaf, as in regression trees
@@ -268,7 +268,7 @@
 - [ ] Because the original dataset contained an encoding error that needed correction
 - [ ] Because flipping the encoding improves the model's overall classification accuracy
 
-### What is the key difference between a regression tree (from 18_1_5) and a classification tree (from 18_5_1) in terms of leaf predictions?
+### What is the key difference between a regression tree (from 17_2_2) and a classification tree (from 18_6_1) in terms of leaf predictions?
 - [ ] Regression trees predict the median while classification trees predict the mode
 - [x] Regression trees predict the mean of target values in the leaf; classification trees predict the majority class
 - [ ] Regression trees predict a probability; classification trees predict a hard class label
@@ -334,7 +334,7 @@
 - [ ] Because accuracy cannot be computed for trees deeper than depth 5
 - [ ] Because recall is the only metric that scikit-learn supports for classification trees
 
-## 18_5_2: Bagging and Random Forests
+## 18_6_2: Bagging and Random Forests
 
 ### What is the core mechanism by which bagging (bootstrap aggregating) reduces model variance?
 - [ ] By training each model on a completely different set of features with no overlap
@@ -498,7 +498,7 @@
 - [ ] Bagging uses deep trees to minimize errors; boosting uses shallow trees to maximize them
 - [ ] There is no conceptual difference — both methods average predictions from models trained on the same data
 
-## 18_5_3: Boosting and BART
+## 18_6_3: Boosting and BART
 
 ### What is the fundamental difference in how bagging and boosting build their ensemble of trees?
 - [ ] Bagging builds trees sequentially, each correcting the previous ensemble's errors; boosting builds trees independently in parallel
@@ -662,7 +662,7 @@
 - [ ] The calibration curve has no clinical relevance — only the AUC matters for medical decision-making
 - [ ] Both models produce identical probability estimates, so the calibration difference is cosmetic
 
-## 18_5_4: Model Comparison
+## 18_6_4: Model Comparison
 
 ### What is the primary purpose of using nested cross-validation instead of a single train/test split when comparing multiple models?
 - [ ] Nested cross-validation is computationally faster than a single train/test split
@@ -754,7 +754,7 @@
 - [ ] The model will be more accurate because fewer folds means less data is held out for validation
 - [ ] The nested CV will underestimate performance in the opposite direction
 
-### In the feature importance plot for the final Gradient Boosting model, why might the top features differ from those identified by the Random Forest in notebook 18_5_2?
+### In the feature importance plot for the final Gradient Boosting model, why might the top features differ from those identified by the Random Forest in notebook 18_6_2?
 - [x] Because Gradient Boosting and Random Forest use fundamentally different mechanisms — sequential residual-based splits vs. parallel random feature subsampling — leading to different patterns of feature utilization
 - [ ] Because the two models were trained on different datasets
 - [ ] Because feature importance is a random value assigned by scikit-learn with no meaningful interpretation
@@ -808,14 +808,14 @@
 - [ ] It is coincidental and has no theoretical basis
 - [ ] It shows that bagging and boosting are mathematically equivalent, and the difference is random variation
 
-### In the context of the entire 18_5 series, what is the overarching narrative arc from notebook 18_5_1 through 18_5_4?
+### In the context of the entire 18_6 series, what is the overarching narrative arc from notebook 18_6_1 through 18_6_4?
 - [ ] The series demonstrates that single decision trees are the best choice for medical diagnosis
-- [x] The series progresses from understanding single tree limitations (18_5_1), to fixing them with parallel ensembles like bagging and Random Forests (18_5_2), to exploring sequential ensembles like boosting (18_5_3), to rigorously comparing all methods with nested cross-validation (18_5_4)
+- [x] The series progresses from understanding single tree limitations (18_6_1), to fixing them with parallel ensembles like bagging and Random Forests (18_6_2), to exploring sequential ensembles like boosting (18_6_3), to rigorously comparing all methods with nested cross-validation (18_6_4)
 - [ ] The series shows that hyperparameter tuning is unnecessary because default parameters produce the best results
 - [ ] The series demonstrates that accuracy is the only metric that matters for classification models
 
-### If you were to extend this analysis beyond the four models compared, which additional model from the 18_5 series would you most want to include and why?
-- [x] AdaBoost, because it achieved the highest mean accuracy in the 10-fold CV comparison in 18_5_3, and nested CV would provide an unbiased estimate of whether that high accuracy holds up
+### If you were to extend this analysis beyond the four models compared, which additional model from the 18_6 series would you most want to include and why?
+- [x] AdaBoost, because it achieved the highest mean accuracy in the 10-fold CV comparison in 18_6_3, and nested CV would provide an unbiased estimate of whether that high accuracy holds up
 - [ ] A single Decision Tree with unlimited depth, to serve as a worst-case overfitting baseline
 - [ ] A logistic regression model, to show how linear models compare to tree-based ensembles
 - [ ] A K-Nearest Neighbors model, to show how distance-based methods compare

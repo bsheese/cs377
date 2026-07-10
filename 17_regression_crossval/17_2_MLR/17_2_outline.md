@@ -9,34 +9,51 @@ This document provides a complete outline of all topics covered across the six n
 **Dataset:** Ames Housing — 2,930 observations, 82 features. Goal: clean and prepare for multiple linear regression.
 
 ### Purpose of this Notebook
-- Why data cleaning matters for regression quality
-- Under-cleaning (noise in, garbage out) vs. over-cleaning (data loss)
+- Three concrete defects in the raw file: fake-numeric category codes (`MS SubClass`), blanks that mean "feature absent," flagged partial sales
+- Under-cleaning (chaos left in) vs. over-cleaning (information destroyed)
+- Cleaning for inference sets a higher bar than cleaning for prediction
 
-### Typical Checks
-- Using `.info()`, `.describe()`, and boxplots to inspect types, ranges, and outliers
-- Identifying numeric vs. categorical feature mix
+### Pre-Split Cleaning and Exploration
+- The organizing question: does this step compute anything from the data?
+- Deterministic steps are safe on the full dataset; statistical steps must wait for the split
 
-### Common Remediation Approaches
-- Consistent units/scales: converting between square feet, acres, etc.
-- Handling impossible values: zero living area, negative values
-- Types of outliers and diagnostics for detecting them
+### Missing Values
+- Fake missing (blank = "no basement/garage/fireplace") → fill with explicit `'None'`
+- Actually missing → drop rows vs. impute; imputation is statistical, so it's deferred
 
-### Common Transformations
-- Log, square root, Box-Cox for skewed distributions
-- Why transformations matter for inference
-- Important note: interpretation changes after transformation
+### Three Quick Audits
+- Consistent units/scales; impossible values (the `Gr Liv Area > 4000` partial sales); coding errors
+- Min/max sweeps for numeric columns, frequency tables for categorical
 
-### Cleaning Specifically with MLR in Mind
-- Unlike simple regression, MLR assumes linear additivity
-- Feature interactions and multicollinearity awareness
+### Outliers
+- Extremeness in the outcome, a predictor, or the combination (leverage — callback to 17_1_4)
+- Plausible extreme values are kept, not deleted; transformations reduce influence honestly
+- Boxplots reveal heavy right tails in `SalePrice` and the area variables
 
-### Handling Missing and Extreme Values (Train-Set Only)
-- Median imputation for missing numeric values
-- Why you must fit imputation on the training set only
+### Variable Transformations
+- Multiplicative relationships and right skew (the 500-extra-square-feet example)
+- Log transform: compresses the tail, linearizes, evens out residual spread
+- `np.log1p` for zero-containing columns; square root and polynomials as the wider family
+- Interpretation changes: coefficients now speak log-scale (the Log-Dollar Illusion theme)
+
+### The Deterministic vs. Statistical Rule
+- The two-row table; why `log(x)` is split-safe and a median is not
+- Data leakage defined: the test set must never shape the training data
+
+### What MLR Specifically Demands
+- OLS squares its errors → sensitive to missing/extreme values
+- Strictly numeric inputs → encoding without fake magnitudes
+- Readable coefficients → multicollinearity must be controlled (VIF in Part 2)
+
+### The Train/Test Split
+- The line in the sand: fit on train only, apply to both
+
+### Handling Missing Values (Train-Set Only)
+- Median imputation with `SimpleImputer`; fit_transform on train, transform on test
 
 ### Feature Engineering
 - Consolidating correlated floor-area columns into `Total_Square_Footage`
-- The deterministic vs. statistical preprocessing distinction (what is safe before the split)
+- Deliberate loose end: overlap with `Log_Gr Liv Area`, left for Part 2's VIF to catch
 
 ### Encoding Categoricals for the Algorithm
 - Ordinal encoding for ranked quality scales; one-hot encoding (`OneHotEncoder`, `drop='first'`, `handle_unknown='ignore'`) for nominal variables
@@ -48,10 +65,10 @@ This document provides a complete outline of all topics covered across the six n
 - Why log transforms stabilize variance across price ranges
 
 ### Summary
+- The pipeline order as the lesson: Structure → Deterministic → Split → Impute → Engineer → Encode → Separate Target
 - After one-hot encoding, the dataset expands to roughly 225 features
-- Why different modeling techniques require different levels of cleaning
-- Trade-offs of aggressive vs. conservative feature dropping
-- Cleaned data feeds into Part 2 for feature selection
+- The cleaning is packaged into `ames_cleaning.py` for reuse from Part 2 onward
+- Forward pointer: Part 2's correlation shortlist and its bias against one-hot columns
 
 ---
 
@@ -84,7 +101,7 @@ This document provides a complete outline of all topics covered across the six n
 
 ### Interpreting Results
 - Exceptional model performance with selected features
-- The "Big Three" value drivers: Overall Qual, Gr Liv Area, Garage Area
+- The "Big Three" value drivers: Overall Qual, Total_Square_Footage / Log_Gr Liv Area, BsmtFin SF 1
 - Logic check: positive vs. negative coefficient signs
 - Selection efficiency: how many features were kept
 
@@ -92,7 +109,7 @@ This document provides a complete outline of all topics covered across the six n
 - VIF interpretation: 1 = no correlation, >5 = moderate, >10 = severe
 - "The overlapping signals" problem: correlated features inflate variance
 - Recommended steps: drop one of a correlated pair, monitor remaining VIF values
-- Drop one of the "size" variables (Gr Liv Area vs. Garage Area)
+- Drop one of the overlapping "size" variables (Total_Square_Footage vs. Log_Gr Liv Area)
 - Monitor `Overall Qual` and `Year Built` for remaining collinearity
 
 ### Summary
@@ -107,28 +124,28 @@ This document provides a complete outline of all topics covered across the six n
 
 ### The 225-Feature Headache
 - After one-hot encoding, the feature set explodes
-- OLS becomes unstable or impossible with more features than observations
-- Regularization provides a solution
+- 2,340 training rows vs. 225 columns: one coefficient per ~10 houses, and OLS uses every column, noise included
+- Regularization as the alternative to discarding features
 
-### Building a Professional Evaluation Workflow
+### Building an Honest Evaluation Workflow
 - Preventing data leakage with Pipelines
 - Solving the "Log-Dollar Illusion": evaluating in original dollar units
 - The professional evaluation function: pipeline + CV + scoring
 - Establishing the OLS baseline
 
-### Ridge Regression (L2 Regularization)
+### Ridge Regression (L2)
 - Penalty: sum of squared coefficients
 - Shrinks coefficients toward zero but never exactly to zero
 - Benefits: handles multicollinearity, stable coefficients, keeps all features
 - Limitations: no feature selection, coefficients lose interpretability, requires scaling
 
-### Lasso Regression (L1 Regularization)
+### Lasso Regression (L1)
 - Penalty: sum of absolute coefficients
 - Can set coefficients exactly to zero (automatic feature selection)
 - Benefits: performs feature selection, simpler interpretable models
 - Limitations: with correlated features, picks one at random, unstable
 
-### ElasticNet (Hybrid)
+### Elastic Net: The Hybrid
 - Combines L1 and L2 penalties, controlled by `l1_ratio`
 - l1_ratio = 0 → pure Ridge; l1_ratio = 1 → pure Lasso
 - Benefits: guaranteed performance, handles correlated features
@@ -136,10 +153,10 @@ This document provides a complete outline of all topics covered across the six n
 
 ### Model Comparison
 - Ridge is the new champion on this dataset
-- Why Lasso and ElasticNet lag: feature set already well-filtered
+- Why Lasso and Elastic Net lag: guessed alphas — Lasso kept only 66 of 225 features, deleting distributed small signals
 - Computational cost of 2D search for ElasticNet
 
-### Diagnostics
+### Residual Analysis
 - Residual analysis: checking for remaining bias
 - Identifying model weaknesses
 
@@ -162,7 +179,7 @@ This document provides a complete outline of all topics covered across the six n
 
 **Dataset:** Ames Housing (cleaned). Goal: tune hyperparameters and understand nested CV. (Learning curves are practiced in the 17_2_1_9 capstone exercise.)
 
-### What Are Hyperparameters?
+### What Exactly Are We Tuning?
 - Configuration settings chosen before training (alpha, l1_ratio)
 - Distinguished from parameters (coefficients) learned during training
 - The goal: balancing the bias-variance tradeoff
@@ -178,13 +195,13 @@ This document provides a complete outline of all topics covered across the six n
 - Ridge test performance: modest gain from tuning (metric barely moves)
 - Interpreting the flat plateau: model is already well-calibrated
 
-### Tuning Lasso — The Redemption Arc
+### Lasso: The Redemption Arc
 - Looping through alpha values, plotting training $R^2$ vs. CV $R^2$
 - Training $R^2$ falls as alpha increases
 - CV $R^2$ rises then falls, peaking at the optimal alpha
 - The gap between curves indicates overfitting
 
-### Evaluating the Tuned ElasticNet
+### Tuning Elastic Net: The Two-Dimensional Search
 - The computational cost of a 2D grid
 - Interpreting the ElasticNet mix
 

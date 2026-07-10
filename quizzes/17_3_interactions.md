@@ -20,11 +20,11 @@
 - [ ] The total cost per BMI unit regardless of the patient's smoking status
 - [ ] The probability that a high-BMI patient in the dataset is a smoker
 
-### The non-smoker BMI coefficient is ~7 and the interaction coefficient is ~1,400. What is the total cost per BMI unit for a smoker?
-- [ ] 7 — the interaction term replaces the main effect for smokers entirely
-- [ ] 1,400 — the main effect is irrelevant when an interaction term is present
-- [x] ~1,407 — the main effect plus the interaction coefficient
-- [ ] 700 — the average of the main effect and the interaction coefficient
+### The non-smoker BMI coefficient is ~83 and the interaction coefficient is ~1,390. What is the total cost per BMI unit for a smoker?
+- [ ] 83 — the interaction term replaces the main effect for smokers entirely
+- [ ] 1,390 — the main effect is irrelevant when an interaction term is present
+- [x] ~1,473 — the main effect plus the interaction coefficient
+- [ ] 737 — the average of the main effect and the interaction coefficient
 
 ### Why is 'bmi * smoker' preferable to manually writing 'bmi + smoker + bmi:smoker' in the formula?
 - [ ] The * syntax runs faster because it skips the main effects calculation
@@ -32,7 +32,7 @@
 - [ ] Manually specifying terms causes statsmodels to double-count the main effects
 - [ ] The * syntax automatically centers BMI to reduce multicollinearity
 
-### R² increases from ~0.65 (additive) to ~0.83 (interaction). Is R² improvement alone sufficient justification for the interaction model?
+### R² increases from ~0.66 (additive) to ~0.74 (interaction). Is R² improvement alone sufficient justification for the interaction model?
 - [ ] Yes — any R² improvement, however small, justifies adding a new term
 - [x] No — R² rises with any additional term; AIC and domain logic are also needed
 - [ ] Yes — only R² measures out-of-sample predictive accuracy directly

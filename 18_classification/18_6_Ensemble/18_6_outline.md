@@ -1,16 +1,16 @@
-# 18_5 Ensemble Methods — Topic Outline
+# 18_6 Ensemble Methods — Topic Outline
 
-This document provides a complete outline of all topics covered across the five notebooks in the 18_5 Ensemble Methods series.
+This document provides a complete outline of all topics covered across the five notebooks in the 18_6 Ensemble Methods series.
 
 ---
 
-## 18_5_0: Intro to Ensemble Methods
+## 18_6_0: Intro to Ensemble Methods
 
 **Dataset:** Wisconsin Breast Cancer — 569 samples, 30 features, binary target (malignant/benign), ~63/37 class distribution.
 
 ### Introduction: Building on What We Know
 - Acknowledges prior tree coverage from 17_2_2 (regression trees) and the 18_1 classification series
-- Frames 18_5 as a deeper dive into ensemble methods with classification-specific concerns
+- Frames 18_6 as a deeper dive into ensemble methods with classification-specific concerns
 - Focus on precision, recall, false negatives in medical diagnosis, and ROC curves
 
 ### The Ensemble Hierarchy
@@ -30,7 +30,7 @@ This document provides a complete outline of all topics covered across the five 
 
 ---
 
-## 18_5_1: Decision Trees — The Foundation of Ensembles
+## 18_6_1: Decision Trees — The Foundation of Ensembles
 
 **Dataset:** Wisconsin Breast Cancer
 
@@ -69,7 +69,7 @@ This document provides a complete outline of all topics covered across the five 
 
 ---
 
-## 18_5_2: Bagging and Random Forests
+## 18_6_2: Bagging and Random Forests
 
 **Dataset:** Wisconsin Breast Cancer
 
@@ -114,7 +114,7 @@ This document provides a complete outline of all topics covered across the five 
 
 ---
 
-## 18_5_3: Boosting and BART
+## 18_6_3: Boosting and BART
 
 **Dataset:** Wisconsin Breast Cancer
 
@@ -158,7 +158,7 @@ This document provides a complete outline of all topics covered across the five 
 
 ---
 
-## 18_5_4: Model Comparison — All Ensemble Methods Head-to-Head
+## 18_6_4: Model Comparison — All Ensemble Methods Head-to-Head
 
 **Dataset:** Wisconsin Breast Cancer
 
@@ -198,13 +198,13 @@ These concepts appear throughout multiple notebooks:
 
 | Theme | Notebooks |
 |---|---|
-| **Malignant recall** | 18_5_1 (depth experiment, CV), 18_5_2 (class_weight demo, CV comparison), 18_5_3 (all metrics, 4-model CV), 18_5_4 (nested CV, final model selection) |
-| **Confusion matrix interpretation** | 18_5_1, 18_5_2, 18_5_3, 18_5_4 |
-| **ROC/AUC** | 18_5_1, 18_5_2, 18_5_3, 18_5_4 |
-| **GridSearchCV tuning** | 18_5_2 (RF), 18_5_3 (GB), 18_5_4 (all models) |
-| **Feature importance** | 18_5_2 (correlated features problem), 18_5_4 (final model) |
-| **Bias-variance tradeoff** | 18_5_1 (depth experiment), 18_5_2 (bagging vs. RF), 18_5_3 (boosting vs. bagging), 18_5_4 (final comparison) |
-| **Cross-validation** | 18_5_1 (10-fold), 18_5_2 (10-fold), 18_5_3 (10-fold), 18_5_4 (nested 5×3) |
-| **OOB error** | 18_5_2 (bagging and RF) |
-| **Probability calibration** | 18_5_3 (RF vs. GB) |
-| **Class imbalance handling** | 18_5_0 (introduction), 18_5_2 (class_weight demo), 18_5_4 (recall-based model selection) |
+| **Malignant recall** | 18_6_1 (depth experiment, CV), 18_6_2 (class_weight demo, CV comparison), 18_6_3 (all metrics, 4-model CV), 18_6_4 (nested CV, final model selection) |
+| **Confusion matrix interpretation** | 18_6_1, 18_6_2, 18_6_3, 18_6_4 |
+| **ROC/AUC** | 18_6_1, 18_6_2, 18_6_3, 18_6_4 |
+| **GridSearchCV tuning** | 18_6_2 (RF), 18_6_3 (GB), 18_6_4 (all models) |
+| **Feature importance** | 18_6_2 (correlated features problem), 18_6_4 (final model) |
+| **Bias-variance tradeoff** | 18_6_1 (depth experiment), 18_6_2 (bagging vs. RF), 18_6_3 (boosting vs. bagging), 18_6_4 (final comparison) |
+| **Cross-validation** | 18_6_1 (10-fold), 18_6_2 (10-fold), 18_6_3 (10-fold), 18_6_4 (nested 5×3) |
+| **OOB error** | 18_6_2 (bagging and RF) |
+| **Probability calibration** | 18_6_3 (RF vs. GB) |
+| **Class imbalance handling** | 18_6_0 (introduction), 18_6_2 (class_weight demo), 18_6_4 (recall-based model selection) |

@@ -1,6 +1,6 @@
-# 18_5 Ensemble Methods — Glossary
+# 18_6 Ensemble Methods — Glossary
 
-This document defines all technical and conceptual terms used across the five notebooks in the 18_5 Ensemble Methods series. Terms already defined in the 18_1 Classification Basics glossary are noted with cross-references.
+This document defines all technical and conceptual terms used across the five notebooks in the 18_6 Ensemble Methods series. Terms already defined in the 18_1 Classification Basics glossary are noted with cross-references.
 
 ---
 
@@ -10,10 +10,10 @@ This document defines all technical and conceptual terms used across the five no
 The original boosting algorithm. It trains weak learners (typically decision stumps) sequentially, increasing the weights of misclassified samples after each round so that subsequent learners focus on the hardest cases. Final predictions are made by weighted voting, where better-performing learners get more weight.
 
 ### Accuracy Paradox
-See **18_1 Glossary: Accuracy Paradox**. In the medical context of 18_5, a model can achieve high accuracy by correctly classifying most benign tumors while missing many malignant ones — making it clinically useless.
+See **18_1 Glossary: Accuracy Paradox**. In the medical context of 18_6, a model can achieve high accuracy by correctly classifying most benign tumors while missing many malignant ones — making it clinically useless.
 
 ### AUC (Area Under the ROC Curve)
-See **18_1 Glossary: AUC**. In 18_5, an AUC of 0.99 means the model correctly ranks a random malignant tumor above a random benign tumor 99% of the time.
+See **18_1 Glossary: AUC**. In 18_6, an AUC of 0.99 means the model correctly ranks a random malignant tumor above a random benign tumor 99% of the time.
 
 ---
 
@@ -39,10 +39,10 @@ Random sampling with replacement from the training data. Each bootstrap sample i
 The degree to which a model's predicted probabilities match actual outcome frequencies. A well-calibrated model that predicts 80% probability of malignancy should be correct about 80% of the time. Random Forests tend to be well-calibrated; Gradient Boosting often produces probabilities that are too extreme.
 
 ### Class Weight (Balanced)
-A model option (`class_weight='balanced'`) that re-weights classes inversely to their frequency during training — the per-class analogue of the **Sample Weight** entry in the 18_1 glossary. In 18_5, using `class_weight='balanced'` with Random Forests shifts the decision boundary to catch more malignant tumors at the cost of more false positives (unnecessary biopsies).
+A model option (`class_weight='balanced'`) that re-weights classes inversely to their frequency during training — the per-class analogue of the **Sample Weight** entry in the 18_1 glossary. In 18_6, using `class_weight='balanced'` with Random Forests shifts the decision boundary to catch more malignant tumors at the cost of more false positives (unnecessary biopsies).
 
 ### Confusion Matrix
-See **18_1 Glossary: Confusion Matrix**. In 18_5, the medical interpretation is critical: false negatives = missed cancers, false positives = unnecessary biopsies.
+See **18_1 Glossary: Confusion Matrix**. In 18_6, the medical interpretation is critical: false negatives = missed cancers, false positives = unnecessary biopsies.
 
 ### Correlated Features Problem
 When two or more features are highly correlated, tree-based models tend to use one for splits and ignore the others. This splits the importance score among correlated features, making none appear as dominant as it truly is. Permutation importance is a more reliable alternative.
@@ -55,7 +55,7 @@ When two or more features are highly correlated, tree-based models tend to use o
 A decision tree with a single split (max_depth=1). It is a "weak learner" — only slightly better than random guessing. Used as the base learner in AdaBoost because the sequential correction process adds value only when individual learners are weak.
 
 ### Decision Tree
-A model that predicts by asking a sequence of yes/no questions about feature values. In 18_5, we contrast classification trees (majority class prediction at leaves, Gini impurity for splits) with the regression trees from 17_2_2 (mean prediction at leaves, MSE for splits).
+A model that predicts by asking a sequence of yes/no questions about feature values. In 18_6, we contrast classification trees (majority class prediction at leaves, Gini impurity for splits) with the regression trees from 17_2_2 (mean prediction at leaves, MSE for splits).
 
 ---
 
@@ -69,13 +69,13 @@ A technique that combines multiple models (typically decision trees) to produce 
 ## F
 
 ### F1-Score
-See **18_1 Glossary: F1-Score**. In 18_5, the F1-score is used as the scoring metric for GridSearchCV because it balances precision and recall — important when both missed cancers and unnecessary biopsies matter.
+See **18_1 Glossary: F1-Score**. In 18_6, the F1-score is used as the scoring metric for GridSearchCV because it balances precision and recall — important when both missed cancers and unnecessary biopsies matter.
 
 ### False Negative (FN) / Type II Error
-In the medical context of 18_5: the model predicts benign but the tumor is actually malignant. A **missed cancer**. This is typically the more costly error in clinical settings.
+In the medical context of 18_6: the model predicts benign but the tumor is actually malignant. A **missed cancer**. This is typically the more costly error in clinical settings.
 
 ### False Positive (FP) / Type I Error
-In the medical context of 18_5: the model predicts malignant but the tumor is actually benign. An **unnecessary biopsy**. Less costly than a false negative but still has clinical and financial consequences.
+In the medical context of 18_6: the model predicts malignant but the tumor is actually benign. An **unnecessary biopsy**. Less costly than a false negative but still has clinical and financial consequences.
 
 ### Feature Importance
 See **18_1 Glossary: Feature Importance**. Computed as the total reduction in Gini impurity attributed to splits on each feature across all trees in the ensemble. Limitation: correlated features share importance, so none appears as dominant as it truly is.
@@ -91,7 +91,7 @@ A measure of node purity used by decision trees to choose splits. `Gini = 1 - Σ
 An ensemble technique that builds trees sequentially, where each new tree predicts the residuals (errors) of the ensemble so far. The tree's predictions are added to the ensemble, scaled by the learning rate (shrinkage). Reduces bias more effectively than bagging but is more prone to overfitting if not carefully tuned.
 
 ### GridSearchCV
-Exhaustive hyperparameter search with cross-validation; introduced for regression in 17_2_1_4 and used for classification in 18_1_6. In 18_5, used to tune hyperparameters for Random Forests (n_estimators, max_depth, max_features) and Gradient Boosting (n_estimators, learning_rate, max_depth).
+Exhaustive hyperparameter search with cross-validation; introduced for regression in 17_2_1_4 and used for classification in 18_1_6. In 18_6, used to tune hyperparameters for Random Forests (n_estimators, max_depth, max_features) and Gradient Boosting (n_estimators, learning_rate, max_depth).
 
 ---
 
@@ -122,7 +122,7 @@ A family of algorithms used in Bayesian inference to sample from complex probabi
 ## N
 
 ### Nested Cross-Validation
-A two-layer cross-validation approach: the inner loop tunes hyperparameters within each outer training fold, and the outer loop evaluates the tuned model on an independent holdout fold. Provides an unbiased estimate of model performance, accounting for the fact that hyperparameter selection itself introduces optimistic bias. Used in 18_5_4 for the final model comparison.
+A two-layer cross-validation approach: the inner loop tunes hyperparameters within each outer training fold, and the outer loop evaluates the tuned model on an independent holdout fold. Provides an unbiased estimate of model performance, accounting for the fact that hyperparameter selection itself introduces optimistic bias. Used in 18_6_4 for the final model comparison.
 
 ### N Estimators
 The number of trees in an ensemble model (bagging, random forest, boosting). More trees generally improve performance up to a point, after which returns diminish. Tuning often finds that fewer trees (e.g., 100) are sufficient.
@@ -135,10 +135,10 @@ The number of trees in an ensemble model (bagging, random forest, boosting). Mor
 A built-in validation estimate available for bagging-based methods. Because bootstrap sampling leaves out ~37% of data for each tree, those "out-of-bag" samples serve as a validation set. The OOB score is the accuracy on these held-out samples, averaged across all trees. Useful because it eliminates the need for a separate validation set.
 
 ### One-vs-Rest (OvR)
-A strategy that turns a K-class problem into K binary problems (one classifier per class, "this class vs. everything else"). Not directly used in 18_5 (all problems here are binary), but relevant for multiclass extensions of these models.
+A strategy that turns a K-class problem into K binary problems (one classifier per class, "this class vs. everything else"). Not directly used in 18_6 (all problems here are binary), but relevant for multiclass extensions of these models.
 
 ### Overfitting
-When a model memorizes its training data instead of learning generalizable patterns, so training performance far exceeds test performance. In 18_5, demonstrated through the depth experiment: training accuracy reaches 1.0 while test accuracy plateaus or drops. Ensembles (bagging, RF, boosting) are designed to combat overfitting.
+When a model memorizes its training data instead of learning generalizable patterns, so training performance far exceeds test performance. In 18_6, demonstrated through the depth experiment: training accuracy reaches 1.0 while test accuracy plateaus or drops. Ensembles (bagging, RF, boosting) are designed to combat overfitting.
 
 ---
 
@@ -161,10 +161,10 @@ See **Calibration (Probability Calibration)**.
 An ensemble of decision trees where each tree is trained on a bootstrap sample and, at each split, considers only a random subset of features (typically √p). This decorrelates the trees, making the averaging more effective than plain bagging. Reduces variance.
 
 ### Recall (Sensitivity)
-See **18_1 Glossary: Recall**. In the medical context of 18_5: of all actual malignant tumors, what percentage did the model catch? This is the most critical metric for clinical deployment.
+See **18_1 Glossary: Recall**. In the medical context of 18_6: of all actual malignant tumors, what percentage did the model catch? This is the most critical metric for clinical deployment.
 
 ### ROC Curve (Receiver Operating Characteristic)
-See **18_1 Glossary: ROC Curve**. In 18_5, used to compare the discrimination ability of different ensemble methods.
+See **18_1 Glossary: ROC Curve**. In 18_6, used to compare the discrimination ability of different ensemble methods.
 
 ---
 
@@ -180,13 +180,13 @@ A function that converts K raw scores into K probabilities that sum to 1; see th
 See **18_1 Glossary: Specificity**. Equal to 1 − FPR. In the medical context: of all benign tumors, what percentage did the model correctly identify as benign?
 
 ### Stratified Split
-See **18_1 Glossary: Stratified Split**. Used in 18_5 to ensure the 63/37 class distribution is preserved in both training and test sets.
+See **18_1 Glossary: Stratified Split**. Used in 18_6 to ensure the 63/37 class distribution is preserved in both training and test sets.
 
 ### Stump
 See **Decision Stump**.
 
 ### Support
-See **18_1 Glossary: Support**. In 18_5, the malignant class has fewer samples (~37%), so its metrics have higher variance.
+See **18_1 Glossary: Support**. In 18_6, the malignant class has fewer samples (~37%), so its metrics have higher variance.
 
 ---
 
@@ -203,7 +203,7 @@ The model correctly predicts malignant and the tumor is actually malignant.
 ## V
 
 ### Variance (Model)
-The error a model makes because it is overly sensitive to the particular training sample it saw — a high-variance model changes substantially when the data changes slightly. In 18_5, bagging and random forests reduce variance by averaging many diverse trees. The standard deviation of cross-validation scores is a practical measure of variance.
+The error a model makes because it is overly sensitive to the particular training sample it saw — a high-variance model changes substantially when the data changes slightly. In 18_6, bagging and random forests reduce variance by averaging many diverse trees. The standard deviation of cross-validation scores is a practical measure of variance.
 
 ---
 
