@@ -20,11 +20,7 @@ prelim  SLR    MLR    inter-      eval   logreg  multi-  trees &
                        actions    first          class   ensembles
 ```
 
-**The through-line of the whole course is honest evaluation.** Every unit
-advances one storyline: how do you know your model will work on data it has
-never seen? Baselines → train/test split → cross-validation → pipelines (no
-leakage) → hyperparameter tuning → nested CV. Models change; that question
-never does.
+
 
 ## Units at a Glance
 
@@ -82,7 +78,7 @@ never does.
 | Bagging, OOB error, random forests | 18_6_2 | — |
 | Boosting (AdaBoost, gradient), BART | 18_6_3 | — |
 
-## Ethics Thread (deliberate, worth naming to students)
+## Ethics Thread
 
 - 17_1_4 — when you may and may not drop a data point
 - 17_3_1 — omitted interactions concentrate pricing errors on specific groups
