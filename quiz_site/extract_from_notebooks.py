@@ -25,6 +25,7 @@ TITLES = {
     "17_3_Interactions": "17.3 · Interaction Terms",
     "18_1_Classification_Basics": "18.1 · Classification Basics",
     "18_2_LogisticRegression": "18.2 · Logistic Regression",
+    "18_5_MutliClassClassification": "18.5 · Multi-Class Classification",
     "18_6_Ensemble": "18.6 · Ensemble Methods",
 }
 
@@ -76,8 +77,16 @@ def find_all_quizzes(nb_path: Path) -> dict:
     raise ValueError(f"no all_quizzes dict found in {nb_path}")
 
 
+# Overrides for unit folders whose slugified name doesn't match the
+# established quizzes/*.md filename (e.g. an intentional typo in the
+# folder name that we don't want propagated into the output file).
+SLUGS = {
+    "18_5_MutliClassClassification": "18_5_multiclass",
+}
+
+
 def slugify(unit_dir: str) -> str:
-    return unit_dir.lower()
+    return SLUGS.get(unit_dir, unit_dir.lower())
 
 
 def prettify(unit_dir: str) -> str:

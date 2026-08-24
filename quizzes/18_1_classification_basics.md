@@ -3,69 +3,81 @@
 ## Part 1: Classification Foundations
 
 ### In XGBoost, what does the scale_pos_weight parameter do?
-- [ ] Increases the learning rate for predictions on the positive class
+- [ ] Increases the learning rate for positive class predictions
 - [x] Scales the weight of the positive class to handle class imbalance
-- [ ] Normalizes all predicted probabilities to fall between 0 and 1
-- [ ] Rescales feature values to have zero mean and unit variance
+- [ ] Normalizes all predictions to be between 0 and 1
+- [ ] Scales feature values to have zero mean and unit variance
 
-### For the South German Credit dataset with 70% good and 30% bad credit, what is the naive baseline accuracy?
+### For the German Credit dataset with 70% good and 30% bad credit, what is the naive baseline accuracy?
 - [ ] 30%
 - [ ] 50%
 - [x] 70%
 - [ ] 100%
 
 ### XGBoost builds an ensemble of decision trees:
-- [x] Sequentially, each one correcting the errors of the prior ensemble
-- [ ] Sequentially, with each tree trained on an independent bootstrap sample
-- [ ] In parallel, with the final output determined by majority vote
+- [x] Sequentially, correcting errors from prior trees
+- [ ] In parallel, averaging predictions across all trees
+- [ ] Randomly, selecting the best tree at the end
 
 ### Why is stratified splitting important for imbalanced datasets?
-- [ ] It forces the training and test sets to have equal total sizes
-- [x] It ensures both train and test sets preserve the same class proportions
-- [ ] It automatically adjusts class weights during model training
-- [ ] It removes minority class samples to make the split more manageable
+- [ ] It makes training and test sets proportionally equal in size
+- [x] It ensures both train and test sets have the same class proportions
+- [ ] It automatically balances the class weights during training
+- [ ] It removes minority class samples to simplify training
+
+### Why do tree-based models like XGBoost NOT require feature scaling?
+- [ ] They use gradient descent, which is scale-invariant
+- [x] They make threshold-based splits, so relative rank matters more than magnitude
+- [ ] They normalize features internally before training
+- [ ] They only work with binary features
 
 ## Part 2: Confusion Matrix & Basic Metrics
 
 ### In a confusion matrix, what does a False Negative represent?
-- [ ] Predicting default when the customer is actually a good payer
+- [ ] Predicting default when the customer is actually good
 - [x] Predicting good when the customer actually defaults
-- [ ] Correctly identifying a customer who defaults
-- [ ] Correctly identifying a customer who is a good payer
+- [ ] Correctly identifying a defaulter
+- [ ] Correctly identifying a good customer
 
 ### Precision measures:
 - [ ] Of all actual positives, how many were correctly identified
 - [x] Of all positive predictions, how many are actually correct
-- [ ] The proportion of total predictions that are correct overall
-- [ ] The ratio of true positives to total true negatives
+- [ ] The total number of correct predictions
+- [ ] The ratio of true positives to true negatives
 
 ### Recall measures:
 - [ ] Of all positive predictions, how many are actually correct
 - [x] Of all actual positives, how many were correctly identified
-- [ ] The proportion of total predictions that are correct overall
-- [ ] The ratio of true positives to total predictions made
+- [ ] The total number of correct predictions
+- [ ] The ratio of true positives to total predictions
+
+### Using the Denominator Trick: precision's denominator is ___; recall's denominator is ___.
+- [ ] actual positives; predicted positives
+- [x] predicted positives; actual positives
+- [ ] all samples; all positives
+- [ ] true positives; all samples
 
 ### Why does F1-score use harmonic mean instead of arithmetic mean?
-- [ ] Harmonic mean is computationally less expensive to calculate
-- [x] Harmonic mean gives more weight to lower values, penalizing extreme imbalances between precision and recall
-- [ ] Arithmetic mean cannot be applied to percentage-valued metrics
-- [ ] Harmonic mean produces higher scores than arithmetic mean for balanced classifiers
+- [ ] Harmonic mean is faster to compute
+- [x] Harmonic mean penalizes extreme imbalances between precision and recall
+- [ ] Arithmetic mean cannot handle percentages
+- [ ] Harmonic mean always gives higher scores
 
 ### If precision = 100% and recall = 1%, what is the F1-score?
-- [ ] About 50% — the average of perfect precision and near-zero recall
-- [x] About 2% — the harmonic mean heavily penalizes the near-zero recall
-- [ ] About 100% — perfect precision dominates the score
-- [ ] About 25% — the geometric mean of precision and recall
+- [ ] About 50%
+- [x] About 2%
+- [ ] About 100%
+- [ ] About 25%
 
 ### When would you prefer weighted average over macro average?
-- [ ] When all classes are equally important regardless of their sample size
-- [x] When you want overall performance weighted by the dataset's class distribution
+- [ ] When all classes are equally important regardless of size
+- [x] When you want overall performance reflecting the dataset's class distribution
 - [ ] When you want to treat all classes equally regardless of sample size
-- [ ] When the dataset has a perfectly balanced class distribution
+- [ ] When the dataset is perfectly balanced
 
 ### If you raise the decision threshold from 0.5 to 0.7, what happens to precision and recall?
-- [ ] Both precision and recall increase
-- [ ] Both precision and recall decrease
+- [ ] Both increase
+- [ ] Both decrease
 - [x] Precision increases, recall decreases
 - [ ] Precision decreases, recall increases
 
@@ -75,70 +87,160 @@
 - [x] False Positive
 - [ ] True Positive
 
-### What does the ROC curve plot?
-- [ ] Precision vs. Recall at varying decision thresholds
-- [x] True Positive Rate vs. False Positive Rate at varying thresholds
-- [ ] Accuracy vs. F1-Score at varying decision thresholds
-- [ ] Training loss vs. validation loss across training epochs
+## Part 3: Examples and Practice
+
+### In the Adult Census Income dataset (~76% earn <=50K, ~24% earn >50K), what is the naive baseline accuracy?
+- [ ] 24%
+- [ ] 50%
+- [x] 76%
+- [ ] 100%
+
+### After training XGBoost on the Adult Census dataset, the '>50K' class has lower precision and recall than the '<=50K' class. What is the most likely reason?
+- [ ] XGBoost cannot handle more than two classes
+- [x] The model sees fewer positive examples during training, making the minority class harder to predict
+- [ ] The features in the dataset are not relevant to income
+- [ ] scale_pos_weight was not set correctly
+
+### For the Adult Census task, a false negative means the model predicted '<=50K' for someone who actually earns '>50K'. In a marketing context, what is the business cost of this error?
+- [ ] Wasted marketing budget on an uninterested prospect
+- [x] A missed high-income prospect who would have responded to a premium offer
+- [ ] Lower model accuracy on the training set
+- [ ] Higher precision on the positive class
 
 ## Part 4: ROC, AUC & Threshold Tuning
 
+### What does the ROC curve plot?
+- [ ] Precision vs Recall
+- [x] True Positive Rate vs False Positive Rate
+- [ ] Accuracy vs F1-Score
+- [ ] Loss vs number of trees
+
 ### An AUC of 0.79 means:
-- [ ] The model correctly classifies 79% of all samples in the dataset
+- [ ] The model correctly classifies 79% of samples
 - [x] The model correctly ranks a random positive above a random negative 79% of the time
-- [ ] 79% of all model predictions are true positives
-- [ ] The model achieves 79% precision on the positive class
+- [ ] 79% of predictions are true positives
+- [ ] The model has 79% precision
 
 ### Why is AUC described as threshold-independent?
-- [ ] It assumes a fixed decision threshold of 0.5 for all calculations
-- [x] It evaluates performance across all possible decision thresholds simultaneously
-- [ ] It only applies to binary classification problems with balanced classes
-- [ ] It does not require any threshold to compute the score
+- [ ] It uses a fixed threshold of 0.5
+- [x] It evaluates performance across all possible thresholds simultaneously
+- [ ] It only works with binary classification
+- [ ] It doesn't require a threshold to compute
 
 ### Youden's J statistic is calculated as:
 - [ ] TPR + FPR
 - [x] TPR - FPR
 - [ ] Precision + Recall
-- [ ] Accuracy - Baseline accuracy
+- [ ] Accuracy - Baseline
 
 ### Why might ROC curves be over-optimistic on imbalanced data?
-- [x] ROC includes true negatives in the FPR calculation, which inflates performance
-- [ ] ROC curves ignore false positives when computing the true positive rate
-- [ ] ROC is unaffected by class imbalance and always gives accurate results
-- [ ] ROC uses precision in place of recall, which benefits the majority class
+- [x] The large number of true negatives keeps FPR artificially low even with many false alarms
+- [ ] ROC curves ignore false positives entirely
+- [ ] ROC is not affected by class imbalance
+- [ ] ROC uses precision instead of recall
 
 ### What is the baseline for a Precision-Recall curve?
-- [ ] 0.5, representing a random classifier on balanced data
-- [x] The positive class prevalence in the dataset
-- [ ] The majority class proportion in the dataset
-- [ ] 1.0, representing a perfect classifier
+- [ ] 0.5 (random)
+- [x] The positive class prevalence
+- [ ] The majority class proportion
+- [ ] 1.0 (perfect)
 
-### If false negatives cost more than false positives, where should you set the threshold?
-- [ ] At 0.5, the standard default threshold
-- [ ] Higher than 0.5, to make the classifier more conservative
-- [x] Lower than 0.5, to flag more positives and reduce missed cases
-- [ ] At 1.0, to eliminate all false positives
+### If false negatives cost more than false positives, where should the threshold be set relative to 0.5?
+- [ ] At 0.5 (default)
+- [ ] Higher than 0.5 (more conservative)
+- [x] Lower than 0.5 (flag more positives, catch more true cases)
+- [ ] At 1.0
 
-### A perfect ROC curve would:
-- [ ] Follow the diagonal line from (0,0) to (1,1)
-- [x] Hug the top-left corner of the plot
-- [ ] Form a horizontal line at y = 0.5
-- [ ] Form a vertical line at x = 0
+### Youden's J is the most appropriate threshold selection method when:
+- [ ] False positives cost more than false negatives
+- [ ] False negatives cost more than false positives
+- [x] False positives and false negatives are equally costly
+- [ ] The dataset has no class imbalance
 
-### A wide box in a cross-validation boxplot indicates:
-- [ ] The model achieves high accuracy on every fold
-- [x] The model's performance varies significantly across different data splits
-- [ ] The model has high bias and underfits every fold
-- [ ] The model is underfitting the training data
+### Why do we use out-of-fold (OOF) training probabilities to select the threshold, rather than test-set probabilities?
+- [ ] OOF probabilities are more accurate than test-set probabilities
+- [x] Using the test set for threshold selection leaks information and makes the final evaluation dishonest
+- [ ] The test set does not contain enough samples for reliable threshold estimation
+- [ ] OOF probabilities produce a smoother ROC curve
 
-### Why do we score models on both accuracy AND F1?
-- [ ] F1 is always more important and reliable than accuracy
-- [x] Accuracy can be misleading on imbalanced data; F1 reveals minority class performance
-- [ ] Accuracy is unreliable on large datasets; F1 is more robust to dataset size
-- [ ] They always produce the same result on balanced datasets
+## Part 5: Credit Card Fraud Detection
 
-### If Random Forest has the highest mean F1 but also the widest spread, you should:
-- [ ] Choose it because it has the highest mean performance
-- [x] Consider both mean performance and stability; a more consistent model may be preferable
-- [ ] Choose the lowest variance model regardless of mean performance
-- [ ] Replace cross-validation with a single train/test split instead
+### The credit card fraud dataset has 0.17% fraud. A model that labels every transaction 'Not Fraud' achieves 99.83% accuracy. Why is this model useless?
+- [ ] Its precision is too low
+- [x] It catches zero fraud cases — the thing we actually care about
+- [ ] It has a high false positive rate
+- [ ] It has not been trained on enough data
+
+### With 99.8% legitimate transactions, the weighted average F1 in the classification report is nearly indistinguishable from accuracy. Why?
+- [ ] Weighted average is always equal to accuracy
+- [x] The legitimate class dominates the support counts, so its performance overwhelms the fraud class in the weighted calculation
+- [ ] F1 and accuracy use the same formula
+- [ ] The model performs equally well on both classes
+
+### For the fraud dataset, the ROC AUC looks impressive (e.g., ~0.97). Why is this misleading?
+- [ ] AUC is always high when the dataset is large
+- [x] With 85,000+ legitimate transactions, even thousands of false alarms barely move the FPR denominator
+- [ ] The ROC curve only measures recall, not precision
+- [ ] XGBoost always produces high AUC on fraud data
+
+### The F2-score (beta=2) weights recall four times as heavily as precision. When is this the right choice?
+- [ ] When false positives are more costly than false negatives
+- [x] When missing positive cases (e.g., fraud) is more costly than generating false alarms
+- [ ] When the dataset is perfectly balanced
+- [ ] When you want to maximize overall accuracy
+
+### On the fraud dataset, the PR curve baseline is approximately 0.0017 (0.17%). A model whose PR curve barely rises above this line would tell you:
+- [ ] The model is performing well on the minority class
+- [x] The model is barely better than randomly guessing 'fraud' with 0.17% probability
+- [ ] The model has high recall but low precision
+- [ ] The positive class prevalence is too high to detect fraud
+
+### Why must you use out-of-fold (OOF) probabilities — not test-set probabilities — when selecting the optimal threshold?
+- [ ] OOF probabilities are always more accurate
+- [x] Using test-set probabilities to choose a threshold means your final evaluation is no longer on truly unseen data
+- [ ] The test set is too small for reliable threshold estimation
+- [ ] OOF avoids overfitting the model itself
+
+## Part 6: Cost-Weighted Training & Nested CV
+
+### For the fraud dataset, the class ratio is ~499:1 but the cost ratio is only 4.5:1 ($450 FN / $100 FP). Why would scale_pos_weight = 499 be a poor choice?
+- [x] It would over-weight the minority class by two orders of magnitude relative to the actual costs
+- [ ] XGBoost cannot accept scale_pos_weight values above 100
+- [ ] It would make training too slow on 284,807 transactions
+- [ ] scale_pos_weight only works for balanced datasets
+
+### What does the custom cost_weighted_objective change about how XGBoost trains?
+- [x] It scales the gradient and hessian by dollar costs, so missed fraud produces a stronger correction signal than a false alarm
+- [ ] It changes the decision threshold from 0.5 to the cost-optimal value during training
+- [ ] It removes legitimate transactions from the training set until the classes are balanced
+- [ ] It replaces the trees with a linear model that minimizes dollar cost directly
+
+### The flawed total_cost_scorer converts probabilities to predictions with a hardcoded threshold (0.95) inside GridSearchCV. Why does this produce misleading model comparisons?
+- [x] The cost-optimal threshold differs for every hyperparameter combination, so the search rewards models that happen to score well at that one cutoff
+- [ ] 0.95 is too high a threshold for any practical fraud model
+- [ ] GridSearchCV cannot maximize negative values
+- [ ] The scorer ignores false positives entirely
+
+### What is the correct GridSearch scoring metric in notebook 6, and why?
+- [x] average_precision (PR-AUC), because it measures ranking quality across all thresholds and is therefore threshold-independent
+- [ ] accuracy, because it is the most interpretable metric
+- [ ] recall, because missing fraud is the most expensive error
+- [ ] total dollar cost at the 0.5 threshold, because it directly encodes business priorities
+
+### In nested cross-validation, what is the role of the outer loop?
+- [x] To evaluate the complete tuning pipeline on holdout folds it never influenced, giving an honest generalization estimate
+- [ ] To find the best hyperparameters for the final model
+- [ ] To generate out-of-fold probabilities for threshold tuning
+- [ ] To speed up GridSearchCV by parallelizing the parameter grid
+
+### The tuned model saved very little over the baseline XGBoost. According to the notebook, why is this an expected result rather than a failure?
+- [x] Default XGBoost hyperparameters are strong starting points, so grid search typically retrieves only the last few percent of attainable performance
+- [ ] The grid search used the wrong scoring metric
+- [ ] Nested CV systematically underestimates the benefit of tuning
+- [ ] The dataset is too small for hyperparameter tuning to matter
+
+### After nested CV, the final production model is trained on 100% of the data. How should its performance be reported?
+- [x] Report the nested CV mean PR-AUC — never evaluate the final model on the data it was trained on
+- [ ] Evaluate the final model on the full dataset, since more data gives a more reliable score
+- [ ] Re-split the data and evaluate on a fresh 30% test set
+- [ ] Report the inner-loop GridSearchCV best score
