@@ -86,4 +86,9 @@ We can create a list of residuals for our first line and a second list for our s
 
 We can solve these problems the same way we did before: we square the residuals first, and then add them together. This creates a single value indicating the incorrectness of our line, called the **Residual Sum of Squares (RSS)**. If we are just trying to compare our two lines, the line with the lower RSS is the winner — it is closer to fitting the pattern of the data than the other line.
 
-However, we don't typically just draw lines and compare them. What we really want is the one line, out of all possible lines, with the lowest RSS: the line of best fit. It turns out there is a closed-form formula for that line, built from the pieces we already have — the optimal slope is $r \cdot (\sigma_y / \sigma_x)$, and the optimal intercept is whatever value makes the line pass through the point of means. How we get there, and how we score the resulting line with $R^2$, is the subject of notebook 17_0_5.
+However, we don't typically just draw lines and compare them. What we really want is the one line, out of all possible lines, with the lowest RSS: the line of best fit. Instead of guessing and checking different lines, we look for the single line of best fit that minimizes the Residual Sum of Squares (RSS). This optimal line can be calculated directly using a straightforward formula derived from our summary statistics. The optimal slope is found by multiplying the correlation coefficient (\(r\)) by the ratio of the standard deviations (\(\sigma_y / \sigma_x\)), while the intercept is determined by forcing the line directly through the point of means (the average x and the average y).
+
+
+
+
+
