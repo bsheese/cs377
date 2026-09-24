@@ -18,7 +18,7 @@
 
 ### Interpreting the Model
 
-6. The model predicts that a penguin with a 200mm flipper has a body mass of 9,130g. A penguin with a 0mm flipper would weigh −5,872g. Why is this second prediction conceptually nonsensical, and what does it tell us about extrapolation beyond the data range?
+6. The model predicts that a penguin with a 200mm flipper has a body mass of about 4,159g. A penguin with a 0mm flipper would weigh −5,872g. Why is this second prediction conceptually nonsensical, and what does it tell us about extrapolation beyond the data range?
 
 7. The intercept represents the expected y-value when x = 0. In what scenarios is the intercept meaningful versus when is it "just a mathematical artifact"?
 
@@ -170,7 +170,7 @@
 
 ### Interpreting Log-Transformed Models
 
-4. In the Gapminder model, the coefficient for log(GDP) is approximately 5.8. How do you interpret this slope in plain English?
+4. In the Gapminder model, the coefficient for log(GDP) is approximately 7.2. How do you interpret this slope in plain English?
 
 5. A model uses `log(y) = β₀ + β₁ * x`. A 1-unit increase in x is associated with how much percent change in y?
 
