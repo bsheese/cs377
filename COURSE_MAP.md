@@ -60,8 +60,9 @@ prelim  SLR    MLR    inter-      eval   logreg  multi-  trees &
 | Log transforms & interpretation | 17_1_5 | 17_2_1_1 (Ames), Log-Dollar Illusion (17_2_1_3) |
 | Train/test split, overfitting, bias-variance | 17_1_6 | everywhere; trees version in 17_2_2 |
 | Data cleaning, leakage, deterministic-vs-statistical rule | 17_2_1_1 | 18_1_9_x (leakage-aware capstones) |
+| Cross-validation (k-fold, validation vs. test) | 17_2_1_2 (previewed in 17_1_6) | 17_2_1_3–5, all later model comparison |
 | Feature selection (forward/backward), VIF | 17_2_1_2 | 17_2_1_3 (regularization as the alternative) |
-| Pipelines (scaler inside CV) | 17_2_1_3 | all later modeling |
+| Pipelines (scaler inside CV) | 17_2_1_2 (introduced), 17_2_1_3 (in depth) | all later modeling |
 | Regularization (Ridge/Lasso/ElasticNet) | 17_2_1_3 | 18_6_3 (XGBoost's built-in reg), weight decay pointer |
 | Hyperparameters, GridSearchCV, validation curve | 17_2_1_4 | 18_1_6, 18_6_2/3 |
 | Nested cross-validation | 17_2_1_4 → deep dive 17_2_1_5 | 18_1_6, 18_1_9_x, 18_6_4 |
