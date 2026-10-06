@@ -30,7 +30,7 @@ prelim  SLR    MLR    inter-      eval   logreg  multi-  trees &
 | `17_0_Preliminaries` | Statistical foundations, built by hand: spread, association, residuals, R² | Heights, penguins, Anscombe | 16 |
 | `17_1_SLR` | Simple linear regression end-to-end: inference, assumptions, influence, transformations, generalization | Penguins, Auto MPG, Ames (preview), Gapminder | 17_0 |
 | `17_2_MLR` | The Ames five-part serial: cleaning → selection → regularization → tuning → nested CV; plus regression trees (17_2_2) | Ames Housing | 17_1 |
-| `17_3_Interactions` | One case study: when one feature's effect depends on another | Medical insurance costs | 17_1 (statsmodels formulas) |
+| `17_3_Interactions` | One case study: when one feature's effect depends on another; introduces the statsmodels formula interface and AIC | Medical insurance costs | 17_1 (statsmodels OLS) |
 | `18_1_Classification_Basics` | **Evaluation-first**: metrics machinery using XGBoost as a black box; three end-of-unit projects (worked / optional / capstone) | German Credit, credit-card fraud, Bank Marketing, Hotel, Telco | 17_2 (pipelines, CV, nested CV) |
 | `18_2_LogisticRegression` | Opens the hood on a classifier; interpretability; bridge to neural networks | Titanic, German Credit | 18_1 |
 | `18_5_MutliClassClassification` | Two classes → K classes: softmax probabilities, K×K confusion matrix, macro vs. weighted, imbalance | Penguins, fetal health (CTG), wine quality | 18_1 |
@@ -43,7 +43,7 @@ prelim  SLR    MLR    inter-      eval   logreg  multi-  trees &
   explicitly.
 - Tree mechanics are taught **in the regression unit** (17_2_2) and assumed by
   18_6 — a student skipping 17_2_2 will miss the foundation for ensembles.
-- 17_3 can float: it needs 17_1's statsmodels fluency but nothing from 17_2.
+- 17_3 can float: it needs 17_1's statsmodels fluency but nothing from 17_2. It introduces the formula interface and its dummy coding itself.
 
 ## Where Concepts Are First Taught (and Reprised)
 
@@ -67,6 +67,7 @@ prelim  SLR    MLR    inter-      eval   logreg  multi-  trees &
 | Hyperparameters, GridSearchCV, validation curve | 17_2_1_4 | 18_1_6, 18_6_2/3 |
 | Nested cross-validation | 17_2_1_4 → deep dive 17_2_1_5 | 18_1_6, 18_1_9_x, 18_6_4 |
 | Decision trees (regression) | 17_2_2 | 18_6_1 (classification version) |
+| Statsmodels formula interface, automatic dummy coding, AIC | 17_3_1 (AIC named in 17_1_1) | — |
 | Interaction effects | 17_3_1 | implicitly: trees "capture interactions" (17_2_2, 18_6) |
 | Class imbalance & the accuracy paradox | 18_1_1 | 18_5_3 (multiclass), 18_6_2 (class_weight) |
 | Confusion matrix, precision/recall/F1 | 18_1_2 | 18_5_1/2 (K×K, macro/weighted), 18_6 |

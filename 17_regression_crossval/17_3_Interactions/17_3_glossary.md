@@ -10,7 +10,7 @@ This document defines the technical and conceptual terms used in the 17_3 Intera
 A regression model in which each feature contributes its effect independently and the prediction is the sum of those contributions: `charges ~ bmi + smoker`. Geometrically, a categorical feature shifts the line up or down but every group shares the same slope — parallel lines. The additive assumption is the default in every model from 17_1 and 17_2; this unit is about when it breaks.
 
 ### AIC (Akaike Information Criterion)
-A model-comparison score that rewards fit but penalizes complexity; lower is better. Unlike $R^2$, which always improves when a term is added, AIC only improves if the added term earns back its complexity cost. In the medical-cost case study, AIC drops substantially when the interaction term is added — evidence the term is not just noise-chasing.
+A model-comparison score that rewards fit but penalizes complexity (a penalty for every coefficient); lower is better. Only differences between models fitted to the same data and target are meaningful; a drop of more than about 10 is usually treated as strong evidence. Unlike $R^2$, which never gets worse when a term is added, AIC only improves if the added term earns back its complexity cost. In the medical-cost case study, AIC drops by about 374 (27,526 to 27,152) when the interaction term is added — evidence the term is not just noise-chasing.
 
 ---
 
@@ -44,4 +44,7 @@ The category statsmodels absorbs into the intercept when encoding a categorical 
 The plain-English reading of an interaction coefficient: `bmi:smoker[T.yes] ≈ 1,390` means "being a smoker adds about \$1,390 to the per-BMI-point slope." The total slope for the non-reference group is main effect + interaction (≈ \$83 + \$1,390 ≈ \$1,473).
 
 ### Statsmodels Formula Operators (`*` vs. `:`)
-In a formula, `a:b` adds only the interaction term, while `a * b` expands to `a + b + a:b` — main effects plus interaction. Prefer `*`: it guarantees the main effects ride along. `a:b` alone produces a model with no term for the reference group's slope and an uninterpretable intercept.
+In a formula, `a:b` adds only the interaction term, while `a * b` expands to `a + b + a:b` — main effects plus interaction. Prefer `*`: it guarantees the main effects ride along. `bmi:smoker` alone still gives each group its own BMI slope, but it drops the `smoker` offset, so both groups' lines are forced through the same point at BMI = 0. In the case study that constraint distorts both slopes (about \$214 and \$1,007, against \$83 and \$1,473 in the full model).
+
+### Statsmodels Formula Interface
+A way to specify a model as text: `ols('charges ~ bmi + smoker', data=df)`. The target goes left of `~` and the features go right, joined by `+`. The intercept is added automatically, and text columns are dummy-coded automatically, producing columns such as `smoker[T.yes]`. Compare `sm.OLS(y, X)` in 17_1, where you build `X` and add the constant yourself.

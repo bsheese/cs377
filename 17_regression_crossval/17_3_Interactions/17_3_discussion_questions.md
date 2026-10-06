@@ -40,15 +40,15 @@
 
 14. AIC (Akaike Information Criterion) penalizes model complexity. If the interaction model has a much lower AIC than the additive model, what does this confirm? If the AIC is only slightly lower, how would that change your decision?
 
-15. R² always increases when you add terms. AIC can increase or decrease. Explain why R² is an unreliable guide for model selection while AIC is more reliable.
+15. R² never decreases when you add terms. AIC can increase or decrease. Explain why R² is an unreliable guide for model selection while AIC is more reliable.
 
-16. The notebook compares additive vs. interaction models on the same training data. Why might you also want to compare their test R² values?
+16. The notebook fits and compares both models on all 1,338 customers. Why might you also want to compare them on held-out data, and what would that comparison tell you that AIC does not?
 
 ### Generalizing the Concept
 
 17. Feature engineering is presented as a way to improve model performance. How is creating an interaction term a form of feature engineering? What "new information" is the interaction term encoding?
 
-18. The notebook mentions that this interaction insight "often beats simply adding more variables." Why would one well-chosen interaction term outperform adding several new independent features?
+18. The notebook argues that how variables relate to each other can matter as much as which variables you include. Why might one well-chosen interaction term improve a model more than adding several new, unrelated features?
 
 19. Interaction effects are present in many real-world datasets but are often overlooked. What is the risk of building a policy decision (e.g., insurance pricing) on an additive model when a true interaction exists?
 

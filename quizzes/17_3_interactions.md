@@ -34,7 +34,7 @@
 
 ### R² increases from ~0.66 (additive) to ~0.74 (interaction). Is R² improvement alone sufficient justification for the interaction model?
 - [ ] Yes — any R² improvement justifies adding the interaction term
-- [x] No — R² always increases with more terms; AIC and domain logic are also needed
+- [x] No — R² never decreases when terms are added; AIC and domain logic are also needed
 - [ ] Yes — only R² measures out-of-sample predictive accuracy
 - [ ] No — R² improvements only matter when they exceed 50 percentage points
 
@@ -52,7 +52,7 @@
 
 ### A student writes 'charges ~ bmi:smoker' without including main effects. What is the problem with this model?
 - [ ] The interaction operator : is not valid without the * operator
-- [x] The model has no term for smokers who have BMI=0, making the intercept uninterpretable
+- [x] It drops the smoker offset, so both groups' lines are forced through the same point at BMI = 0, which distorts both slopes
 - [ ] Statsmodels automatically adds main effects when interaction terms are specified
 - [ ] The model would overfit because interactions always require large sample sizes
 
@@ -61,3 +61,15 @@
 - [x] The model would charge smokers and non-smokers the same rate per BMI unit, ignoring the true cost difference
 - [ ] Additive models cannot include categorical variables like smoker status
 - [ ] The model would ignore BMI entirely when smoker is in the model
+
+### In `ols('charges ~ bmi + smoker', data=df)`, statsmodels reports a coefficient named `smoker[T.yes]`. What is it?
+- [ ] A test of whether the smoker column contains valid values
+- [x] The coefficient on a 0/1 column statsmodels created automatically; it measures how smokers differ from non-smokers, the reference group
+- [ ] The average charges of all smokers in the dataset
+- [ ] The probability that a customer is a smoker
+
+### The additive model has AIC ≈ 27,526 and the interaction model AIC ≈ 27,152. How should you read this?
+- [ ] The additive model is better, because its AIC is higher
+- [x] Lower AIC is better; a drop of about 374 for one extra coefficient is strong evidence the interaction term earns its place
+- [ ] Neither number means anything without knowing the test-set R²
+- [ ] The interaction model explains 374 more dollars of variation
