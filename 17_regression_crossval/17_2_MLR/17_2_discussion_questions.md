@@ -86,9 +86,9 @@
 
 5. Forward selection starts with no features and adds them one at a time. Backward selection starts with all features and removes them one at a time. Under what circumstances might these two approaches select different sets of features?
 
-6. Using `n_features_to_select='auto'` lets the algorithm decide how many features to keep. What are the tradeoffs of letting the algorithm choose versus specifying the number yourself?
+6. With scikit-learn's default `tol=None`, `n_features_to_select='auto'` simply keeps half of the candidate features (20 of the 40 here). Passing a `tol` value instead lets the search stop when the next feature adds too little. What are the tradeoffs between fixing the number of features in advance and letting a threshold decide?
 
-7. Only 2 CV folds are used to keep computation time manageable. What is the tradeoff when using fewer folds? Why would 5 or 10 folds give more reliable estimates?
+7. Part 2 uses 5 CV folds inside the selector, and every round of selection repeats that cross-validation for each candidate. What would you gain and lose by dropping to 2 folds, or raising it to 10?
 
 ### Interpreting Coefficients
 

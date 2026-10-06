@@ -83,7 +83,7 @@ This document provides a complete outline of all topics covered across the six n
 ### Forward Selection
 - Start with no features, add one at a time based on CV improvement
 - Test each feature individually, add the best one, repeat
-- `n_features_to_select='auto'`: stops when improvement becomes small
+- `n_features_to_select='auto'`: with the default `tol=None`, keeps half the candidates (20 of 40); a `tol` value gives a data-driven stopping point
 - Mini-example: stepping through feature-by-feature addition
 - Advantage: computationally efficient for large feature sets
 - Limitation: once a feature is added, it can never be removed
@@ -317,8 +317,8 @@ This document provides a complete outline of all topics covered across the six n
 - Correlated features problem: model picks one, the other gets no credit
 
 ### XGBoost Hyperparameter Tuning (Nested Cross-Validation)
-- Inner loop: 3 folds, 12 hyperparameter combinations
-- Outer loop: 5 folds, 180 total model fits
+- Inner loop: 3 folds, 8 hyperparameter combinations
+- Outer loop: 5 folds, 120 total model fits
 - Nested CV $R^2$: competitive with regularized linear models
 
 ### Model Comparison Summary
@@ -328,7 +328,7 @@ This document provides a complete outline of all topics covered across the six n
 ### Final Thought
 - OLS + Regularization = interpretable but sensitive to data quality
 - XGBoost = not interpretable but robust to messy data
-- Practical takeaway: start with Random Forest, move to boosting if you need more accuracy
+- Practical takeaway: one test split is one draw; report the nested CV estimate
 
 ---
 
