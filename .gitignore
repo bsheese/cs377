@@ -219,3 +219,6 @@ TODO.md
 
 # Generated quiz site (CI rebuilds it)
 _site/
+
+# POGIL answer sheets: instructor-only, repo is public
+*answer_sheet*
