@@ -1,6 +1,6 @@
 # 17_2 MLR and Regularization — Topic Outline
 
-This document provides a complete outline of all topics covered across the six notebooks in the 17_2 MLR and Regularization series.
+This document provides a complete outline of all topics covered across the five-part Ames series (17_2_1_1 to 17_2_1_5). Regression trees (17_2_2) have their own outline in `17_2_2_MLR_RegressionTrees/`.
 
 ---
 
@@ -265,84 +265,17 @@ This document provides a complete outline of all topics covered across the six n
 
 ---
 
-## 17_2_2: Tree-Based Methods (Regression Trees, Random Forest, Gradient Boosting, XGBoost)
-
-**Dataset:** Ames Housing (cleaned, then raw for robustness test). Goal: explore tree-based models as an alternative to linear regression.
-
-### Why Trees?
-- Linear models assume straight-line relationships; trees partition data into regions
-- Trees naturally capture non-linearities, threshold effects, and interactions
-- Minimal data cleaning required — robust to messy data
-- The "20 Questions" analogy
-
-### How a Regression Tree Works
-- Key terminology: root node, decision node, leaf node, branch
-- Split selection: tries every possible split on every feature, picks the one that reduces error most
-- Overfitting problem: unconstrained tree memorizes the training data
-- `max_depth` limits complexity
-
-### Interpreting Depth Experiment
-- Test $R^2$ peaks at moderate depth, then declines
-- Depth 3: underfitting; Depth None: severe overfitting (train $R^2 = 1.0$)
-- Same bias-variance pattern as polynomial features
-
-### Visualizing a Single Tree
-- Reading the tree structure from root to leaves
-- Feature repetition at different depths captures interactions
-- Small-leaf warnings: predictions based on few samples are unreliable
-
-### Random Forests (Bagging + Parallelization)
-- **Bootstrap sampling:** each tree trains on a random sample with replacement
-- **Feature randomness:** `max_features='sqrt'` — each tree considers ~√n features per split
-- Variance reduction: averaging diverse, uncorrelated trees cancels out individual overfitting
-- Why `max_depth=None` works in forests: averaging controls overfitting
-- Tuned RF achieves strong CV performance
-
-### Gradient Boosting (Sequential Refinement)
-- Each new tree predicts the *residuals* (errors) of the ensemble so far
-- Process: average prediction → calculate residuals → train tree on residuals → update → repeat
-- Bias reduction (vs. RF's variance reduction)
-- Robustness test: training on raw, uncleaned data — nearly identical performance
-
-### XGBoost (eXtreme Gradient Boosting)
-- Built-in L1/L2 regularization on leaf weights
-- Parallelized feature sorting despite sequential nature
-- Native missing data handling
-- Comparing three boosting approaches: GBM vs. HGB vs. XGBoost
-
-### Feature Importance
-- Measures total error reduction attributed to each feature across all trees
-- Overall Qual dominates (~45% of model's learning)
-- Limitation: tells you *what* not *how* (no direction or shape)
-- Correlated features problem: model picks one, the other gets no credit
-
-### XGBoost Hyperparameter Tuning (Nested Cross-Validation)
-- Inner loop: 3 folds, 8 hyperparameter combinations
-- Outer loop: 5 folds, 120 total model fits
-- Nested CV $R^2$: competitive with regularized linear models
-
-### Model Comparison Summary
-- Decision Tree → Random Forest → HGB → XGBoost
-- Trade-off: accuracy vs. interpretability vs. computational cost
-
-### Final Thought
-- OLS + Regularization = interpretable but sensitive to data quality
-- XGBoost = not interpretable but robust to messy data
-- Practical takeaway: one test split is one draw; report the nested CV estimate
-
----
-
 ## Cross-Cutting Themes
 
 | Theme | Notebooks |
 |---|---|
-| **Multicollinearity** | 17_2_1_2 (VIF), 17_2_1_3 (Ridge handles it), 17_2_2 (feature importance problem) |
-| **Bias-Variance Tradeoff** | 17_2_1_3 (regularization), 17_2_1_4 (alpha tuning, nested CV), 17_2_2 (tree depth) |
-| **Cross-Validation** | 17_2_1_2 (feature selection), 17_2_1_4 (GridSearchCV, nested CV), 17_2_1_5 (nested CV deep dive), 17_2_2 (nested CV for XGBoost) |
-| **Overfitting** | 17_2_1_3 (regularization prevents it), 17_2_1_9 (learning curves), 17_2_2 (tree depth) |
-| **Feature Selection** | 17_2_1_2 (forward/backward), 17_2_1_3 (Lasso), 17_2_2 (feature importance) |
+| **Multicollinearity** | 17_2_1_2 (VIF), 17_2_1_3 (Ridge handles it) |
+| **Bias-Variance Tradeoff** | 17_2_1_3 (regularization), 17_2_1_4 (alpha tuning, nested CV) |
+| **Cross-Validation** | 17_2_1_2 (feature selection), 17_2_1_4 (GridSearchCV, nested CV), 17_2_1_5 (nested CV deep dive) |
+| **Overfitting** | 17_2_1_3 (regularization prevents it), 17_2_1_9 (learning curves) |
+| **Feature Selection** | 17_2_1_2 (forward/backward), 17_2_1_3 (Lasso) |
 | **Log Transformation** | 17_2_1_1 (target cleaning), 17_2_1_2 (log interpretation) |
 | **Pipelines** | 17_2_1_2 (scaling + selection), 17_2_1_3 (scaling + regularization), 17_2_1_4 (scaling + GridSearchCV) |
-| **Model Comparison** | 17_2_1_3 (Ridge vs. Lasso vs. EN), 17_2_1_4 (tuned models), 17_2_2 (tree progression) |
-| **Data Cleaning** | 17_2_1_1 (full pipeline), 17_2_2 (robustness to messy data) |
+| **Model Comparison** | 17_2_1_3 (Ridge vs. Lasso vs. EN), 17_2_1_4 (tuned models) |
+| **Data Cleaning** | 17_2_1_1 (full pipeline) |
 | **One-Hot Encoding** | 17_2_1_1, 17_2_1_3 (feature explosion) |
