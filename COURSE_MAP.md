@@ -29,7 +29,8 @@ prelim  SLR    MLR    inter-      eval   logreg  multi-  trees &
 | `16_ml_intro` | Tooling + what ML is. 16_4/16_5 are **reference notebooks** (skim, return on demand) | Song data (DJ problem), Auto MPG | Intro Python (lists, loops, functions) |
 | `17_0_Preliminaries` | Statistical foundations, built by hand: spread, association, residuals, R² | Heights, penguins, Anscombe | 16 |
 | `17_1_SLR` | Simple linear regression end-to-end: inference, assumptions, influence, transformations, generalization | Penguins, Auto MPG, Ames (preview), Gapminder | 17_0 |
-| `17_2_MLR` | The Ames five-part serial: cleaning → selection → regularization → tuning → nested CV; plus regression trees (17_2_2) | Ames Housing | 17_1 |
+| `17_2_1_MLR` | The Ames five-part serial: cleaning → selection → regularization → tuning → nested CV | Ames Housing | 17_1 |
+| `17_2_2_MLR_RegressionTrees` | Regression trees, random forests, boosting and XGBoost on the Ames data | Ames Housing | 17_2_1 |
 | `17_3_Interactions` | One case study: when one feature's effect depends on another; introduces the statsmodels formula interface and AIC | Medical insurance costs | 17_1 (statsmodels OLS) |
 | `18_1_Classification_Basics` | **Evaluation-first**: metrics machinery using XGBoost as a black box; three end-of-unit projects (worked / optional / capstone) | German Credit, credit-card fraud, Bank Marketing, Hotel, Telco | 17_2 (pipelines, CV, nested CV) |
 | `18_2_LogisticRegression` | Opens the hood on a classifier; interpretability; bridge to neural networks | Titanic, German Credit | 18_1 |
@@ -94,7 +95,7 @@ prelim  SLR    MLR    inter-      eval   logreg  multi-  trees &
   `*_discussion_questions.md`, `*_practice_quiz.ipynb`; quiz site source in
   `quizzes/`, deployed via GitHub Pages.
 - Smoke-test all notebooks: `python smoke_test.py` (see file header for usage).
-- Shared cleaning modules: `17_2_MLR/ames_cleaning.py`,
+- Shared cleaning modules: `17_2_1_MLR/ames_cleaning.py`,
   `18_classification/classification_cleaning.py`.
 - Datasets are vendored in `data/` and loaded from this repo's raw GitHub URL
   (course-controlled hosting; changes take effect on push to `main`). Only

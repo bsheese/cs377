@@ -1,3 +1,5 @@
+# TEMPORARY COPY for Fall 2026 only: student notebooks saved before the 17_2_MLR -> 17_2_1_MLR rename
+# still download this file from the old path. The real file is 17_2_1_MLR/ames_cleaning.py. Delete after the term.
 import pandas as pd
 import numpy as np
 import warnings
@@ -113,7 +115,7 @@ def load_and_clean_ames(url, test_size=0.2, random_state=42):
 def get_colab_download_code(module_url: str = None) -> str:
     """Return the code needed to download and import this module in Colab."""
     if module_url is None:
-        module_url = "https://raw.githubusercontent.com/bsheese/cs377/main/17_regression_crossval/17_2_MLR/ames_cleaning.py"
+        module_url = "https://raw.githubusercontent.com/bsheese/cs377/main/17_regression_crossval/17_2_1_MLR/ames_cleaning.py"
     return f'''import urllib.request
 module_url = "{module_url}"
 urllib.request.urlretrieve(module_url, "ames_cleaning.py")

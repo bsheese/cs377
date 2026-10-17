@@ -40,7 +40,7 @@ jupyter lab
 
 ## Shared modules
 
-- `17_regression_crossval/17_2_MLR/ames_cleaning.py` — full Ames Housing
+- `17_regression_crossval/17_2_1_MLR/ames_cleaning.py` — full Ames Housing
   cleaning pipeline (`load_and_clean_ames`), used by the 17_2 notebooks.
 - `18_classification/classification_cleaning.py` — Titanic and breast-cancer
   loaders used across unit 18.

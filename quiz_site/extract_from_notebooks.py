@@ -21,7 +21,7 @@ TITLES = {
     "16_ml_intro": "16 · Intro to Machine Learning",
     "17_0_Preliminaries": "17.0 · Regression Preliminaries",
     "17_1_SLR": "17.1 · Simple Linear Regression",
-    "17_2_MLR": "17.2 · Multiple Linear Regression",
+    "17_2_1_MLR": "17.2 · Multiple Linear Regression",
     "17_3_Interactions": "17.3 · Interaction Terms",
     "18_1_Classification_Basics": "18.1 · Classification Basics",
     "18_2_LogisticRegression": "18.2 · Logistic Regression",
