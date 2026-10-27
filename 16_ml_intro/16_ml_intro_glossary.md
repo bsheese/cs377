@@ -1,4 +1,4 @@
-# 16 ML Intro — Glossary
+# 16 ML Intro: Glossary
 
 This document defines the technical and conceptual terms used across the notebooks in the 16 ML Intro series, plus a few forward-looking terms (marked as such) that become important in later units.
 
@@ -21,9 +21,6 @@ The broader field of computer science concerned with creating systems that can p
 
 ### Boolean Mask
 An array or Series of `True`/`False` values used to select a subset of data. Created by applying a comparison operator (e.g., `>`, `==`, `<=`) to an array or Series. With NumPy arrays, the mask is passed directly inside `array[mask]`. With Pandas, it is passed inside `.loc[]` to filter rows. Multiple masks can be combined with `&` (and), `|` (or), and `~` (not).
-
-### Broadcasting
-NumPy's mechanism for applying operations between arrays of different shapes. When an operation involves a scalar and an array, or two arrays whose shapes are compatible, NumPy automatically "stretches" the smaller shape to match the larger one without copying data. Example: adding a single number to every element of a 2D matrix.
 
 ---
 
@@ -85,7 +82,7 @@ A principle stating that the quality of a model's output is directly limited by 
 ## H
 
 ### Head / Tail
-Pandas methods — `.head(n)` returns the first `n` rows (default 5), `.tail(n)` returns the last `n` rows (default 5). Used to inspect data quickly without printing the entire structure.
+Pandas methods: `.head(n)` returns the first `n` rows (default 5), `.tail(n)` returns the last `n` rows (default 5). Used to inspect data quickly without printing the entire structure.
 
 ---
 
@@ -112,7 +109,7 @@ An interactive computing environment that integrates text, code, and code output
 ## K
 
 ### K-Means
-An unsupervised clustering algorithm that groups data points into $k$ clusters by repeatedly assigning each point to the nearest cluster center and re-computing the centers. Used in 16_1 to show that the song groups can be discovered from features alone — without the labels supervised learning requires. The discovered clusters are numbered, not named; interpreting them is up to us.
+An unsupervised clustering algorithm that groups data points into $k$ clusters by repeatedly assigning each point to the nearest cluster center and re-computing the centers. Used in 16_1 to show that the song groups can be discovered from features alone, without the labels supervised learning requires. The discovered clusters are numbered, not named; interpreting them is up to us.
 
 ### K-Nearest Neighbors (KNN)
 A supervised learning algorithm that classifies a new data point by looking at the $k$ closest training examples in feature space and taking a majority vote. Used in 16_1 to predict song danceability from tempo and energy. Sensitive to the scale of features, so **Feature Scaling** is applied before fitting. Predictions can include a probability estimate via `.predict_proba()`.
@@ -195,7 +192,7 @@ A type of machine learning where the model is trained on labeled data (input-out
 The output variable that a supervised learning model aims to predict. Represented mathematically as $y$. Also called the dependent variable, label, or response variable.
 
 ### Test Set
-A portion of the labeled data deliberately held back and *not* used during training, so the model can be scored on examples it has never seen. Measuring performance on the training data itself is misleading — a model can memorize its training examples yet fail on new data. Contrast with the **Training** data. See **Train/Test Split**.
+A portion of the labeled data deliberately held back and *not* used during training, so the model can be scored on examples it has never seen. Measuring performance on the training data itself is misleading, because a model can memorize its training examples yet fail on new data. Contrast with the **Training** data. See **Train/Test Split**.
 
 ### Train/Test Split
 Dividing labeled data into a training set (used to fit the model) and a **Test Set** (held back to evaluate it on unseen examples). scikit-learn's `train_test_split` performs the division. Used in nearly every modeling notebook in the course; it guards against overstating a model's quality by testing it on data it was trained on. Related: **Overfitting**, **Data Leakage**.
@@ -218,13 +215,13 @@ A type of machine learning where the model is given unlabeled data and must find
 ## V
 
 ### `.value_counts()`
-A Pandas method that tallies how many times each unique value appears in a column (or Series), returning the counts sorted from most to least common. The standard tool for inspecting a categorical column — and, in classification, for checking **class balance** (how many examples exist of each category the model must predict).
+A Pandas method that tallies how many times each unique value appears in a column (or Series), returning the counts sorted from most to least common. The standard tool for inspecting a categorical column and, in classification, for checking **class balance** (how many examples exist of each category the model must predict).
 
 ### Vectorization
-Performing an operation on an entire array or Series at once (e.g., `myarray + 4`, `series.str.lower()`) instead of looping element-by-element in Python. Vectorized operations run in compiled C code under the hood, making them dramatically faster than the equivalent Python loop — the main reason to prefer NumPy/Pandas operations over `for` loops.
+Performing an operation on an entire array or Series at once (e.g., `myarray + 4`, `series.str.lower()`) instead of looping element-by-element in Python. Vectorized operations run in compiled C code under the hood, making them dramatically faster than the equivalent Python loop, which is the main reason to prefer NumPy/Pandas operations over `for` loops.
 
 ### View (informal usage)
-In this module, "viewing" data means displaying the result of a selection (e.g., `.head()`, `.tail()`, boolean masking) without changing the original object. These operations return **new objects** — the original Series or DataFrame is left unchanged, and the result is discarded unless assigned to a variable. (Pandas also has a stricter internal notion of memory views vs. copies, which we will meet in later units.)
+In this module, "viewing" data means displaying the result of a selection (e.g., `.head()`, `.tail()`, boolean masking) without changing the original object. These operations return **new objects**: the original Series or DataFrame is left unchanged, and the result is discarded unless assigned to a variable. (Pandas also has a stricter internal notion of memory views vs. copies, which we will meet in later units.)
 
 ---
 

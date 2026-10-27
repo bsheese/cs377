@@ -1,6 +1,6 @@
-# 16 ML Intro — Topic Outline
+# 16 ML Intro: Topic Outline
 
-This document provides a complete outline of all topics covered across the notebooks in the 16 ML Intro series: 16_1, 16_3, 16_4, 16_5, and the 16_9 exercises. (There is no 16_2 — notebook basics are covered inside 16_1.)
+This document provides a complete outline of all topics covered across the notebooks in the 16 ML Intro series: 16_1, 16_3, 16_4_1 to 16_4_3, 16_5, and the 16_9 exercises. (There is no 16_2; notebook basics are covered inside 16_1.)
 
 ---
 
@@ -21,7 +21,7 @@ This document provides a complete outline of all topics covered across the noteb
 
 ### The Central Role of Data
 - ML as empirical: data is the raw material
-- "Garbage in, garbage out" — data quality determines model quality
+- "Garbage in, garbage out": data quality determines model quality
 - Bias, noise, and representativeness of training data
 - Why most course time goes into data preparation, not algorithm coding
 
@@ -49,13 +49,13 @@ This document provides a complete outline of all topics covered across the noteb
 - Restart the kernel if the notebook seems broken
 
 ### Supervised Learning Worked Examples
-- **KNN Classifier** — song danceability: features (tempo, energy) → danceable/not
+- **KNN Classifier**: song danceability: features (tempo, energy) → danceable/not
   - Decision boundary: the region where the model changes its prediction
   - Prediction confidence / probability (`.predict_proba()`)
   - Feature scaling with `StandardScaler` before fitting KNN
-- **Linear Regression** — house price from square footage
+- **Linear Regression**: house price from square footage
   - Model fit, prediction (`\hat{y}`), residual standard deviation as uncertainty
-- **K-Means Clustering** — the same songs without labels
+- **K-Means Clustering**: the same songs without labels
   - Discovering groups from features alone vs. naming the groups
   - Side-by-side contrast with the supervised (labeled) view
 
@@ -67,7 +67,7 @@ This document provides a complete outline of all topics covered across the noteb
 
 ## 16_3: Introducing Numpy Arrays
 
-**Topics:** List review, array creation, array operations, broadcasting, reshaping, random number generation, statistical methods, multi-dimensional arrays.
+**Topics:** List review, array creation, array operations, boolean masking, random number generation, statistical methods, multi-dimensional arrays.
 
 ### Python List Review
 - Creating lists, appending, extending
@@ -82,10 +82,9 @@ This document provides a complete outline of all topics covered across the noteb
 - Indexing, slicing, and boolean masking work similarly to lists
 - Type coercion: assigning a float to a string array converts it to string
 
-### Array Arithmetic and Broadcasting
-- Adding, subtracting, multiplying, dividing — applied element-wise
+### Vectorized Array Arithmetic
+- Adding, subtracting, multiplying, dividing: applied element-wise
 - Lists cannot do this: `list + 4` produces an error
-- **Broadcasting:** applying an operation between arrays of different shapes (e.g., scalar to array, row to 2D matrix); NumPy stretches the smaller shape to match
 
 ### Creating Arrays
 - `np.array()` from Python lists
@@ -98,8 +97,7 @@ This document provides a complete outline of all topics covered across the noteb
 - `np.random.randint()`, `np.random.random()`, `np.random.normal()`
 - `np.random.shuffle()`, `np.random.choice()`
 
-### Reshaping Arrays
-- `.reshape()` to change array dimensions
+### Multi-Dimensional Arrays
 - `.shape` attribute for inspecting dimensions
 - Arrays from nested lists (multi-dimensional)
 
@@ -113,7 +111,7 @@ This document provides a complete outline of all topics covered across the noteb
 - Computing statistics on filtered subsets
 
 ### Best Practices
-- Don't create empty arrays and append — pre-allocate with `np.zeros()`
+- Don't create empty arrays and append: pre-allocate with `np.zeros()`
 
 ---
 
@@ -121,7 +119,7 @@ This document provides a complete outline of all topics covered across the noteb
 
 **Topics:** Comparing lists/arrays/Series, Series creation, copying vs. aliasing, examining data, selecting data, updating, sorting, operations, string methods.
 
-### Lists, Arrays, and Series — A Comparison
+### Lists, Arrays, and Series: A Comparison
 - Side-by-side comparison of features, performance, and use cases
 - Arrays: homogeneous, fast math, no labels
 - Series: labeled index, heterogeneous-friendly, built-in NaN handling, alignment by label
@@ -168,7 +166,7 @@ This document provides a complete outline of all topics covered across the noteb
 - Element-wise arithmetic: `series + 5`, `series - 5`, `series * 5`, `series / 5`
 - Operations return a new Series; the original is unchanged
 - Reassign to persist changes: `series = series + 5`
-- `.cumsum()` — cumulative sum across the series
+- `.cumsum()`: cumulative sum across the series
 
 ### Basic String Operations
 - String concatenation across a series
@@ -179,8 +177,8 @@ This document provides a complete outline of all topics covered across the noteb
 - Avoid for-loops when vectorized operations exist
 
 ### Sorting Series
-- `.sort_index()` — sort by index labels
-- `.sort_values()` — sort by values
+- `.sort_index()`: sort by index labels
+- `.sort_values()`: sort by values
 - Sorting returns a new Series; reassign to persist
 - `ascending=False` for descending order
 - In-place sorting exists but not recommended for this course
@@ -206,14 +204,14 @@ This document provides a complete outline of all topics covered across the noteb
 - Object identity checking with `is`
 
 ### Examining Dataframes
-- `.info()` — column types, non-null counts, memory usage
-- `.head()` and `.tail()` — first/last rows
+- `.info()`: column types, non-null counts, memory usage
+- `.head()` and `.tail()`: first/last rows
 - `.index` and `.columns` attributes
 
 ### Setting and Resetting the Index
-- `.set_index()` — promote a column to the index
-- `.reset_index()` — move index back to a column
-- `.sort_index()` — sort by index values
+- `.set_index()`: promote a column to the index
+- `.reset_index()`: move index back to a column
+- `.sort_index()`: sort by index values
 
 ### Updating Index Labels and Column Labels
 - Assigning a new list or series to `.index`
@@ -274,20 +272,20 @@ This document provides a complete outline of all topics covered across the noteb
 
 ---
 
-## 16_9: EDA Workout — Auto MPG Exercises
+## 16_9: EDA Workout: Auto MPG Exercises
 
 **Topics:** Integrative fill-in-the-blank exercises applying the 16_3–16_5 skills to the seaborn Auto MPG dataset (398 cars, 1970–1982).
 
-### Task 1 — NumPy
+### Task 1: NumPy
 - `.to_numpy()`, summary statistics (`.mean()`, `.std()`, `.min()`, `.max()`)
 - Boolean masking and statistics on masked subsets
 
-### Task 2 — Pandas Series
+### Task 2: Pandas Series
 - `.loc[]` label slicing (inclusive stop)
 - `.sort_values(ascending=False)` with `.head()`
 - Boolean masks on a Series
 
-### Task 3 — Pandas DataFrame
+### Task 3: Pandas DataFrame
 - Creating a derived column from two existing columns
 - Combined boolean masks with `&`
 - Comparing group means with `.loc[]` selection and `.mean()`

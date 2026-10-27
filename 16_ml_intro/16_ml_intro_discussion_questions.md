@@ -1,4 +1,4 @@
-# Discussion Questions: 16 — Introduction to ML, NumPy, and Pandas
+# Discussion Questions: 16: Introduction to ML, NumPy, and Pandas
 
 ---
 
@@ -72,19 +72,15 @@
 
 10. `mask.sum()` counts True values because True=1 and False=0. This works in Python, but is it good practice? What would make the intent clearer?
 
-### Broadcasting and Reshaping
+### Reshaping for scikit-learn
 
-11. Broadcasting allows `(3,1)` and `(3,)` arrays to be added together, producing a `(3,3)` result. Draw out what this means for a specific example with numbers. When could broadcasting produce unexpected results?
-
-12. `.reshape(-1, 1)` converts a 1D array to a 2D column. Why does scikit-learn's `LinearRegression` require 2D input? What does the `-1` mean?
-
-13. If an array has shape `(100,)` and you reshape it to `(-1, 5)`, what is the resulting shape? What would happen if the array had 103 elements instead?
+11. `.reshape(-1, 1)` converts a 1D array to a 2D column. Why does scikit-learn's `LinearRegression` require 2D input? What does the `-1` mean?
 
 ### Random Numbers and Statistics
 
-14. `np.random.seed(42)` is called before generating data. What would happen if you didn't set the seed? Why is reproducibility important in machine learning?
+12. `np.random.seed(42)` is called before generating data. What would happen if you didn't set the seed? Why is reproducibility important in machine learning?
 
-15. Why is pre-allocating a `np.zeros()` array and filling it in a loop faster than building an array with repeated `np.append()` calls?
+13. Why is pre-allocating a `np.zeros()` array and filling it in a loop faster than building an array with repeated `np.append()` calls?
 
 ---
 
@@ -152,7 +148,7 @@
 
 ### Modifying DataFrames
 
-9. Creating a new column with `df.loc[:, 'new_col'] = value` broadcasts a scalar across all rows. When might broadcasting cause unexpected behavior?
+9. Creating a new column with `df.loc[:, 'new_col'] = value` puts the same single value in every row. When might assigning one value to a whole column cause unexpected behavior?
 
 10. `df.drop(columns=['col1'])` returns a new DataFrame unless `inplace=True`. When is the non-destructive default helpful, and when might you prefer `inplace=True`?
 
@@ -162,7 +158,7 @@
 
 12. In the Grammy Winners dataset, New York leads in both absolute and per-capita Grammy winners. Does this surprise you? What confounding variables might explain this result?
 
-13. In the Titanic dataset, combining `(df['Age'] < 10) | (df['Age'] > 60)` to find the very young and very old — what real-world questions could you answer with this filter?
+13. In the Titanic dataset, combining `(df['Age'] < 10) | (df['Age'] > 60)` to find the very young and very old. What real-world questions could you answer with this filter?
 
 14. The `.info()` method shows non-null counts. Before doing any analysis, why should this always be one of the first things you check?
 

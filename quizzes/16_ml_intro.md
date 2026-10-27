@@ -83,10 +83,10 @@
 - [ ] NumPy does not recognize Python keywords inside array expressions
 
 ### np.linspace(0, 1, 5) produces [0.0, 0.25, 0.5, 0.75, 1.0]. What does np.arange(0, 1, 0.25) produce?
-- [ ] [0.0, 0.25, 0.5, 0.75, 1.0] — five elements including endpoint
-- [x] [0.0, 0.25, 0.5, 0.75] — four elements excluding endpoint
-- [ ] [0.25, 0.5, 0.75, 1.0] — excludes start but includes endpoint
-- [ ] [0.0, 0.25, 0.5, 0.75, 1.0, 1.25] — continues past 1.0 by one step
+- [ ] [0.0, 0.25, 0.5, 0.75, 1.0]: five elements including endpoint
+- [x] [0.0, 0.25, 0.5, 0.75]: four elements excluding endpoint
+- [ ] [0.25, 0.5, 0.75, 1.0]: excludes start but includes endpoint
+- [ ] [0.0, 0.25, 0.5, 0.75, 1.0, 1.25]: continues past 1.0 by one step
 
 ### arr.reshape(-1, 1) converts a 1D array to 2D. Why does scikit-learn require this shape?
 - [x] Scikit-learn uses 2D arrays to represent a feature matrix with rows=samples, cols=features
@@ -99,12 +99,6 @@
 - [x] The random data would change each run, making results non-reproducible
 - [ ] NumPy would raise an error when generating random numbers
 - [ ] The generated distribution would no longer be normal
-
-### An array has shape (100,). You reshape it to (-1, 5). What is the resulting shape?
-- [ ] (5, 100) — the -1 is replaced by 100
-- [x] (20, 5) — NumPy infers 20 rows to make 100 elements fit
-- [ ] (100, 5) — the original size is preserved as rows
-- [ ] (-1, 5) — NumPy cannot infer the -1 dimension here
 
 ## 16_4: Pandas Series
 
