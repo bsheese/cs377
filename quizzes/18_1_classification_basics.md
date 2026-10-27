@@ -167,7 +167,7 @@
 
 ### The credit card fraud dataset has 0.17% fraud. A model that labels every transaction 'Not Fraud' achieves 99.83% accuracy. Why is this model useless?
 - [ ] Its precision is too low
-- [x] It catches zero fraud cases — the thing we actually care about
+- [x] It catches zero fraud cases, and catching fraud is the reason for building the model
 - [ ] It has a high false positive rate
 - [ ] It has not been trained on enough data
 
@@ -183,7 +183,7 @@
 - [ ] The ROC curve only measures recall, not precision
 - [ ] XGBoost always produces high AUC on fraud data
 
-### The F2-score (beta=2) weights recall four times as heavily as precision. When is this the right choice?
+### The F2-score (beta = 2) treats recall as more important than precision. When is this the right choice?
 - [ ] When false positives are more costly than false negatives
 - [x] When missing positive cases (e.g., fraud) is more costly than generating false alarms
 - [ ] When the dataset is perfectly balanced
@@ -195,7 +195,7 @@
 - [ ] The model has high recall but low precision
 - [ ] The positive class prevalence is too high to detect fraud
 
-### Why must you use out-of-fold (OOF) probabilities — not test-set probabilities — when selecting the optimal threshold?
+### Why must you use out-of-fold (OOF) probabilities rather than test-set probabilities when selecting the optimal threshold?
 - [ ] OOF probabilities are always more accurate
 - [x] Using test-set probabilities to choose a threshold means your final evaluation is no longer on truly unseen data
 - [ ] The test set is too small for reliable threshold estimation
@@ -240,7 +240,7 @@
 - [ ] The dataset is too small for hyperparameter tuning to matter
 
 ### After nested CV, the final production model is trained on 100% of the data. How should its performance be reported?
-- [x] Report the nested CV mean PR-AUC — never evaluate the final model on the data it was trained on
+- [x] Report the nested CV mean PR-AUC; never evaluatenever evaluate the final model on the data it was trained on
 - [ ] Evaluate the final model on the full dataset, since more data gives a more reliable score
 - [ ] Re-split the data and evaluate on a fresh 30% test set
 - [ ] Report the inner-loop GridSearchCV best score

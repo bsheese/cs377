@@ -54,7 +54,7 @@
 
 ## 18_5_3: Imbalanced Multiclass
 
-### In the fetal health data, most recordings are Normal. A weak model posts high accuracy while missing most Pathological cases. Why is accuracy misleading here?
+### In the fetal health data, most recordings are Normal. A weak model posts high accuracy while missing many of the Suspect and Pathological cases. Why is accuracy misleading here?
 - [x] Predicting the dominant class for nearly everything already yields high accuracy
 - [ ] Accuracy is undefined when a dataset has more than two classes
 - [ ] Accuracy double-counts observations from the majority class

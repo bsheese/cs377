@@ -1,4 +1,4 @@
-# Discussion Questions: 18_5 — Multi-Class Classification
+# Discussion Questions: 18_5 Multi-Class Classification
 
 ---
 
@@ -6,7 +6,7 @@
 
 ### From Two Classes to Three
 
-1. Everything in this notebook — probabilities, confusion matrix, classification report — existed in the binary notebooks of 18_1. For each of the three, state precisely what changes when the number of classes goes from 2 to 3.
+1. Everything in this notebook (probabilities, confusion matrix, classification report) also appeared in the binary notebooks of 18_1. For each of the three, state precisely what changes when the number of classes goes from 2 to 3.
 2. `predict_proba` returns a row of three numbers for each penguin, and the numbers always sum to 1. Why must they sum to 1? What assumption about the classes does that encode, and can you think of a problem where that assumption would be wrong (hint: can a photo contain both a cat *and* a dog)?
 3. One-hot encoding writes Adelie as [1, 0, 0]. Why not just use 0, 1, 2 as the target and treat it as a regression problem? What false relationship between the species would the model then be free to learn?
 
@@ -32,18 +32,18 @@
 
 ## 18_5_3: When One Class Is Rare
 
-### The Imbalance Trap
+### Majority-Class Bias
 
-13. In the fetal-health data, the majority of recordings are Normal. What accuracy does the "always predict Normal" strategy achieve, and why does the notebook call beating that number without checking per-class recall a "trap"? Connect this to the accuracy paradox from 18_1.
+13. In the fetal-health data, the majority of recordings are Normal. What accuracy does the "always predict Normal" strategy achieve, and why is it a mistake to be satisfied with beating that number without checking per-class recall? Connect this to the accuracy paradox from 18_1.
 14. The rare Pathological class is also the most important one to catch. Is this coincidence, or is there a general reason the rare class is so often the high-stakes class in real applications? Give two more examples.
 
 ### Sample Weights
 
 15. `compute_sample_weight(class_weight="balanced")` gives rare-class rows larger weights during training. Explain what changes from the model's point of view: what did a missed Pathological case "cost" the model before weighting, and what does it cost after?
-16. Sample weighting changes no data — no rows are duplicated or deleted. Compare this to oversampling the rare class. What risk of oversampling does weighting avoid?
-17. After adding balanced sample weights, overall accuracy often goes *down* while macro F1 goes up. Why is this trade usually worth making here? Who, concretely, benefits from it in the fetal-health setting?
+16. Sample weighting does not change the data, since no rows are duplicated or deleted. Compare this to oversampling the rare class. What risk of oversampling does weighting avoid?
+17. In 18_5_3, adding balanced sample weights raised recall for Suspect (0.70 to 0.86) and Pathological (0.89 to 0.94), but lowered accuracy and also lowered macro F1 (0.87 to 0.84), because many more Normal sessions were flagged. Make the case for each model. Who, concretely, benefits from the balanced model in the fetal-health setting, who bears its costs, and what would you need to know to choose between them?
 
-### Honest Evaluation
+### Evaluation with Stratified Cross-Validation
 
 18. Ordinary K-fold can hand one fold almost none of the rare class. Walk through what happens to that fold's Pathological recall and why the resulting cross-validation average is untrustworthy. How does stratification fix it?
 19. The notebook recommends macro F1 plus the rare class's own recall as the metrics to watch. Why is macro F1 alone not quite enough when one specific class is the one you cannot afford to miss?

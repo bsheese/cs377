@@ -1,4 +1,4 @@
-# Discussion Questions: 18_2 — Logistic Regression
+# Discussion Questions: 18_2 Logistic Regression
 
 ---
 
@@ -26,7 +26,7 @@
 
 8. The likelihood of observing a set of outcomes is the product of probabilities. Why do we use log-likelihood (sum of logs) instead of the raw likelihood (product of probabilities)?
 
-9. MLE uses gradient descent to find optimal coefficients. What is a "learning rate," and what happens if it is set too high vs. too low?
+9. The coefficients that maximize the likelihood are found with an iterative optimizer such as gradient descent. What is a "learning rate," and what happens if it is set too high vs. too low?
 
 ---
 
@@ -62,9 +62,9 @@
 
 11. The odds ratio for `pclass_3` (vs. 1st class) is approximately 0.17. What does an odds ratio below 1 mean? How much worse are 3rd class passengers' survival odds?
 
-12. Age has OR ≈ 0.59. How do you interpret this? Would you prefer to know this as an odds ratio or as a probability change? Why?
+12. Age has OR ≈ 0.59. Age was standardized before fitting, so this odds ratio describes a one-standard-deviation increase in age (about 14 years). How do you interpret it? Would you prefer to know this as an odds ratio or as a probability change? Why?
 
-13. Two features — `sibspouse` and `parentchild` — both have OR < 1. Does this surprise you? What real-world explanation might account for family size being associated with lower survival?
+13. Two features, `sibspouse` and `parentchild`, both have OR < 1. Does this surprise you? What real-world explanation might account for family size being associated with lower survival?
 
 ### Evaluation Metrics
 
@@ -84,7 +84,7 @@
 
 ---
 
-## 18_2_2: Interpretability — When the Model Must Explain Itself
+## 18_2_2: Interpretability: When the Model Must Explain Its Predictions
 
 ### Statsmodels vs. Sklearn
 
@@ -104,7 +104,7 @@
 
 ### LR vs. XGBoost Explanations
 
-7. Both models put `sex_f` at the top of their importance rankings, yet the notebook argues they "say very different things." List the three pieces of information the LR odds ratio gives you that XGBoost's gain-based importance does not.
+7. Both models put `sex_f` at the top of their importance rankings, yet the notebook argues that they tell you quite different things. List the three pieces of information the LR odds ratio gives you that XGBoost's gain-based importance does not.
 
 8. XGBoost's feature importances are unsigned. Why can't a tree ensemble's importance score have a direction the way a regression coefficient does?
 
@@ -112,11 +112,11 @@
 
 9. Under the Equal Credit Opportunity Act, a lender must give specific reasons for denying credit. Walk through how the individual-prediction decomposition (coefficient × scaled feature value) produces such a reason. What is the equivalent procedure for XGBoost, and why is it harder?
 
-10. The notebook claims a 2% AUC improvement from a black-box model is "often not a legal option" in regulated domains. Construct the cost-benefit argument: when is the accuracy gain worth the interpretability loss, and who gets to decide?
+10. The notebook says that in regulated domains a model that is hard to explain is "often not a legal option," even if its AUC is 2% higher. Construct the cost-benefit argument: when is the accuracy gain worth the interpretability loss, and who gets to decide?
 
 ---
 
-## 18_2_3: From One Neuron to Many — The Bridge to Neural Networks
+## 18_2_3: From One Neuron to Many: Connecting Logistic Regression to Neural Networks
 
 ### LR = One Neuron
 
@@ -136,15 +136,15 @@
 
 6. Why is sigmoid still the standard choice for the *output* layer of a binary classifier, even in networks that use ReLU everywhere else?
 
-### The Interpretability Tax
+### The Interpretability Trade-Off
 
 7. The shallow MLP has 145 parameters vs. logistic regression's 8, yet scores about the same on the Titanic test set. Give two reasons the extra capacity doesn't help here.
 
-8. The notebook calls the loss of interpretability the "interpretability tax." For each of these applications, say whether you would pay it and why: (a) credit scoring, (b) photo tagging, (c) hospital readmission risk, (d) movie recommendations.
+8. Moving from logistic regression to a neural network can improve accuracy but costs interpretability. For each of these applications, say whether you would accept that trade-off and why: (a) credit scoring, (b) photo tagging, (c) hospital readmission risk, (d) movie recommendations.
 
 ---
 
-## 18_2_9: Credit Risk Exercise — Interpretability Constraints
+## 18_2_9: Credit Risk Exercise: Interpretability Constraints
 
 1. The compliance scenario rules out XGBoost before any model is fit. Is this premature? What would you need to know about the regulatory requirement to decide whether a post-hoc explanation tool (like SHAP) could make XGBoost acceptable instead?
 
@@ -152,6 +152,6 @@
 
 3. After fitting, some odds ratios for rare categories have enormous confidence intervals. What does this tell you about how much data supports those coefficients? Should they appear in an adverse action notice?
 
-4. Your forest plot will likely show `checking_status` categories among the strongest predictors — consistent with XGBoost's feature importance in 18_1_1. Why is agreement between two very different models reassuring evidence about the data rather than about either model?
+4. Your forest plot will likely show `checking_status` categories among the strongest predictors, which is consistent with XGBoost's feature importance in 18_1_1. Why is agreement between two very different models reassuring evidence about the data rather than about either model?
 
 5. If XGBoost achieves higher AUC than your logistic regression on this dataset, write the two-or-three sentence recommendation you would give the bank. Which model do you recommend, and what is the deciding factor?

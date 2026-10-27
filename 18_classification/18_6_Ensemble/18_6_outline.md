@@ -1,4 +1,4 @@
-# 18_6 Ensemble Methods — Topic Outline
+# 18_6 Ensemble Methods: Topic Outline
 
 This document provides a complete outline of all topics covered across the five notebooks in the 18_6 Ensemble Methods series.
 
@@ -6,31 +6,31 @@ This document provides a complete outline of all topics covered across the five 
 
 ## 18_6_0: Intro to Ensemble Methods
 
-**Dataset:** Wisconsin Breast Cancer — 569 samples, 30 features, binary target (malignant/benign), ~63/37 class distribution.
+**Dataset:** Wisconsin Breast Cancer: 569 samples, 30 features, binary target (malignant/benign), ~63/37 class distribution.
 
 ### Introduction: Building on What We Know
 - Acknowledges prior tree coverage from 17_2_2 (regression trees) and the 18_1 classification series
-- Frames 18_6 as a deeper dive into ensemble methods with classification-specific concerns
+- Frames 18_6 as a more detailed treatment of ensemble methods, with classification-specific concerns
 - Focus on precision, recall, false negatives in medical diagnosis, and ROC curves
 
 ### The Ensemble Hierarchy
-- All ensemble methods share the core idea: combine multiple weak models to create a strong one
+- All ensemble methods share the core idea: combine many models so the combination predicts better than any one of them (boosting combines weak models; bagging and random forests average strong but unstable ones)
 - Comparison table: Single Tree, Bagging, Random Forest, Boosting, BART
   - How trees are built (parallel vs. sequential)
   - How predictions are combined (majority vote vs. weighted sum vs. posterior distribution)
   - Primary goal (interpretability vs. variance reduction vs. bias reduction vs. uncertainty quantification)
-- Key insight: Bagging/RF reduce variance; Boosting reduces bias; BART addresses both + uncertainty
+- Bagging/RF reduce variance; Boosting reduces bias; BART addresses both + uncertainty
 
 ### The Dataset: Wisconsin Breast Cancer
 - 569 samples, 30 features (mean, SE, and "worst" for 10 cell nucleus characteristics)
 - Binary target: Malignant (1) or Benign (0)
-- Class distribution: ~63% benign, ~37% malignant — moderately imbalanced
+- Class distribution: ~63% benign, ~37% malignant (moderately imbalanced)
 - High-stakes classification: false negatives (missed cancers) are far more costly than false positives (unnecessary biopsies)
 - Why accuracy alone is insufficient for medical diagnosis
 
 ---
 
-## 18_6_1: Decision Trees — The Foundation of Ensembles
+## 18_6_1: Decision Trees: The Foundation of Ensembles
 
 **Dataset:** Wisconsin Breast Cancer
 
@@ -44,7 +44,7 @@ This document provides a complete outline of all topics covered across the five 
 ### A Single Decision Tree
 - **Gini impurity explained:** Formula, numerical example, how trees choose splits
 - Gini = 0 (pure) vs. Gini = 0.5 (maximally mixed)
-- Alternative: entropy (information gain) — produces nearly identical trees
+- Alternative: entropy (information gain), which produces nearly identical trees
 - Visualizing the tree flowchart with `plot_tree`
 - Reading tree nodes: condition, Gini, samples, value, class, color
 - Regression vs. classification tree comparison table (leaf predictions, split criteria, evaluation metrics)
@@ -52,8 +52,8 @@ This document provides a complete outline of all topics covered across the five 
 ### The Overfitting Problem: Depth vs. Generalization
 - Training accuracy vs. testing accuracy across depths 1-20
 - Adding malignant recall to the depth experiment (dual-axis plot)
-- Best accuracy depth vs. best recall depth — they may differ
-- The gap between training and testing curves = overfitting penalty
+- Best accuracy depth vs. best recall depth, which may differ
+- The gap between training and testing curves as a measure of overfitting
 - Same bias-variance pattern as 17_2_2 with Ames data, now in classification context
 
 ### Beyond Accuracy: Classification Metrics
@@ -73,9 +73,9 @@ This document provides a complete outline of all topics covered across the five 
 
 **Dataset:** Wisconsin Breast Cancer
 
-### Bagging: Fixing Instability
+### Bagging: Reducing Instability
 - How bagging works: bootstrap sampling → deep trees → majority vote
-- Why it works: each tree overfits differently; averaging cancels noise
+- Why it works: each tree overfits differently, and averaging cancels much of that noise
 - **Why deep trees?** Contrast with boosting's shallow trees
   - Bagging: each tree needs to be strong on its bootstrap sample; variance is reduced by averaging
   - Boosting: each tree only corrects residual errors; deep trees overfit faster
@@ -85,11 +85,11 @@ This document provides a complete outline of all topics covered across the five 
 ### Handling Class Imbalance
 - The `class_weight='balanced'` parameter
 - Demonstrating the precision-recall tradeoff: default vs. balanced weights
-- In medical context: catching more cancers at the cost of more false positives
+- In medical context: catching more cancers at the cost of more false positives (on this dataset the weights made no difference)
 
 ### Random Forests: Decorrelating the Trees
-- Bagging's flaw: correlation — dominant features used by every tree
-- The Random Forest fix: random feature subsets at each split (`max_features='sqrt'`)
+- Bagging's weakness: correlated trees, because dominant features are used by every tree
+- How Random Forests address this: random feature subsets at each split (`max_features='sqrt'`)
 - Forces trees to explore alternative paths, decorrelating them
 
 ### Classification Metrics: Beyond Accuracy
@@ -120,8 +120,8 @@ This document provides a complete outline of all topics covered across the five 
 
 ### AdaBoost: Adaptive Boosting
 - How AdaBoost works: equal weights → train stump → reweight misclassified → repeat → weighted voting
-- **Why stumps (max_depth=1)?** Weak learners only slightly better than random; power comes from combining hundreds
-- Contrast with bagging's deep trees: different strategies for different goals
+- **Why stumps (max_depth=1)?** Weak learners only slightly better than random; accuracy comes from combining hundreds
+- Contrast with bagging's deep trees: the two methods address different problems
 - AdaBoost accuracy, F1, and malignant recall
 
 ### Gradient Boosting: Predicting the Residuals
@@ -147,35 +147,38 @@ This document provides a complete outline of all topics covered across the five 
 
 ### Probability Calibration
 - Why calibration matters in medical contexts
-- Random Forests: typically well-calibrated
-- Gradient Boosting: often produces extreme probabilities
-- Calibration curves: predicted probability vs. actual fraction of positives
+- AdaBoost: poorly calibrated; all probabilities between about 0.2 and 0.8 despite high accuracy
+- Random Forest: mild pull toward the middle from averaging
+- Gradient Boosting: very extreme probabilities, but mostly correct on this dataset (Brier score slightly lower than RF)
+- Extreme vs. miscalibrated: why a probability near 0 or 1 is not a problem by itself
+- Calibration curves on out-of-fold probabilities with quantile bins; probability histograms; Brier score
+- `CalibratedClassifierCV` for rescaling poorly calibrated probabilities
 
 ### Note on BART
-- Conceptual position: between Random Forest and Gradient Boosting in accuracy
+- Expected accuracy broadly similar to the other ensembles
 - Key advantage: uncertainty quantification (credible intervals)
 - Why BART isn't in the comparison (requires specialized libraries such as `pymc`/`bartpy`)
 
 ---
 
-## 18_6_4: Model Comparison — All Ensemble Methods Head-to-Head
+## 18_6_4: Model Comparison: All Ensemble Methods Compared
 
 **Dataset:** Wisconsin Breast Cancer
 
 ### Nested Cross-Validation for Unbiased Comparison
 - Recall from 17_2_1_5: inner loop tunes, outer loop evaluates
 - Outer loop: 5-fold CV; Inner loop: 3-fold CV
-- Computational cost quantified: 450 total model fits across 4 models
+- Computational cost quantified: 470 model fits per pass of nested CV across 4 models (about 1,880 in total, because the notebook runs one pass per metric)
 - Hyperparameter grids per model
 
 ### Visualizing the Comparison
 - 4-panel boxplots: accuracy, F1, malignant recall, AUC
 - Strip plot overlay showing actual 5 outer fold data points
-- Honest visualization of limited sample size (5 points per model)
+- Showing the small sample size directly (5 points per model)
 
 ### Interpreting the Results
-- **The Bias-Variance Story:** Decision Tree (high variance) → Bagging → Random Forest → Gradient Boosting (lowest bias)
-- **The Malignant Recall Story:** Most clinically relevant metric; mean recall and variance across folds
+- **Bias and Variance:** Decision Tree (high variance) → Bagging → Random Forest → Gradient Boosting (lowest bias)
+- **Malignant Recall:** Most clinically relevant metric; mean recall and variance across folds
 - **Which Model Should You Choose?** Evidence-based decision table
 - **Nested CV vs. Single Train/Test Split:** Comparison table showing optimistic bias gap
 
@@ -188,7 +191,7 @@ This document provides a complete outline of all topics covered across the five 
 
 ### Conclusion: The Ensemble Series Recap
 - Single Decision Tree → Bagging → Random Forest → Gradient Boosting → BART
-- Key takeaways: ensembles beat single trees, bagging reduces variance, boosting reduces bias, tuning matters, recall > accuracy in medical contexts, nested CV gives honest estimates
+- Key takeaways: ensembles outperformed the single tree, bagging reduces variance, boosting reduces bias, tuning matters, recall > accuracy in medical contexts, nested CV gives unbiased estimates
 
 ---
 
@@ -206,5 +209,5 @@ These concepts appear throughout multiple notebooks:
 | **Bias-variance tradeoff** | 18_6_1 (depth experiment), 18_6_2 (bagging vs. RF), 18_6_3 (boosting vs. bagging), 18_6_4 (final comparison) |
 | **Cross-validation** | 18_6_1 (10-fold), 18_6_2 (10-fold), 18_6_3 (10-fold), 18_6_4 (nested 5×3) |
 | **OOB error** | 18_6_2 (bagging and RF) |
-| **Probability calibration** | 18_6_3 (RF vs. GB) |
+| **Probability calibration** | 18_6_3 (AdaBoost vs. RF vs. GB) |
 | **Class imbalance handling** | 18_6_0 (introduction), 18_6_2 (class_weight demo), 18_6_4 (recall-based model selection) |

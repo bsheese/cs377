@@ -16,7 +16,7 @@
 5. In the German Credit dataset, 70% of applicants have good credit and 30% have bad credit. What would be the accuracy of a model that always predicts "Good"? Why is this model useless despite its 70% accuracy?
 6. If a dataset had a 95/5 class split, what would the naive baseline accuracy be? How much better than this baseline would a model need to be before you'd consider it useful?
 7. Why is the accuracy paradox especially dangerous in real-world applications like fraud detection or rare disease diagnosis?
-8. The notebook states: "If your model's accuracy isn't significantly better than the majority class percentage, your model hasn't learned anything useful." What does "significantly better" mean in practice? Is 72% vs. 70% significant? What about 80% vs. 70%?
+8. The notebook says that a model whose accuracy does not beat the majority-class percentage has not learned anything useful, and that a gap of only 1–2 percentage points should make you suspicious. How much better does a model need to be in practice? Is 72% vs. 70% significant? What about 80% vs. 70%?
 
 ### Data Preparation
 
@@ -111,17 +111,17 @@
 
 ## 18_1_5: Credit Card Fraud Detection
 
-### Extreme Imbalance and the Accuracy Trap
+### Extreme Imbalance and the Accuracy Paradox
 
-51. The Credit Card Fraud dataset has a 0.17% fraud rate. A model that labels every transaction as "Not Fraud" achieves 99.83% accuracy. In your own words, why is this model completely useless despite its near-perfect accuracy?
-52. In the classification report for the untuned fraud model at the default threshold, accuracy is ~1.00 and weighted average F1 is also very high, yet fraud recall is only ~0.74. Which number most honestly describes the model's usefulness? Why is the weighted average nearly meaningless here?
-53. The fraud notebook deliberately avoids using ROC AUC as the primary evaluation tool. Explain why: what specific property of the False Positive Rate makes the ROC curve look deceptively good when 99.8% of samples are legitimate?
+51. The Credit Card Fraud dataset has a 0.17% fraud rate. A model that labels every transaction as "Not Fraud" achieves 99.83% accuracy. In your own words, why is this model of no use despite its near-perfect accuracy?
+52. In the classification report for the untuned fraud model at the default threshold, accuracy is ~1.00 and weighted average F1 is also very high, yet fraud recall is only ~0.74. Which number best describes the model's usefulness? Why is the weighted average nearly meaningless here?
+53. The fraud notebook deliberately avoids using ROC AUC as the primary evaluation tool. Explain why: what specific property of the False Positive Rate makes the ROC curve look better than the model really is when 99.8% of samples are legitimate?
 
 ### Precision-Recall Curves and F-Beta Score
 
 54. On the fraud dataset, the PR curve baseline is approximately 0.0017 (0.17%). What does this baseline represent? What would it mean if your model's PR curve barely rose above this line?
-55. The F2-score (beta=2) weights recall four times as heavily as precision (the weight is beta-squared). In fraud detection, why would you prioritize recall over precision? Give a concrete business example of what a false negative (missed fraud) costs the bank vs. a false positive (incorrectly flagging a legitimate transaction).
-56. The F-Beta score peaks at a specific threshold — below that threshold, recall is high but precision is very low; above it, the reverse is true. What does the peak of the F-Beta curve tell you about the right decision threshold for your specific cost priorities?
+55. The F2-score (beta = 2) treats recall as twice as important as precision (beta² = 4 is the number that appears in the formula). In fraud detection, why would you prioritize recall over precision? Give a concrete business example of what a false negative (missed fraud) costs the bank vs. a false positive (incorrectly flagging a legitimate transaction).
+56. The F-Beta score peaks at a specific threshold. Below that threshold, recall is high but precision is very low, and above it the reverse is true. What does the peak of the F-Beta curve tell you about the right decision threshold for your specific cost priorities?
 
 ### Threshold Selection and OOF Probabilities
 
@@ -135,7 +135,7 @@
 ### Handling Imbalance: Three Approaches
 
 59. By the end of Notebook 6 you have seen three tools for addressing class imbalance: `scale_pos_weight` (training time), a custom cost-weighted objective (training time), and threshold tuning (prediction time). What is the fundamental difference between the training-time approaches and the prediction-time approach? When would you use all three together?
-60. For the fraud dataset, the class ratio is about 499:1 (negative to positive), but the cost ratio is approximately 4.5:1 ($450 FN vs. $100 FP). Why would setting `scale_pos_weight = 499` be a poor choice here? What does the custom cost-weighted objective do differently?
+60. For the fraud dataset, the class ratio is about 578:1 (negative to positive), but the cost ratio is approximately 4.5:1 ($450 FN vs. $100 FP). Why would setting `scale_pos_weight = 578` be a poor choice here? What does the custom cost-weighted objective do differently, and could a different value of `scale_pos_weight` get a similar effect?
 
 ### GridSearch Scorer Design
 
@@ -145,4 +145,4 @@
 ### Nested Cross-Validation
 
 63. In nested cross-validation, what is the purpose of the inner loop? What is the purpose of the outer loop? Why does running `cross_val_score` on a model that was already tuned with GridSearch *overestimate* true generalization performance?
-64. After the full nested CV and hyperparameter tuning pipeline on the fraud dataset, the improvement over the default XGBoost model was very small. Give at least two reasons why small gains over well-tuned defaults are expected even with a systematic grid search.
+64. After the full nested CV and hyperparameter tuning pipeline on the fraud dataset, the tuned model did not beat the baseline: at the cost-optimal threshold it cost $1,100 more on the test set. Give at least two reasons why small or even negative gains over a well-chosen baseline are common, even with a systematic grid search.

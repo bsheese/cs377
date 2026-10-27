@@ -1,4 +1,4 @@
-# 18_1 Classification Basics — Glossary
+# 18_1 Classification Basics: Glossary
 
 This document defines all technical and conceptual terms used across the six notebooks in the 18_1 Classification Basics series.
 
@@ -7,7 +7,7 @@ This document defines all technical and conceptual terms used across the six not
 ## A
 
 ### Accuracy
-The proportion of correct predictions (both true positives and true negatives) out of all predictions. Can be misleading on imbalanced datasets — a model that always predicts the majority class can achieve high accuracy while being useless.
+The proportion of correct predictions (both true positives and true negatives) out of all predictions. Can be misleading on imbalanced datasets, because a model that always predicts the majority class can achieve high accuracy without detecting any minority-class cases.
 
 ### Accuracy Paradox
 The phenomenon where a model with high accuracy is actually performing poorly on the task of interest. This occurs on imbalanced datasets where a naive model that always predicts the majority class achieves high accuracy but fails to detect the minority class.
@@ -20,10 +20,10 @@ A single-number summary of a model's ranking ability, computed as the area under
 ## B
 
 ### Baseline (Naive)
-The performance of the simplest possible model — typically one that always predicts the majority class. Any useful model must significantly exceed the baseline. For a 70/30 split, the naive baseline accuracy is 70%.
+The performance of the simplest possible model, typically one that always predicts the majority class. Any useful model must significantly exceed the baseline. For a 70/30 split, the naive baseline accuracy is 70%.
 
 ### Business Cost Sensitivity
-The practice of assigning real-world dollar costs to different types of classification errors (false positives vs. false negatives) and choosing the decision threshold that minimizes total expected cost, rather than using a mathematically optimal but cost-blind threshold.
+The practice of assigning real-world dollar costs to different types of classification errors (false positives vs. false negatives) and choosing the decision threshold that minimizes total expected cost, rather than using a threshold, such as Youden's J, that ignores costs.
 
 ---
 
@@ -46,7 +46,7 @@ A table that cross-tabulates actual class labels against predicted class labels.
 The probability cutoff used to convert a soft prediction (probability) into a hard prediction (class label). By default, sklearn uses 0.5: if P(positive) ≥ 0.5, predict positive; otherwise predict negative. Moving the threshold changes the precision-recall trade-off. Selected via Youden's J, business cost analysis, or default convention.
 
 ### Denominator Trick
-A memory aid for keeping precision and recall straight. Ask: *what is in the denominator?* Precision's denominator is all **predicted** positives (TP + FP) — it measures how reliable your predictions are. Recall's denominator is all **actual** positives (TP + FN) — it measures how much of reality you caught. If you can remember which denominator belongs to which metric, the formula follows automatically.
+A memory aid for keeping precision and recall straight. Ask: *what is in the denominator?* Precision's denominator is all **predicted** positives (TP + FP), so it measures how reliable your positive predictions are. Recall's denominator is all **actual** positives (TP + FN), so it measures how many of the real positives you caught. If you can remember which denominator belongs to which metric, the formula follows automatically.
 
 ### Drop First
 A parameter in one-hot encoding (`drop_first=True`) that removes the first category column to avoid perfect multicollinearity (the dummy variable trap). With K categories, this produces K−1 binary columns instead of K.
@@ -63,10 +63,10 @@ A machine learning technique that combines multiple models to produce better pre
 ## F
 
 ### F1-Score
-The harmonic mean of precision and recall: `F1 = 2 × (precision × recall) / (precision + recall)`. Provides a single number that balances both metrics. Punishes extreme imbalances — a model with perfect precision but near-zero recall gets a near-zero F1.
+The harmonic mean of precision and recall: `F1 = 2 × (precision × recall) / (precision + recall)`. Provides a single number that balances both metrics. It is low whenever either metric is low, so a model with perfect precision but near-zero recall gets a near-zero F1.
 
 ### F-Beta Score
-A generalization of the F1-score that weights recall more (beta > 1) or less (beta < 1) than precision. The F2-score (beta=2) weights recall four times as much as precision (the weight is beta-squared), useful when missing positive cases is especially costly — such as fraud detection or disease screening.
+A generalization of the F1-score that weights recall more (beta > 1) or less (beta < 1) than precision. The F2-score (beta = 2) treats recall as twice as important as precision (beta² = 4 is the number that appears in the formula), which is useful when missing positive cases is especially costly, as in fraud detection or disease screening.
 
 ### False Negative (FN) / Type II Error
 A case where the model predicts negative (Good credit) but the actual label is positive (Bad credit / Default). In the credit context: approving a loan to someone who will default. In fraud: missing a fraudulent transaction.
@@ -119,7 +119,7 @@ An averaging strategy that computes the metric globally across all samples, aggr
 ## N
 
 ### n_estimators
-In ensemble models (XGBoost, Random Forest), the number of trees in the ensemble. More trees generally reduce variance but increase training time. Works hand-in-hand with **Learning Rate** — a lower learning rate usually requires a higher `n_estimators` to compensate.
+In ensemble models (XGBoost, Random Forest), the number of trees in the ensemble. More trees generally reduce variance but increase training time. Works together with **Learning Rate**: a lower learning rate usually requires a higher `n_estimators` to compensate.
 
 ### Naive Baseline
 See **Baseline (Naive)**.
@@ -135,7 +135,7 @@ A two-layer cross-validation approach: the inner loop tunes hyperparameters with
 A technique for converting categorical variables into binary (0/1) columns. Each category becomes its own column, with 1 indicating presence and 0 indicating absence.
 
 ### Out-of-Fold (OOF) Probabilities
-Predicted probabilities for each training sample obtained by predicting using models trained on folds that did not include that sample. Produced during cross-validation. Used for honest threshold selection without data leakage.
+Predicted probabilities for each training sample obtained by predicting using models trained on folds that did not include that sample. Produced during cross-validation. Used to select a threshold without leaking information from the test set.
 
 ---
 
@@ -145,7 +145,7 @@ Predicted probabilities for each training sample obtained by predicting using mo
 Synonym for **Precision**. Often used in medical and diagnostic contexts. Remembering "Precision = Positive Predictive Value" (both start with P and describe the positive prediction) is a useful word-association hook.
 
 ### Precision
-The proportion of positive predictions that are actually correct: `TP / (TP + FP)`. Measures reliability — when the model says "positive," how often is it right? See also: **Positive Predictive Value**, **Denominator Trick**.
+The proportion of positive predictions that are actually correct: `TP / (TP + FP)`. Measures reliability: when the model says "positive," how often is it right? See also: **Positive Predictive Value**, **Denominator Trick**.
 
 ### Precision-Recall Curve
 A plot of precision vs. recall as the decision threshold varies from 0 to 1. More informative than the ROC curve for imbalanced datasets because it ignores true negatives. The baseline is the positive class prevalence.
@@ -155,7 +155,7 @@ A plot of precision vs. recall as the decision threshold varies from 0 to 1. Mor
 ## R
 
 ### Recall (Sensitivity)
-The proportion of actual positives that the model correctly identifies: `TP / (TP + FN)`. Measures coverage — of all the people who actually defaulted, what percentage did we catch?
+The proportion of actual positives that the model correctly identifies: `TP / (TP + FN)`. Measures coverage: of all the people who actually defaulted, what percentage did we catch?
 
 ### ROC Curve (Receiver Operating Characteristic)
 A plot of the True Positive Rate (recall) against the False Positive Rate (1 − specificity) as the decision threshold varies from 0 to 1. The curve shows the trade-off between catching positives and generating false alarms. A perfect model hugs the top-left corner; a random model follows the diagonal.
@@ -213,7 +213,7 @@ An averaging strategy that computes the metric for each class, then takes a weig
 ## X
 
 ### XGBoost
-eXtreme Gradient Boosting — a powerful tree-based ensemble algorithm. Instead of fitting a single model, it builds an ensemble of decision trees sequentially, where each new tree corrects the errors of the previous ones. Uses `scale_pos_weight` to handle class imbalance.
+eXtreme Gradient Boosting, a tree-based ensemble algorithm. Instead of fitting a single model, it builds an ensemble of decision trees sequentially, where each new tree corrects the errors of the previous ones. Uses `scale_pos_weight` to handle class imbalance.
 
 ---
 

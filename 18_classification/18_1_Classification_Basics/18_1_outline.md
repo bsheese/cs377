@@ -1,4 +1,4 @@
-# 18_1 Classification Basics — Topic Outline
+# 18_1 Classification Basics: Topic Outline
 
 This document provides a complete outline of all topics covered across the six notebooks in the 18_1 Classification Basics series.
 
@@ -6,7 +6,7 @@ This document provides a complete outline of all topics covered across the six n
 
 ## 18_1_1: Classification Foundations
 
-**Dataset:** German Credit / Statlog (`credit-g`) — 1000 rows, 20 features + target, binary target (good/bad credit), ~70/30 class distribution.
+**Dataset:** German Credit / Statlog (`credit-g`): 1000 rows, 20 features + target, binary target (good/bad credit), ~70/30 class distribution.
 
 ### Regression vs. Classification
 - Linear regression predicts continuous values; classification predicts discrete categories
@@ -23,7 +23,7 @@ This document provides a complete outline of all topics covered across the six n
 
 ### Data Preparation for XGBoost
 - Binary encoding of the target variable (good=0, bad=1)
-- Native categorical support (`enable_categorical=True`) — no one-hot encoding needed for XGBoost
+- Native categorical support (`enable_categorical=True`), so no one-hot encoding is needed for XGBoost
 - Stratified train-test split (preserving class ratios)
 - Note: Tree-based models do NOT require feature scaling
 
@@ -63,14 +63,14 @@ This document provides a complete outline of all topics covered across the six n
 
 ### Precision and Recall
 - Precision: reliability of positive predictions (TP / TP + FP)
-- Recall: sensitivity — how many actual positives were caught (TP / TP + FN)
+- Recall: sensitivity, or how many actual positives were caught (TP / TP + FN)
 - The precision-recall trade-off
-- The "denominator trick" — precision denominator is predicted positives, recall denominator is actual positives
-- The "Courtroom vs. Airport" analogy — which error each system is designed to avoid
+- The "denominator trick": the precision denominator is predicted positives, and the recall denominator is actual positives
+- The "Courtroom vs. Airport" analogy: which error each system is designed to avoid
 
 ### The F1-Score
 - Harmonic mean of precision and recall
-- Why harmonic mean (not arithmetic): punishing extreme imbalances
+- Why harmonic mean (not arithmetic): it stays low when precision and recall are far apart
 - Concrete example: precision=100%, recall=1% → F1≈2%
 
 ### The Classification Report
@@ -81,13 +81,13 @@ This document provides a complete outline of all topics covered across the six n
 
 ### The Threshold Trade-Off (Preview)
 - Moving the threshold: conservative vs. sensitive
-- Teaser for ROC curves and systematic threshold optimization
+- Preview of ROC curves and systematic threshold optimization
 
 ---
 
 ## 18_1_3: Guided Practice
 
-**Dataset:** Adult Census Income — binary target (income >50K or ≤50K).
+**Dataset:** Adult Census Income, binary target (income >50K or ≤50K).
 
 ### Applying Concepts from Notebooks 1 & 2
 - Load and explore a new dataset
@@ -147,7 +147,7 @@ This document provides a complete outline of all topics covered across the six n
 
 ## 18_1_5: Credit Card Fraud Detection
 
-**Dataset:** Credit Card Fraud (OpenML 1597) — 284,807 transactions, 29 features (V1–V28 + Amount), extreme imbalance (~0.17% fraudulent).
+**Dataset:** Credit Card Fraud (OpenML 1597): 284,807 transactions, 29 features (V1–V28 + Amount), extreme imbalance (~0.17% fraudulent).
 
 ### The Imbalance Problem
 - Extreme class imbalance: far more severe than the credit dataset
@@ -155,20 +155,20 @@ This document provides a complete outline of all topics covered across the six n
 - At the default 0.5 threshold, XGBoost has high fraud precision (~0.96) but misses roughly 1 in 4 fraud cases (recall ~0.74)
 
 ### Model Evaluation on Fraud Data
-- Confusion matrix reveals the imbalance trap
-- Accuracy and weighted averages are saturated and uninformative; the Fraud row and macro average carry the real story
+- Confusion matrix shows how imbalance affects the results
+- Accuracy and weighted averages are near 1.0 and uninformative; the Fraud row and macro average are the useful summaries
 - Practical business impact: a 26% miss rate leaves substantial fraud undetected
 
 ### Precision-Recall Analysis
 - Skipping ROC in favor of PR curves for extreme imbalance
 - PR AUC and the PR curve shape
 - The F-Beta Score: weighting recall more heavily than precision
-  - F2-Score: beta=2 means recall counts four times as much as precision (the weight is beta-squared)
-  - Finding the "sweet spot" where F-beta peaks
+  - F2-Score: beta = 2 means recall is treated as twice as important as precision (beta² = 4 is the weight that appears in the formula)
+  - Finding the threshold where F-beta peaks
 
 ### Business Cost Analysis
 - Consistent cost values for false positives vs. false negatives
-- Out-of-Fold (OOF) probabilities for honest evaluation
+- Out-of-Fold (OOF) probabilities for threshold selection without using the test set
 - Three approaches to threshold selection:
   - Youden's J Statistic (statistical balanced approach)
   - Cost-based optimization (business-driven approach)
@@ -181,13 +181,13 @@ This document provides a complete outline of all topics covered across the six n
 
 ---
 
-## 18_1_6: Credit Card Fraud — Cost-Weighted Objective & Nested Cross-Validation
+## 18_1_6: Credit Card Fraud: Cost-Weighted Objective & Nested Cross-Validation
 
 **Dataset:** Credit Card Fraud (OpenML 1597)
 
 ### Three Strategies for Class Imbalance
 - `scale_pos_weight` (training-time, class-ratio multiplier) vs. custom objective (training-time, cost-ratio gradients) vs. threshold tuning (prediction-time)
-- Why `scale_pos_weight = 499` would massively over-correct when the cost ratio is only 4.5:1
+- Why `scale_pos_weight = 578` would over-correct by a large margin when the cost ratio is only 4.5:1
 - The `cost_weighted_objective`: scaling XGBoost's gradient and hessian by dollar costs
 
 ### GridSearch Scorer Design
@@ -198,18 +198,18 @@ This document provides a complete outline of all topics covered across the six n
 ### Nested Cross-Validation
 - Why standard CV overestimates performance when hyperparameters are tuned on the same data
 - Inner loop: grid search within each outer training fold
-- Outer loop: honest evaluation on held-out folds (PR-AUC)
+- Outer loop: evaluation on held-out folds that the tuning never saw (PR-AUC)
 - Compute cost: 18 grid combinations × 3 inner folds × 5 outer folds = 270 model fits
 
 ### Final Model and Diminishing Returns
-- Training the production model on all data; reporting the nested CV mean as the honest estimate
+- Training the production model on all data; reporting the nested CV mean as the performance estimate
 - Three-row comparison isolating the effect of threshold tuning vs. hyperparameter tuning
-- The headline lesson: gains over strong XGBoost defaults are small — always measure what tuning actually bought you
+- Gains over strong XGBoost defaults are small, so it is worth measuring what tuning actually improved
 
 ### Key Takeaways
 - Match the imbalance correction to the cost structure, not the class ratio
-- Never put a hardcoded threshold inside a GridSearch scorer
-- Nested CV provides honest performance estimates; expect diminishing returns from tuning
+- Do not put a hardcoded threshold inside a GridSearch scorer
+- Nested CV provides unbiased performance estimates; expect diminishing returns from tuning
 
 ---
 
@@ -219,7 +219,7 @@ This document provides a complete outline of all topics covered across the six n
 |------|-------------|
 | `18_1_9_1_Bank_Marketing.ipynb` | **Fully worked example.** Full workflow on the UCI Bank Marketing data (45,211 contacts): cleaning, business utility, OOF threshold tuning, nested CV |
 | `18_1_9_2_Hotel_Cancellations.ipynb` | **Optional extra practice.** Full workflow on Hotel Booking Demand (119,390 reservations): leakage-aware feature dropping, cost-based thresholds, nested CV |
-| `18_1_9_3_Telco_Churn.ipynb` | **The capstone — students drive.** TASK cells on IBM Telco Churn (7,043 customers) |
+| `18_1_9_3_Telco_Churn.ipynb` | **The capstone, completed by students.** TASK cells on IBM Telco Churn (7,043 customers) |
 | `18_1_9_4_Exercise.ipynb` | Metrics-from-scratch exercise on the breast cancer dataset (confusion matrix, precision/recall/F1, threshold sweep) |
 
 ## Supporting Materials

@@ -45,8 +45,8 @@
 - [ ] 80% benign, 20% malignant
 
 ### In the breast cancer context, what does a false negative represent?
-- [ ] The model predicts malignant but the tumor is actually benign — an unnecessary biopsy
-- [x] The model predicts benign but the tumor is actually malignant — a missed cancer
+- [ ] The model predicts malignant but the tumor is actually benign, which means an unnecessary biopsy
+- [x] The model predicts benign but the tumor is actually malignant, which means a missed cancer
 - [ ] The model correctly predicts benign and the tumor is actually benign
 - [ ] The model produces a probability of exactly 0.5 for a malignant tumor
 
@@ -77,7 +77,7 @@
 ### Why is the breast cancer dataset described as a 'high-stakes classification problem'?
 - [ ] Because the dataset is very large and requires significant computational resources
 - [ ] Because the features are difficult to measure accurately in clinical practice
-- [x] Because the costs of the two types of errors are asymmetric — missing a cancer has far more severe consequences than an unnecessary biopsy
+- [x] Because the costs of the two types of errors are asymmetric: missing a cancer has far more severe consequences than an unnecessary biopsy
 - [ ] Because the class distribution is perfectly balanced, making it hard to achieve high accuracy
 
 ### In the ensemble hierarchy table, what does 'Bayesian tree perturbation' refer to?
@@ -89,12 +89,12 @@
 ### What is the relationship between bagging/random forests and variance?
 - [ ] They increase variance by training many different models on different data
 - [x] They reduce variance by averaging many independently overfitting models, canceling out their individual errors
-- [ ] They have no effect on variance — variance is only affected by the number of features
+- [ ] They have no effect on variance; variance is only affected by the number of features
 - [ ] They reduce variance by using shallow trees that cannot overfit
 
 ### What is the relationship between boosting and bias?
 - [ ] Boosting increases bias by using shallow trees that cannot capture complex patterns
-- [ ] Boosting has no effect on bias — it only reduces variance
+- [ ] Boosting has no effect on bias; it only reduces variance
 - [x] Boosting reduces bias by sequentially correcting errors, turning weak learners into a strong ensemble
 - [ ] Boosting reduces bias by using deeper trees than bagging
 
@@ -104,7 +104,7 @@
 - [ ] Because the Ames Housing dataset was too clean and did not demonstrate real-world challenges
 - [ ] Because the breast cancer dataset has fewer features, making it easier to visualize
 
-### What does it mean that ensemble methods 'combine multiple weak models to create a strong one'?
+### What does it mean that ensemble methods 'combine many models so that the combination predicts better than any one of them'?
 - [ ] Each individual model in the ensemble must perform worse than random guessing
 - [x] The ensemble's combined prediction is more accurate than any individual model's prediction, even if some individual models are quite good
 - [ ] The ensemble discards the weakest models and only uses the strongest ones
@@ -134,9 +134,9 @@
 - [ ] Ensure that the training and test sets have no correlated features
 - [ ] Force each tree to use a completely different set of features
 
-### If a model on the breast cancer dataset achieves 95% accuracy but has a malignant recall of 70%, what does this mean?
-- [ ] The model is excellent — 95% accuracy is very high for any medical application
-- [x] The model correctly identifies 95% of all tumors but misses 30% of actual cancers, which may be clinically unacceptable
+### If a model on the breast cancer dataset achieves 90% accuracy but has a malignant recall of 75%, what does this mean?
+- [ ] The model is excellent; 90% accuracy is very high for any medical application
+- [x] The model correctly classifies 90% of all tumors but misses 25% of actual cancers, which may be clinically unacceptable
 - [ ] The model is overfitting and should be retrained with more data
 - [ ] The model's accuracy and recall are inconsistent, indicating a bug in the evaluation code
 
@@ -149,7 +149,7 @@
 ### The notebook states that BART addresses 'both' bias and variance. What does this mean?
 - [ ] BART uses both deep and shallow trees in the same ensemble
 - [x] BART combines the variance-reduction benefits of ensemble averaging with the bias-reduction benefits of sequential refinement, while also providing uncertainty estimates
-- [ ] BART trains two separate models — one for bias and one for variance — and combines their predictions
+- [ ] BART trains two separate models, one for bias and one for variance, and combines their predictions
 - [ ] BART uses both L1 and L2 regularization to control bias and variance simultaneously
 
 ### Why does the notebook emphasize looking 'beyond accuracy' for the breast cancer problem?
@@ -170,7 +170,7 @@
 - [ ] A single tree requires feature scaling while ensemble methods do not
 - [ ] A single tree always overfits while ensemble methods never overfit
 
-## 18_6_1: Decision Trees — The Foundation
+## 18_6_1: Decision Trees: The Foundation
 
 ### In a classification tree, what does each leaf node predict?
 - [ ] The mean of target values in the leaf, as in regression trees
@@ -215,20 +215,20 @@
 - [ ] The training data is too small to produce reliable results for either metric
 
 ### What does the gap between the training accuracy curve and the testing accuracy curve represent?
-- [ ] The model's bias — how far it is from capturing the true underlying pattern
-- [x] The overfitting penalty — how much the model's performance degrades on unseen data compared to training data
+- [ ] The model's bias, meaning how far it is from capturing the true underlying pattern
+- [x] How much the model is overfitting, measured by how much the model's performance degrades on unseen data compared to training data
 - [ ] The effect of class imbalance on the model's predictions
 - [ ] The measurement error inherent in the test set
 
 ### In the confusion matrix for the decision tree, what does a false negative represent in the breast cancer context?
-- [ ] The model predicts malignant but the tumor is actually benign — an unnecessary biopsy
-- [x] The model predicts benign but the tumor is actually malignant — a missed cancer
+- [ ] The model predicts malignant but the tumor is actually benign, which means an unnecessary biopsy
+- [x] The model predicts benign but the tumor is actually malignant, which means a missed cancer
 - [ ] The model correctly predicts benign and the tumor is actually benign
 - [ ] The model produces a probability of exactly 0.5 for a malignant tumor
 
 ### In the confusion matrix for the decision tree, what does a false positive represent in the breast cancer context?
-- [x] The model predicts malignant but the tumor is actually benign — an unnecessary biopsy
-- [ ] The model predicts benign but the tumor is actually malignant — a missed cancer
+- [x] The model predicts malignant but the tumor is actually benign, which means an unnecessary biopsy
+- [ ] The model predicts benign but the tumor is actually malignant, which means a missed cancer
 - [ ] The model correctly predicts malignant and the tumor is actually malignant
 - [ ] The model fails to produce a prediction for that sample
 
@@ -258,7 +258,7 @@
 
 ### The cross-validation results show malignant recall ranging from 0.824 to 1.000 across folds. What is the clinical implication of this range?
 - [ ] The model is perfectly reliable because the minimum recall is above 80%
-- [x] In the worst fold, the model misses about 1 in 6 cancers, while in the best fold it catches all of them — this variability is a concern for clinical deployment
+- [x] In the worst fold, the model misses about 1 in 6 cancers, while in the best fold it catches all of them, and this variability is a concern for clinical deployment
 - [ ] The range indicates a bug in the cross-validation code, as recall should be constant across folds
 - [ ] The model should only be deployed on datasets similar to the best-performing fold
 
@@ -272,13 +272,13 @@
 - [ ] Regression trees predict the median while classification trees predict the mode
 - [x] Regression trees predict the mean of target values in the leaf while classification trees predict the majority class
 - [ ] Regression trees predict a probability while classification trees predict a hard class label
-- [ ] There is no difference — both predict the mean of their target values
+- [ ] There is no difference; both predict the mean of their target values
 
 ### What is the key difference between a regression tree and a classification tree in terms of split criterion?
 - [x] Regression trees minimize Mean Squared Error while classification trees minimize Gini impurity or entropy
 - [ ] Regression trees use Gini impurity while classification trees use Mean Squared Error
 - [ ] Regression trees use accuracy while classification trees use R-squared
-- [ ] There is no difference — both use Gini impurity
+- [ ] There is no difference; both use Gini impurity
 
 ### In the tree visualization, what does the 'value' field in each node represent?
 - [ ] The Gini impurity of that node
@@ -287,13 +287,13 @@
 - [ ] The predicted probability of malignancy for that node
 
 ### In the tree visualization, what does the color intensity of each node indicate?
-- [ ] The depth of the node in the tree — darker nodes are deeper
-- [ ] The number of samples in the node — darker nodes have more samples
-- [x] The purity of the node — darker nodes are purer (more dominated by one class)
+- [ ] The depth of the node in the tree; darker nodes are deeper
+- [ ] The number of samples in the node; darker nodes have more samples
+- [x] The purity of the node; darker nodes are purer (more dominated by one class)
 - [ ] The importance of the feature used to split at that node
 
 ### The root node of the depth-3 tree splits on 'mean concave points <= 0.051'. Why is this significant?
-- [ ] It is a random choice — the tree could have split on any feature first
+- [ ] It is a random choice; the tree could have split on any feature first
 - [x] It confirms that 'mean concave points' is the single most discriminative feature for separating malignant from benign tumors, consistent with the violin plot analysis
 - [ ] It means that concave points are the only feature that matters for classification
 - [ ] It indicates that the tree is overfitting to this particular feature
@@ -350,7 +350,7 @@
 
 ### Why does bagging use deep (unlimited depth) decision trees rather than shallow ones?
 - [ ] Because deep trees are computationally faster to train than shallow trees when used in large ensembles
-- [ ] Because shallow trees cannot be combined through majority voting — they produce incompatible predictions
+- [ ] Because shallow trees cannot be combined through majority voting, because they produce incompatible predictions
 - [x] Because bagging relies on each tree being individually strong (but overfitting differently) so that averaging cancels their individual errors, whereas shallow trees would all be weak and averaging weak models does not help much
 - [ ] Because deep trees have lower variance than shallow trees, making them inherently more stable
 
@@ -367,7 +367,7 @@
 - [ ] Because the OOB score is specifically calibrated to match the test accuracy during the training process
 
 ### Why is OOB error not available for boosting methods like Gradient Boosting?
-- [x] Because boosting methods do not use bootstrap sampling — each tree is trained on the full dataset, so there are no out-of-bag samples
+- [x] Because boosting methods do not use bootstrap sampling; each tree is trained on the full dataset, so there are no out-of-bag samples
 - [ ] Because boosting methods are too computationally expensive to compute an additional error metric
 - [ ] Because OOB error is only defined for classification problems, and boosting is used exclusively for regression
 - [ ] Because boosting methods automatically include a built-in validation set as part of their sequential training process
@@ -439,7 +439,7 @@
 - [ ] Because F1-score is the only metric that works with GridSearchCV's internal cross-validation mechanism
 
 ### In the confusion matrix for the Random Forest, the model achieved 0 false positives and 5 false negatives. What is the clinical interpretation?
-- [ ] The model is perfect — it made no errors of any kind on the test set
+- [ ] The model is perfect; it made no errors of any kind on the test set
 - [x] The model never incorrectly flagged a benign tumor as malignant (no unnecessary biopsies), but it missed 5 actual cancers that went undiagnosed
 - [ ] The model flagged all tumors as malignant, resulting in zero false positives but many false negatives
 - [ ] The model's confusion matrix is incorrect because it is mathematically impossible to have zero false positives
@@ -470,7 +470,7 @@
 
 ### The notebook states that 'more trees doesn't always mean better.' Under what circumstances would adding more trees to a Random Forest stop improving performance?
 - [ ] When the number of trees exceeds the number of features in the dataset, at which point additional trees have no new information to learn
-- [x] When the ensemble has already converged — adding more trees reduces variance only marginally because the law of large numbers has already taken effect
+- [x] When the ensemble has already converged, because adding more trees reduces variance only marginally because the law of large numbers has already taken effect
 - [ ] When the training data is too small to support more than a certain number of trees, causing overfitting
 - [ ] When the trees become too deep, at which point additional trees start to increase bias rather than reduce variance
 
@@ -496,7 +496,7 @@
 - [ ] Bagging corrects errors sequentially by reweighting samples, while boosting averages predictions in parallel
 - [x] Bagging averages independently trained models to cancel out uncorrelated errors, while boosting trains models sequentially with each one explicitly targeting the remaining errors of the ensemble
 - [ ] Bagging uses deep trees to minimize errors, while boosting uses shallow trees to maximize them
-- [ ] There is no conceptual difference — both methods average predictions from multiple models trained on the same data
+- [ ] There is no conceptual difference; both methods average predictions from multiple models trained on the same data
 
 ## 18_6_3: Boosting and BART
 
@@ -504,7 +504,7 @@
 - [ ] Bagging builds trees sequentially, each correcting the previous ensemble's errors, while boosting builds trees independently in parallel
 - [x] Bagging builds trees independently in parallel on bootstrap samples, while boosting builds trees sequentially, each one explicitly targeting the remaining errors of the ensemble so far
 - [ ] Bagging uses shallow trees while boosting uses deep trees, resulting in different bias-variance tradeoffs
-- [ ] There is no fundamental difference — both methods average predictions from multiple independently trained trees
+- [ ] There is no fundamental difference; both methods average predictions from multiple independently trained trees
 
 ### In the bias-variance framework, what does boosting primarily target and what does bagging primarily target?
 - [ ] Boosting primarily targets variance reduction while bagging primarily targets bias reduction
@@ -527,7 +527,7 @@
 ### Why does AdaBoost use decision stumps (max_depth=1) as its base learners?
 - [ ] Because stumps are the fastest trees to train, making the overall ensemble computationally efficient
 - [ ] Because scikit-learn only supports stumps for AdaBoost and does not allow deeper trees
-- [x] Because stumps are weak learners that are only slightly better than random guessing, leaving room for the sequential correction process to add value — if deeper trees were used, each would already be quite strong and there would be little room for sequential improvement
+- [x] Because stumps are weak learners that are only slightly better than random guessing, leaving room for the sequential correction process to add value. If deeper trees were used, each would already be quite strong and there would be little room for sequential improvement
 - [ ] Because deeper stumps cause numerical instability in the sample weight update formula
 
 ### In Gradient Boosting, what is the role of the learning rate (shrinkage factor)?
@@ -556,7 +556,7 @@
 
 ### In the 10-fold cross-validation comparison, AdaBoost achieved the highest mean accuracy (0.9701) but Gradient Boosting had the highest mean recall (0.9459). What does this tell us about the two models?
 - [ ] AdaBoost is definitively the better model because accuracy is the most important metric for any classification problem
-- [x] Gradient Boosting catches slightly more actual cancers on average (higher recall), while AdaBoost has slightly better overall correctness — the choice between them depends on whether catching every cancer or minimizing total errors is the priority
+- [x] Gradient Boosting catches slightly more actual cancers on average (higher recall), while AdaBoost has slightly better overall correctness, so the choice between them depends on whether catching every cancer or minimizing total errors is the priority
 - [ ] The difference is too small to be meaningful, and both models should be considered equally good
 - [ ] Gradient Boosting is overfitting because it has higher recall but lower accuracy than AdaBoost
 
@@ -568,31 +568,31 @@
 
 ### What is probability calibration and why does it matter in a medical context?
 - [ ] Calibration refers to the speed at which a model produces predictions, which matters because doctors need fast results
-- [x] Calibration checks whether the predicted probabilities match actual outcome frequencies — for example, if a model predicts 80% malignancy, it should be correct about 80% of the time. This matters because doctors need to trust the probability values when making clinical decisions
+- [x] Calibration checks whether the predicted probabilities match actual outcome frequencies. For example, if a model predicts 80% malignancy, it should be correct about 80% of the time. This matters because doctors need to trust the probability values when making clinical decisions
 - [ ] Calibration refers to the process of tuning hyperparameters to maximize accuracy, which is the most important goal in medical diagnosis
 - [ ] Calibration measures how well the model separates the two classes, which is exactly what the AUC metric already captures
 
 ### In the calibration curve, what does it mean if a model's curve lies below the diagonal line?
-- [ ] The model underestimates probabilities — for a given predicted probability, the actual fraction of positives is higher than predicted
-- [x] The model overestimates probabilities — for a given predicted probability, the actual fraction of positives is lower than predicted
+- [ ] The model underestimates probabilities: for a given predicted probability, the actual fraction of positives is higher than predicted
+- [x] The model overestimates probabilities: for a given predicted probability, the actual fraction of positives is lower than predicted
 - [ ] The model is perfectly calibrated and its probabilities can be trusted exactly as output
 - [ ] The model has high variance and its predictions are unreliable
 
-### The notebook states that Random Forests tend to produce well-calibrated probabilities while Gradient Boosting often produces probabilities that are too extreme. What practical consequence does this have?
-- [ ] Gradient Boosting is always the better choice because extreme probabilities indicate a more confident model
-- [x] For a Random Forest, a predicted probability of 0.8 is more likely to correspond to an actual 80% chance of malignancy, whereas for Gradient Boosting, a predicted 0.8 might correspond to a lower actual probability, meaning the model is overconfident
-- [ ] Random Forests are slower to produce calibrated probabilities, making them impractical for real-time clinical use
-- [ ] There is no practical consequence — calibration only matters for academic research, not for clinical deployment
+### In 18_6_3, Gradient Boosting gave about 90% of tumors a probability below 0.02 or above 0.98, yet its Brier score was slightly lower than the Random Forest's. What does this show?
+- [ ] Gradient Boosting is overconfident, because probabilities that close to 0 or 1 always indicate poor calibration
+- [x] Extreme probabilities are not a calibration problem when they are usually correct, because calibration is about whether predicted probabilities match how often the outcome actually occurs
+- [ ] The Brier score only measures accuracy, so it cannot say anything about how well the probabilities are calibrated
+- [ ] Random Forest probabilities must be more extreme than Gradient Boosting probabilities on this dataset
 
 ### What is BART (Bayesian Additive Regression Trees) and what unique capability does it offer that standard ensemble methods do not?
 - [ ] BART is a faster version of Random Forest that uses Bayesian statistics to speed up tree construction
-- [x] BART combines ensemble learning with Bayesian inference using MCMC sampling, providing credible intervals (uncertainty quantification) for each prediction — telling the doctor not just the predicted probability but also how confident the model is in that probability
+- [x] BART combines ensemble learning with Bayesian inference using MCMC sampling, providing credible intervals (uncertainty quantification) for each prediction, which tells the doctor not just the predicted probability but also how confident the model is in that probability
 - [ ] BART is a type of Gradient Boosting that uses Bayesian priors to automatically tune hyperparameters without GridSearchCV
 - [ ] BART is a dimensionality reduction technique that compresses the feature space before applying ensemble methods
 
 ### If BART gives a 95% credible interval of [60%, 95%] for a patient's malignancy probability, how should a doctor interpret this?
 - [ ] The patient has exactly a 77.5% chance of malignancy, which is the midpoint of the interval
-- [x] There is a 95% probability that the true malignancy probability lies between 60% and 95% — the wide interval indicates substantial uncertainty, and the doctor should consider additional diagnostic tests before making a definitive decision
+- [x] There is a 95% probability that the true malignancy probability lies between 60% and 95%. The wide interval indicates substantial uncertainty, and the doctor should consider additional diagnostic tests before making a definitive decision
 - [ ] The model is 95% confident that the patient has malignancy, and the interval [60%, 95%] is irrelevant
 - [ ] The interval means the model is unreliable and should not be used for any clinical decisions
 
@@ -616,7 +616,7 @@
 
 ### In the cross-validation comparison, Gradient Boosting has a higher standard deviation (0.0216) than Random Forest (0.0111). What might explain this?
 - [ ] Gradient Boosting uses more trees than Random Forest, which inherently increases variance
-- [x] Because Gradient Boosting builds trees sequentially, the ensemble is more sensitive to the specific composition of each training fold — if a fold contains particularly hard-to-classify samples, the sequential correction process may overfit to them
+- [x] Because Gradient Boosting builds trees sequentially, the ensemble is more sensitive to the specific composition of each training fold, so if a fold contains particularly hard-to-classify samples, the sequential correction process may overfit to them
 - [ ] Gradient Boosting has a bug in its cross-validation implementation that causes inconsistent results
 - [ ] The higher standard deviation indicates that Gradient Boosting is always the worse choice compared to Random Forest
 
@@ -646,21 +646,21 @@
 
 ### If a hospital must choose between a model with 97% accuracy and 92% malignant recall versus a model with 96% accuracy and 95% malignant recall, which should they choose and why?
 - [ ] The first model (97% accuracy) because accuracy is the most important metric for any medical application
-- [x] The second model (95% malignant recall) because in a cancer screening context, catching more actual cancers is typically more important than minimizing total errors — the cost of a missed cancer far exceeds the cost of an additional false positive
+- [x] The second model (95% malignant recall) because in a cancer screening context, catching more actual cancers is typically more important than minimizing total errors, because the cost of a missed cancer far exceeds the cost of an additional false positive
 - [ ] Both models are equally good because the difference in accuracy is only 1 percentage point
 - [ ] Neither model should be used because both have recall below 100%, which is unacceptable for medical applications
 
 ### What is the relationship between the number of trees (n_estimators) and the learning rate in Gradient Boosting?
-- [ ] They are independent — changing one has no effect on the optimal value of the other
+- [ ] They are independent; changing one has no effect on the optimal value of the other
 - [x] They have an inverse relationship: a smaller learning rate typically requires more trees to achieve the same level of performance, because each tree contributes less to the ensemble
 - [ ] They have a direct relationship: a smaller learning rate requires fewer trees because the model learns more efficiently
 - [ ] The learning rate determines the maximum number of trees, so they are constrained to be equal
 
-### In the calibration curve plot, the Random Forest curve is closer to the diagonal than the Gradient Boosting curve. What does this mean for a doctor who receives a probability estimate from each model?
-- [x] The doctor should trust the Random Forest's probability estimates more, because they are more likely to reflect the true underlying risk, while the Gradient Boosting model may be overconfident in its predictions
-- [ ] The doctor should trust the Gradient Boosting model more because its curve is further from the diagonal, indicating stronger discrimination between classes
-- [ ] The calibration curve has no clinical relevance — only the AUC matters for medical decision-making
-- [ ] Both models produce identical probability estimates, so the calibration difference is purely cosmetic
+### In 18_6_3, AdaBoost had the highest test accuracy, but all of its predicted probabilities fell between about 0.2 and 0.8, and tumors it scored around 0.7 were almost always malignant. How should a doctor read an AdaBoost score of 0.7?
+- [x] As a sign that the tumor is very likely malignant, not as a 70% chance; AdaBoost's outputs need recalibration before they can be used as probabilities
+- [ ] As a 70% chance of malignancy, because a model with high accuracy produces trustworthy probabilities
+- [ ] As evidence that AdaBoost cannot rank tumors correctly, because a poorly calibrated model also ranks poorly
+- [ ] As a benign prediction, because 0.7 is close to the middle of AdaBoost's range
 
 ## 18_6_4: Model Comparison
 
@@ -684,7 +684,7 @@
 
 ### Why are nested cross-validation estimates typically slightly lower than single train/test split scores for the same model?
 - [ ] Because nested cross-validation uses less data for training in each fold, which always results in lower performance
-- [x] Because nested cross-validation corrects for the optimistic bias introduced when hyperparameters are tuned on the same data used for evaluation — the single split score benefits from this bias while the nested CV score does not
+- [x] Because nested cross-validation corrects for the optimistic bias introduced when hyperparameters are tuned on the same data used for evaluation. The single split score benefits from this bias while the nested CV score does not
 - [ ] Because nested cross-validation uses a different scoring metric that is inherently more conservative than the metric used for the single split
 - [ ] Because the outer loop in nested cross-validation intentionally uses harder test cases to produce a more challenging evaluation
 
@@ -696,15 +696,15 @@
 
 ### In a medical context, why might you prefer a model with slightly lower mean malignant recall but lower variance over the model with the absolute highest mean recall?
 - [ ] Because lower variance means the model is faster to train, which is critical in emergency medical situations
-- [x] Because a more consistent recall means the model's performance is more predictable and reliable in clinical deployment — you want to know that the model will catch a consistent proportion of cancers regardless of which patients it sees, rather than occasionally missing many cancers in certain cases
+- [x] Because a more consistent recall means the model's performance is more predictable and reliable in clinical deployment. You want to know that the model will catch a consistent proportion of cancers regardless of which patients it sees, rather than occasionally missing many cancers in certain cases
 - [ ] Because lower variance models always have higher accuracy, making them the better choice regardless of the clinical context
 - [ ] Because variance has no clinical significance and the choice should be based solely on mean recall
 
-### The notebook states that the total number of model fits for the nested CV is 450. How is this number calculated?
-- [ ] It is the sum of the number of features (30) multiplied by the number of models (4) multiplied by the number of outer folds (5), giving 30 × 4 × 5 = 600, rounded down to 450
-- [x] It is the sum across all four models of (outer folds × inner folds × number of hyperparameter combinations in each model's grid): Decision Tree (5×3×4=60) + Bagging (5×3×6=90) + Random Forest (5×3×12=180) + Gradient Boosting (5×3×8=120) = 450
+### The notebook states that one pass of nested CV takes 470 model fits. How is this number calculated?
+- [ ] It is the number of features (30) multiplied by the number of models (4) multiplied by the number of outer folds (5), giving 600, minus 130 for the refits
+- [x] For each model it is outer folds × (inner folds × hyperparameter combinations + 1 refit), summed: Decision Tree 5×(3×4+1)=65, Bagging 5×(3×6+1)=95, Random Forest 5×(3×12+1)=185, Gradient Boosting 5×(3×8+1)=125, for 470
 - [ ] It is simply the number of outer folds (5) multiplied by the number of inner folds (3) multiplied by the number of models (4), giving 5 × 3 × 4 = 60, then multiplied by a factor of 7.5 for computational overhead
-- [ ] It is the number of training samples (569) divided by the number of outer folds (5), multiplied by the number of models (4), giving approximately 450
+- [ ] It is the number of training samples (569) divided by the number of outer folds (5), multiplied by the number of models (4), giving approximately 455
 
 ### Why are red dots overlaid on the boxplots in the visualization of nested CV results?
 - [ ] To highlight outlier folds that should be excluded from the analysis because they represent anomalous data splits
@@ -726,7 +726,7 @@
 
 ### The confusion matrix for the final model (trained on full data with 5-fold CV predictions) shows 12 missed cancers (FN) and 10 unnecessary biopsies (FP) across all 569 samples. How would you interpret these numbers in a clinical context?
 - [ ] The model is unacceptable because any missed cancers represent a failure of the system, and the model should be discarded
-- [x] Across the full dataset, the model misses approximately 12 out of 212 malignant cases (about 5.7% miss rate) and incorrectly flags 10 out of 357 benign cases (about 2.8% false positive rate) — this represents a reasonable tradeoff, though the miss rate should be carefully weighed against clinical consequences
+- [x] Across the full dataset, the model misses approximately 12 out of 212 malignant cases (about 5.7% miss rate) and incorrectly flags 10 out of 357 benign cases (about 2.8% false positive rate). This represents a reasonable tradeoff, though the miss rate should be carefully weighed against clinical consequences
 - [ ] The model is perfect because the number of false positives (10) is less than the number of false negatives (12), indicating the model is appropriately conservative
 - [ ] These numbers indicate that the model is overfitting because the confusion matrix was computed on the training data
 
@@ -744,18 +744,18 @@
 
 ### What does it mean when the notebook says that 'the standard deviation tells you how much the model's performance varies depending on which samples end up in each fold'?
 - [ ] It means the model's training time varies depending on the size of each fold
-- [x] It means that if you were to re-run the cross-validation with a different random split of the data, the model's performance could differ by approximately one standard deviation from the mean — a larger standard deviation means the model's real-world performance is less predictable
+- [x] It means that if you were to re-run the cross-validation with a different random split of the data, the model's performance could differ by approximately one standard deviation from the mean. A larger standard deviation means the model's real-world performance is less predictable
 - [ ] It means the model's hyperparameters change from fold to fold, causing inconsistent predictions
 - [ ] It means the dataset contains outliers that disproportionately affect certain folds
 
 ### The notebook mentions that for resource-constrained environments, you can reduce the outer loop to 3 folds and use smaller parameter grids. What is the tradeoff of doing this?
-- [ ] There is no tradeoff — reducing the number of folds and grid size always produces better results because it reduces overfitting
+- [ ] There is no tradeoff, because reducing the number of folds and grid size always produces better results because it reduces overfitting
 - [x] The computation will be faster, but the performance estimates will be less reliable (higher variance) and the hyperparameter search may miss the optimal configuration due to the reduced grid
 - [ ] The model will automatically become more accurate because fewer folds means less data is held out for validation
 - [ ] The nested CV will produce biased results in the opposite direction, underestimating rather than overestimating performance
 
 ### In the feature importance plot for the final Gradient Boosting model, why might the top features differ from those identified by the Random Forest in notebook 18_6_2?
-- [x] Because Gradient Boosting and Random Forest use fundamentally different mechanisms to evaluate feature importance — Gradient Boosting builds trees sequentially focusing on residuals, while Random Forest builds trees in parallel with random feature subsets, leading to different patterns of feature utilization
+- [x] Because Gradient Boosting and Random Forest use fundamentally different mechanisms to evaluate feature importance. Gradient Boosting builds trees sequentially focusing on residuals, while Random Forest builds trees in parallel with random feature subsets, leading to different patterns of feature utilization
 - [ ] Because the two models were trained on different datasets, so the feature importances are not comparable
 - [ ] Because feature importance is a random value assigned by scikit-learn and has no meaningful interpretation
 - [ ] Because Gradient Boosting always ranks features differently than Random Forest due to a bug in the scikit-learn implementation
@@ -768,7 +768,7 @@
 
 ### The notebook states that 'Gradient Boosting typically achieves the highest accuracy and F1' but also notes that it 'may have slightly higher variance than the random forest because the trees are dependent on each other.' What does 'trees are dependent on each other' mean in the context of boosting?
 - [ ] It means that each tree in the boosting ensemble uses the same set of features, making them identical
-- [x] It means that each tree is trained on the residuals of the previous ensemble, so the training data for each tree depends on the predictions of all previous trees — if one tree overfits to noise, subsequent trees may compound that error
+- [x] It means that each tree is trained on the residuals of the previous ensemble, so the training data for each tree depends on the predictions of all previous trees. If one tree overfits to noise, subsequent trees may compound that error
 - [ ] It means that all trees in the boosting ensemble share the same hyperparameters, which limits their diversity
 - [ ] It means that the trees are trained in parallel but their predictions are combined using a dependency matrix
 
@@ -798,14 +798,14 @@
 
 ### What would be the consequence of using the same random_state for both the inner and outer loop KFold splitters in the nested CV setup?
 - [ ] It would cause the inner and outer loops to produce identical splits, making the nested CV equivalent to a single train/test split
-- [x] It would have no meaningful impact — the random_state only ensures reproducibility, and using the same value for both loops simply means the results are reproducible in a consistent way
+- [x] It would have no meaningful impact, because the random_state only ensures reproducibility, and using the same value for both loops simply means the results are reproducible in a consistent way
 - [ ] It would cause the nested CV to fail with a ValueError because the random states must be different
 - [ ] It would artificially inflate the performance estimates because the inner and outer loops would be correlated
 
 ### The notebook shows that Bagging achieves higher mean recall than the single Decision Tree but lower mean recall than Gradient Boosting. How does this observation align with the theoretical understanding of what bagging and boosting each optimize for?
 - [ ] It contradicts the theory, because bagging should always outperform boosting on recall since it uses more trees
 - [x] It aligns with the theory: bagging reduces variance (improving stability over the single tree) but does not actively reduce bias, while boosting actively reduces bias by sequentially correcting errors, which can lead to better recall on the minority class
-- [ ] It is coincidental and has no theoretical basis — the results would reverse if a different dataset were used
+- [ ] It is coincidental and has no theoretical basis; the results would reverse if a different dataset were used
 - [ ] It shows that bagging and boosting are mathematically equivalent, and the differences are due to random variation
 
 ### In the context of the entire 18_6 series, what is the overarching narrative arc from notebook 18_6_1 through 18_6_4?
@@ -820,8 +820,8 @@
 - [ ] A logistic regression model, because it would show how linear models compare to tree-based ensembles on this dataset
 - [ ] A K-Nearest Neighbors model, because it would demonstrate the performance of distance-based methods
 
-### The notebook's conclusion states 'Nested CV gives honest estimates — don't trust a single train/test split for model comparison.' In what scenario might a single train/test split still be acceptable?
+### The notebook's conclusion states that nested CV gives unbiased estimates and is a better basis for comparing models than a single train/test split. In what scenario might a single train/test split still be acceptable?
 - [ ] A single train/test split is never acceptable under any circumstances, regardless of the dataset size or the stakes of the decision
-- [x] A single train/test split may be acceptable during early exploration and prototyping when you need quick feedback on model ideas, or when the dataset is so large that the test set itself is sufficiently large and representative to give a reliable estimate — but for final model selection and reporting, nested CV is preferred
+- [x] A single train/test split may be acceptable during early exploration and prototyping when you need quick feedback on model ideas, or when the dataset is so large that the test set itself is sufficiently large and representative to give a reliable estimate. However, for final model selection and reporting, nested CV is preferred
 - [ ] A single train/test split is always preferable to nested CV because it uses more data for training, leading to better models
 - [ ] A single train/test split is only acceptable when the model achieves 100% accuracy, in which case no further validation is needed
