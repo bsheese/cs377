@@ -9,10 +9,10 @@
 - [ ] Binary classification requires at least three predictors to work properly
 
 ### In logistic regression, a positive coefficient means the feature increases the log-odds. Is it correct to say it 'increases the probability'?
-- [ ] Yes — a positive log-odds always produces a probability above 0.5
-- [x] Partly — it increases probability, but not by a fixed amount; the effect depends on the current probability
-- [ ] No — positive log-odds corresponds to a decrease in probability for the baseline class
-- [ ] Yes — the logistic function is linear, so the probability increase is constant
+- [ ] Yes: a positivea positive log-odds always produces a probability above 0.5
+- [x] Partly: it increasesit increases probability, but not by a fixed amount; the effect depends on the current probability
+- [ ] No: positivepositive log-odds corresponds to a decrease in probability for the baseline class
+- [ ] Yes: the logisticthe logistic function is linear, so the probability increase is constant
 
 ### Why does logistic regression use log-likelihood (sum of logs) instead of the raw likelihood (product of probabilities)?
 - [ ] Log-likelihood is always higher than raw likelihood for valid probability values
@@ -21,10 +21,10 @@
 - [ ] The log function removes the need to compute exponentials in the sigmoid
 
 ### A logistic regression coefficient β = 0. What is the odds ratio, and what does it mean?
-- [ ] OR = 0 — the feature completely eliminates the probability of the outcome
-- [x] OR = 1 — the feature has no effect on the odds of the outcome
-- [ ] OR = ∞ — the feature perfectly predicts the outcome
-- [ ] OR = e⁰ = 0 — the feature is statistically insignificant
+- [ ] OR = 0: thethe feature completely eliminates the probability of the outcome
+- [x] OR = 1: thethe feature has no effect on the odds of the outcome
+- [ ] OR = ∞: thethe feature perfectly predicts the outcome
+- [ ] OR = e⁰ = 0: thethe feature is statistically insignificant
 
 ### In what specific sense is logistic regression 'a linear model'?
 - [ ] The sigmoid function is linear when plotted on a log scale
@@ -103,13 +103,13 @@
 - [ ] The model is poorly calibrated for that feature
 
 ### Why is OR = 1 (rather than 0) the 'no effect' reference line for odds ratios?
-- [x] Because multiplying the odds by 1 leaves them unchanged — the coefficient is 0 and e^0 = 1
+- [x] Because multiplying the odds by 1 leaves them unchanged, because the coefficientthe coefficient is 0 and e^0 = 1
 - [ ] Because odds ratios cannot be smaller than 1
 - [ ] Because probabilities are centered at 1
 - [ ] Because statsmodels normalizes all odds ratios to start at 1
 
 ### In the Titanic model, sibspouse and parentchild have wide confidence intervals that cross OR = 1. What is the careful interpretation?
-- [x] The data are not informative enough to be confident about these effects — they could be sizable or near zero
+- [x] The data are not informative enough to be confident about these effects; they couldthey could be sizable or near zero
 - [ ] Family size has been proven to have no effect on survival
 - [ ] The features were encoded incorrectly
 - [ ] These features should have been scaled before fitting
@@ -147,7 +147,7 @@
 - [ ] The hidden layer increases the learning rate adaptively
 
 ### A colleague says: 'Use sigmoid in all hidden layers so the outputs are probabilities.' What is wrong with this reasoning?
-- [x] Hidden layers don't need probabilistic outputs, and deep sigmoid networks suffer from vanishing gradients — ReLU avoids this
+- [x] Hidden layers don't need probabilistic outputs, and deep sigmoid networks suffer from vanishing gradients, and ReLUReLU avoids this
 - [ ] Sigmoid is computationally impossible to use in hidden layers
 - [ ] Probabilities can only be produced by the input layer
 - [ ] Sigmoid outputs are unbounded, so they cannot be probabilities
@@ -158,7 +158,7 @@
 - [ ] MLPs cannot handle binary features
 - [ ] The MLP's hidden layer was too small to learn anything
 
-### What is the 'interpretability tax' of neural networks?
+### Why are neural networks harder to interpret than logistic regression?
 - [x] Their expressive power comes from learned transformations distributed across many weights that have no human-readable meaning
 - [ ] Training them requires expensive specialized hardware
 - [ ] They require more training data than other models

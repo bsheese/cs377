@@ -1,4 +1,4 @@
-# 18_2 Logistic Regression — Glossary
+# 18_2 Logistic Regression: Glossary
 
 This document defines the technical and conceptual terms used across the notebooks in the 18_2 Logistic Regression series.
 
@@ -7,21 +7,21 @@ This document defines the technical and conceptual terms used across the noteboo
 ## A
 
 ### Activation Function
-The nonlinear function applied to a neuron's weighted sum before passing it on. Logistic regression uses the sigmoid; hidden layers in modern networks usually use ReLU. Without a nonlinearity between layers, stacking neurons collapses back into a single linear model — the nonlinearity is what buys expressive power.
+The nonlinear function applied to a neuron's weighted sum before passing it on. Logistic regression uses the sigmoid; hidden layers in modern networks usually use ReLU. Without a nonlinearity between layers, stacking neurons collapses back into a single linear model. The nonlinearity is what allows a network to represent more complex functions.
 
 ---
 
 ## B
 
 ### Baseline (Dummy) Classifier
-A deliberately trivial model — e.g., "always predict the majority class" — used as a floor for judging a real model's accuracy. On imbalanced data a high accuracy can be meaningless; a model is only as impressive as its distance above the baseline.
+A deliberately simple model, such as "always predict the majority class," used as a minimum standard for judging a real model's accuracy. On imbalanced data a high accuracy can be meaningless, so a model's accuracy should be judged by how far it is above the baseline.
 
 ---
 
 ## C
 
 ### Calibration
-How well predicted probabilities match observed frequencies: among all passengers given a 0.7 survival probability, about 70% should survive. Logistic regression is naturally well-calibrated because it directly models probability; many other classifiers (including boosted trees) output scores that need recalibration before being read as probabilities.
+How well predicted probabilities match observed frequencies: among all passengers given a 0.7 survival probability, about 70% should survive. Logistic regression tends to be well calibrated because it directly models probability; many other classifiers (including boosted trees) output scores that need recalibration before being read as probabilities.
 
 ### Confidence Interval (on an Odds Ratio)
 The range of odds-ratio values consistent with the data. Statsmodels reports these; sklearn does not. If the interval contains 1.0, the data cannot rule out "no effect" for that feature. Visualized in the forest plot of 18_2_2.
@@ -31,7 +31,7 @@ The range of odds-ratio values consistent with the data. Statsmodels reports the
 ## D
 
 ### Decision Boundary
-The surface in feature space where the model's predicted probability equals the threshold (usually 0.5), separating predicted classes. Logistic regression's boundary is always a straight line (hyperplane); a neural network with hidden layers can bend it — which is exactly what solving XOR requires.
+The surface in feature space where the model's predicted probability equals the threshold (usually 0.5), separating predicted classes. Logistic regression's boundary is always a straight line (hyperplane); a neural network with hidden layers can bend it, which is what solving XOR requires.
 
 ---
 
@@ -51,7 +51,7 @@ A layer of neurons between input and output. Each hidden neuron computes its own
 
 ## I
 
-### Interpretability Tax
+### Interpretability Trade-Off
 The trade-off incurred when moving from logistic regression to more flexible models: accuracy may improve, but per-feature effect sizes, directions, confidence intervals, and simple individual-prediction explanations are lost. In regulated domains (credit, medicine), that loss can be disqualifying.
 
 ---
@@ -62,7 +62,7 @@ The trade-off incurred when moving from logistic regression to more flexible mod
 The quantity logistic regression is actually linear in: $\log\frac{p}{1-p} = \beta_0 + \beta_1 X_1 + \dots + \beta_k X_k$. Each coefficient is the change in log-odds per unit of its feature; exponentiating a coefficient gives its odds ratio.
 
 ### Logistic (Sigmoid) Function
-$\sigma(z) = \frac{1}{1 + e^{-z}}$ — squashes any real number into (0, 1), turning the linear combination of features into a probability. The reason a straight-line fit fails for binary targets and logistic regression does not.
+$\sigma(z) = \frac{1}{1 + e^{-z}}$. It squashes any real number into (0, 1), turning the linear combination of features into a probability. This is why logistic regression works for binary targets where a straight-line fit does not.
 
 ### Logistic Regression
 A classifier that models the *probability* of the positive class by passing a linear combination of the features through the sigmoid. Despite the name, it is a classification method. Its strengths: calibrated probabilities, interpretable coefficients, statistical inference; its limit: a linear decision boundary.
@@ -79,7 +79,7 @@ Sklearn's feedforward neural network. Used in 18_2_3 as a black box to show that
 ## N
 
 ### Neuron
-The unit of computation in a neural network: a weighted sum of inputs plus a bias, passed through an activation function — $\sigma(w \cdot x + b)$. Logistic regression *is* a single neuron with a sigmoid activation; 18_2_3 verifies this numerically.
+The unit of computation in a neural network: a weighted sum of inputs plus a bias, passed through an activation function: $\sigma(w \cdot x + b)$. Logistic regression *is* a single neuron with a sigmoid activation; 18_2_3 verifies this numerically.
 
 ---
 
@@ -89,14 +89,14 @@ The unit of computation in a neural network: a weighted sum of inputs plus a bia
 The ratio of the probability an event happens to the probability it doesn't: $\text{odds} = \frac{p}{1-p}$. A probability of 0.75 is odds of 3 ("three to one").
 
 ### Odds Ratio
-$e^{\beta}$ for a coefficient $\beta$: the multiplicative change in odds per one-unit increase in that feature, holding the others fixed. An odds ratio of 2 doubles the odds; 0.5 halves them; 1.0 means no effect. The standard interpretable currency of logistic regression.
+$e^{\beta}$ for a coefficient $\beta$: the multiplicative change in odds per one-unit increase in that feature, holding the others fixed. An odds ratio of 2 doubles the odds; 0.5 halves them; 1.0 means no effect. Odds ratios are the standard way of interpreting logistic regression coefficients.
 
 ---
 
 ## R
 
 ### ReLU (Rectified Linear Unit)
-$\text{ReLU}(z) = \max(0, z)$ — the default hidden-layer activation in modern networks. Unlike sigmoid, it does not saturate for large positive inputs, which makes deep networks much easier to train. Sigmoid remains the right choice for the *output* of a binary classifier, where a probability is needed.
+$\text{ReLU}(z) = \max(0, z)$, the default hidden-layer activation in modern networks. Unlike sigmoid, it does not saturate for large positive inputs, which makes deep networks much easier to train. Sigmoid remains the right choice for the *output* of a binary classifier, where a probability is needed.
 
 ---
 
@@ -110,11 +110,11 @@ The inference-oriented implementation of logistic regression: same coefficients 
 ## T
 
 ### Threshold (Decision Threshold)
-The probability cutoff for converting predicted probabilities into class labels, 0.5 by default. Moving it trades precision against recall — reprised from 18_1's ROC and precision-recall material, now applied to logistic regression's calibrated probabilities.
+The probability cutoff for converting predicted probabilities into class labels, 0.5 by default. Moving it trades precision against recall. This is the same idea as in 18_1's ROC and precision-recall material, now applied to logistic regression's probabilities.
 
 ---
 
 ## X
 
 ### XOR Problem
-The four-point dataset — (0,0)→0, (0,1)→1, (1,0)→1, (1,1)→0 — that no linear decision boundary can separate. The classic proof that a single neuron is not enough and the motivating example for hidden layers in 18_2_3.
+The four-point dataset (0,0)→0, (0,1)→1, (1,0)→1, (1,1)→0, which no linear decision boundary can separate. It is the standard example showing that a single neuron is not enough, and it motivates the hidden layers in 18_2_3.

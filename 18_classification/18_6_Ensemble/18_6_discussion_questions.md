@@ -1,4 +1,4 @@
-# Discussion Questions: 18_6 — Trees and Ensemble Methods
+# Discussion Questions: 18_6 Trees and Ensemble Methods
 
 ---
 
@@ -21,11 +21,11 @@
 ### Why Averaging Works
 
 7. Bagging trains each tree on a bootstrap sample (drawn with replacement) of the training data. Why does deliberately training on *noisier* versions of the data produce a *more* stable model?
-8. Single decision trees are described as "high variance." What does variance mean here — variance of what, across what? How does averaging many trees reduce it?
-9. Bagged trees are grown deep (unpruned) on purpose, even though a deep single tree overfits. Why is overfitting in the individual trees acceptable — even desirable — inside a bagging ensemble?
+8. Single decision trees are described as "high variance." What does variance mean here: variance of what, across what? How does averaging many trees reduce it?
+9. Bagged trees are grown deep (unpruned) on purpose, even though a deep single tree overfits. Why is overfitting in the individual trees acceptable, and even desirable, inside a bagging ensemble?
 10. Out-of-bag (OOB) error gives a validation estimate "for free." Where does the free validation data come from, and why is each tree only scored on some of the rows?
 
-### The Random Forest Fix
+### What Random Forests Add
 
 11. If bagging already averages many trees, what problem is left for random forests to solve? What does restricting each split to a random subset of features accomplish that bootstrapping alone does not?
 12. Suppose one feature (say, `worst concave points`) is by far the strongest predictor. Describe what happens to a bagged ensemble's trees without feature subsampling, and why that hurts the ensemble.
@@ -39,13 +39,13 @@
 15. AdaBoost re-weights misclassified samples; gradient boosting fits each new tree to the current residuals. Explain how these are two versions of the same idea: "concentrate on what we're still getting wrong."
 16. Boosting reduces bias, while bagging reduces variance. Connect this to the models each one starts from: why does it make sense that an ensemble of stumps needs bias reduction while an ensemble of deep trees needs variance reduction?
 17. The learning rate shrinks each tree's contribution. Why do a *smaller* learning rate and *more* trees often generalize better than a large learning rate with few trees? What is the cost?
-18. Boosted models can achieve excellent accuracy while producing poorly calibrated probability estimates. Why does calibration matter if all you report to the clinician is a probability of malignancy?
+18. In 18_6_3, AdaBoost had the highest test accuracy, yet its predicted probabilities were poorly calibrated (all between about 0.2 and 0.8). Why does calibration matter if all you report to the clinician is a probability of malignancy?
 
 ## 18_6_4: Model Comparison
 
 ### Comparing Fairly
 
-19. The final notebook uses *nested* cross-validation to compare tree, forest, and boosting models — the same machinery as 17_2's Part 5. Why would tuning hyperparameters and reporting the score from the same cross-validation loop overstate every model's performance? Does it overstate all models equally?
-20. Two models finish within a fraction of a percentage point of each other, but their fold-to-fold standard deviations overlap heavily. What should you conclude, and what would you look at next to choose between them (consider the malignant-recall story and interpretability)?
+19. The final notebook uses *nested* cross-validation to compare tree, forest, and boosting models, using the same procedure as 17_2's Part 5. Why would tuning hyperparameters and reporting the score from the same cross-validation loop overstate every model's performance? Does it overstate all models equally?
+20. Two models finish within a fraction of a percentage point of each other, but their fold-to-fold standard deviations overlap heavily. What should you conclude, and what would you look at next to choose between them (consider the malignant-recall results and interpretability)?
 21. After nested CV selects a winner, the final model is refit on the full dataset. Why is it legitimate to train the shipped model on all the data when every performance number you quoted came from held-out folds?
-22. Across the whole series — single tree, bagging, random forest, boosting — state each method's one-sentence answer to the question "where do you get your edge?"
+22. For each method in the series (single tree, bagging, random forest, boosting), write one sentence explaining where its performance advantage comes from.

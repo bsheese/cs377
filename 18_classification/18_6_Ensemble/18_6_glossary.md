@@ -1,4 +1,4 @@
-# 18_6 Ensemble Methods — Glossary
+# 18_6 Ensemble Methods: Glossary
 
 This document defines all technical and conceptual terms used across the five notebooks in the 18_6 Ensemble Methods series. Terms already defined in the 18_1 Classification Basics glossary are noted with cross-references.
 
@@ -10,7 +10,7 @@ This document defines all technical and conceptual terms used across the five no
 The original boosting algorithm. It trains weak learners (typically decision stumps) sequentially, increasing the weights of misclassified samples after each round so that subsequent learners focus on the hardest cases. Final predictions are made by weighted voting, where better-performing learners get more weight.
 
 ### Accuracy Paradox
-See **18_1 Glossary: Accuracy Paradox**. In the medical context of 18_6, a model can achieve high accuracy by correctly classifying most benign tumors while missing many malignant ones — making it clinically useless.
+See **18_1 Glossary: Accuracy Paradox**. In the medical context of 18_6, a model can achieve high accuracy by correctly classifying most benign tumors while missing many malignant ones, which would make it unsuitable for clinical use.
 
 ### AUC (Area Under the ROC Curve)
 See **18_1 Glossary: AUC**. In 18_6, an AUC of 0.99 means the model correctly ranks a random malignant tumor above a random benign tumor 99% of the time.
@@ -23,7 +23,7 @@ See **18_1 Glossary: AUC**. In 18_6, an AUC of 0.99 means the model correctly ra
 An ensemble technique that reduces variance by training multiple models independently on bootstrap samples (random samples drawn with replacement) and averaging their predictions. Each model overfits to its specific sample, but the errors differ across models, so averaging cancels out the noise.
 
 ### BART (Bayesian Additive Regression Trees)
-A Bayesian ensemble method that combines an ensemble of shallow trees with MCMC (Markov Chain Monte Carlo) sampling. Unlike boosting, BART does not build trees sequentially to correct errors — instead, it randomly perturbs the entire ensemble (adding branches, removing splits, changing thresholds) and accepts changes that improve the fit. The key advantage is **uncertainty quantification**: BART provides credible intervals for each prediction.
+A Bayesian ensemble method that combines an ensemble of shallow trees with MCMC (Markov Chain Monte Carlo) sampling. Unlike boosting, BART does not build trees sequentially to correct errors. Instead, it randomly perturbs the entire ensemble (adding branches, removing splits, changing thresholds) and accepts changes that improve the fit. The key advantage is **uncertainty quantification**: BART provides credible intervals for each prediction.
 
 ### Bias
 The error a model makes because it is too simple to capture the true pattern (underfitting). In the ensemble context: single deep trees have low bias (they can fit complex patterns) but high variance. Boosting reduces bias by sequentially correcting errors.
@@ -36,23 +36,23 @@ Random sampling with replacement from the training data. Each bootstrap sample i
 ## C
 
 ### Calibration (Probability Calibration)
-The degree to which a model's predicted probabilities match actual outcome frequencies. A well-calibrated model that predicts 80% probability of malignancy should be correct about 80% of the time. Random Forests tend to be well-calibrated; Gradient Boosting often produces probabilities that are too extreme.
+The degree to which a model's predicted probabilities match actual outcome frequencies. A well-calibrated model that predicts 80% probability of malignancy should be correct about 80% of the time. AdaBoost is known for poor calibration: in 18_6_3 all of its probabilities fell between about 0.2 and 0.8, even though it classified very accurately. Random Forest probabilities tend to be pulled somewhat toward the middle by averaging. Gradient Boosting, which is trained on log loss, is usually reasonably well calibrated, although its probabilities are often very close to 0 or 1 and can be overconfident when it overfits. Extreme probabilities are not a calibration problem as long as they are usually correct.
 
 ### Class Weight (Balanced)
-A model option (`class_weight='balanced'`) that re-weights classes inversely to their frequency during training — the per-class analogue of the **Sample Weight** entry in the 18_1 glossary. In 18_6, using `class_weight='balanced'` with Random Forests shifts the decision boundary to catch more malignant tumors at the cost of more false positives (unnecessary biopsies).
+A model option (`class_weight='balanced'`) that re-weights classes inversely to their frequency during training. It is the per-class analogue of the **Sample Weight** entry in the 18_1 glossary. In general, `class_weight='balanced'` shifts the decision boundary to catch more of the minority class at the cost of more false positives. In 18_6_2, however, it made no difference on the breast cancer data, because the classes are well separated and only mildly imbalanced.
 
 ### Confusion Matrix
-See **18_1 Glossary: Confusion Matrix**. In 18_6, the medical interpretation is critical: false negatives = missed cancers, false positives = unnecessary biopsies.
+See **18_1 Glossary: Confusion Matrix**. In 18_6, the medical interpretation is especially important: false negatives = missed cancers, false positives = unnecessary biopsies.
 
 ### Correlated Features Problem
-When two or more features are highly correlated, tree-based models tend to use one for splits and ignore the others. This splits the importance score among correlated features, making none appear as dominant as it truly is. Permutation importance is a more reliable alternative.
+When two or more features are highly correlated, tree-based models tend to use one for splits and ignore the others. This splits the importance score among correlated features, so that none of them appears as important as it really is. Permutation importance is a more reliable alternative.
 
 ---
 
 ## D
 
 ### Decision Stump
-A decision tree with a single split (max_depth=1). It is a "weak learner" — only slightly better than random guessing. Used as the base learner in AdaBoost because the sequential correction process adds value only when individual learners are weak.
+A decision tree with a single split (max_depth=1). It is a "weak learner," only slightly better than random guessing. Used as the base learner in AdaBoost because the sequential correction process adds value only when individual learners are weak.
 
 ### Decision Tree
 A model that predicts by asking a sequence of yes/no questions about feature values. In 18_6, we contrast classification trees (majority class prediction at leaves, Gini impurity for splits) with the regression trees from 17_2_2 (mean prediction at leaves, MSE for splits).
@@ -69,7 +69,7 @@ A technique that combines multiple models (typically decision trees) to produce 
 ## F
 
 ### F1-Score
-See **18_1 Glossary: F1-Score**. In 18_6, the F1-score is used as the scoring metric for GridSearchCV because it balances precision and recall — important when both missed cancers and unnecessary biopsies matter.
+See **18_1 Glossary: F1-Score**. In 18_6, the F1-score is used as the scoring metric for GridSearchCV because it combines precision and recall, which is important when both missed cancers and unnecessary biopsies matter.
 
 ### False Negative (FN) / Type II Error
 In the medical context of 18_6: the model predicts benign but the tumor is actually malignant. A **missed cancer**. This is typically the more costly error in clinical settings.
@@ -78,7 +78,7 @@ In the medical context of 18_6: the model predicts benign but the tumor is actua
 In the medical context of 18_6: the model predicts malignant but the tumor is actually benign. An **unnecessary biopsy**. Less costly than a false negative but still has clinical and financial consequences.
 
 ### Feature Importance
-See **18_1 Glossary: Feature Importance**. Computed as the total reduction in Gini impurity attributed to splits on each feature across all trees in the ensemble. Limitation: correlated features share importance, so none appears as dominant as it truly is.
+See **18_1 Glossary: Feature Importance**. Computed as the total reduction in Gini impurity attributed to splits on each feature across all trees in the ensemble. Limitation: correlated features share importance, so none of them appears as important as it really is.
 
 ---
 
@@ -98,7 +98,7 @@ Exhaustive hyperparameter search with cross-validation; introduced for regressio
 ## H
 
 ### Harmonic Mean
-The reciprocal of the average of reciprocals. Unlike the arithmetic mean, it is dragged toward the smaller of its inputs — which is why the F1-score uses it: both precision and recall must be high for the F1 to be high.
+The reciprocal of the average of reciprocals. Unlike the arithmetic mean, it is pulled toward the smaller of its inputs, which is why the F1-score uses it: both precision and recall must be high for the F1 to be high.
 
 ---
 
@@ -203,7 +203,7 @@ The model correctly predicts malignant and the tumor is actually malignant.
 ## V
 
 ### Variance (Model)
-The error a model makes because it is overly sensitive to the particular training sample it saw — a high-variance model changes substantially when the data changes slightly. In 18_6, bagging and random forests reduce variance by averaging many diverse trees. The standard deviation of cross-validation scores is a practical measure of variance.
+The error a model makes because it is overly sensitive to the particular training sample it saw. A high-variance model changes substantially when the data changes slightly. In 18_6, bagging and random forests reduce variance by averaging many diverse trees. The standard deviation of cross-validation scores is a practical measure of variance.
 
 ---
 

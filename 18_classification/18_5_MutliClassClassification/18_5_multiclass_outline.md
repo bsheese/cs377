@@ -1,14 +1,14 @@
-# 18_5 Multi-Class Classification — Topic Outline
+# 18_5 Multi-Class Classification: Topic Outline
 
 This document outlines the topics covered across the three teaching notebooks and the exercise in the 18_5 Multi-Class Classification series.
 
 **Data by notebook:**
 - **18_5_1:** Palmer Penguins (three species)
 - **18_5_2:** Palmer Penguins (three species)
-- **18_5_3:** Fetal health / cardiotocography (Normal / Suspect / Pathological — heavily imbalanced)
+- **18_5_3:** Fetal health / cardiotocography (Normal / Suspect / Pathological; heavily imbalanced)
 - **18_5_9 (exercise):** Wine Quality (red), binned into a three-class target
 
-**Model throughout:** XGBoost with `objective="multi:softprob"` — the same classifier family from 18_1, extended to K classes.
+**Model throughout:** XGBoost with `objective="multi:softprob"`, the same classifier family from 18_1, extended to K classes.
 
 ---
 
@@ -21,7 +21,7 @@ This document outlines the topics covered across the three teaching notebooks an
 - The three species; visual separability of the classes
 
 ### Preparing the Data and Training
-- Integer-coded targets; one-hot encoding as the convention deep-learning frameworks use (exactly one 1 per row — one class per observation)
+- Integer-coded targets; one-hot encoding as the convention deep-learning frameworks use (exactly one 1 per row, because each observation has one class)
 - `XGBClassifier(objective="multi:softprob", num_class=3)`
 
 ### Probabilities for Three Classes
@@ -30,7 +30,7 @@ This document outlines the topics covered across the three teaching notebooks an
 
 ### The 3×3 Confusion Matrix
 - From 2×2 to 3×3: rows actual, columns predicted, diagonal correct
-- Every off-diagonal cell is one *specific* confusion — which pairs the model mixes up
+- Every off-diagonal cell is one *specific* confusion, showing which pairs the model mixes up
 
 ### A First Look at the Classification Report
 - Per-class precision/recall/F1/support; preview of the averaging question
@@ -61,25 +61,25 @@ This document outlines the topics covered across the three teaching notebooks an
 
 ## 18_5_3: When One Class Is Rare
 
-**Topics:** Imbalanced multiclass classification on real medical data; sample weighting; honest cross-validation.
+**Topics:** Imbalanced multiclass classification on real medical data; sample weighting; stratified cross-validation.
 
 ### The Problem: Fetal Health Monitoring
 - Cardiotocography data; Pathological is rare and is the class you cannot afford to miss
 
-### Measuring the Problem, and the Imbalance Trap in Action
-- Class proportions; a weak model posts high accuracy while missing Pathological cases
+### Measuring the Problem, and How Imbalance Affects a Simple Model
+- Class proportions; a weak model gets high accuracy while missing Pathological cases
 - Macro F1 vs. weighted F1: why the gap matters here
 
 ### Remedies
-- XGBoost's flexibility; `compute_sample_weight(class_weight="balanced")` — rare classes get equal total voice in training, no rows added or removed
+- XGBoost's flexibility; `compute_sample_weight(class_weight="balanced")`, which gives rare classes equal total influence in training without adding or removing rows
 
-### Honest Evaluation
+### Evaluation with Stratified Cross-Validation
 - `StratifiedKFold` so every fold preserves the rare class's proportion
 - Which metric to use: macro F1 plus the rare class's own recall
 
 ---
 
-## 18_5_9: Exercise — Wine Quality Prediction
+## 18_5_9: Exercise: Wine Quality Prediction
 
 **Topics:** The full multiclass pipeline, end to end, on a new dataset.
 
@@ -87,5 +87,5 @@ This document outlines the topics covered across the three teaching notebooks an
 - Visualize class separation
 - Baseline XGBoost model; confusion matrix
 - Handle imbalance with balanced sample weights
-- Honest evaluation with stratified cross-validation
+- Evaluation with stratified cross-validation
 - Reflection questions
