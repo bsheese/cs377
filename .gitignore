@@ -222,3 +222,6 @@ _site/
 
 # POGIL answer sheets: instructor-only, repo is public
 *answer_sheet*
+
+# Copy downloaded by the supplemental pair notebooks when run from the repo root
+/ames_cleaning.py
