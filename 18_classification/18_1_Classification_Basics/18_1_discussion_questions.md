@@ -98,7 +98,7 @@
 ### Youden's J Statistic
 
 45. Youden's J = TPR − FPR. Why does maximizing this quantity find the "best" threshold? What trade-off does it implicitly make?
-46. Youden's J assumes that false positives and false negatives are equally costly. In the credit default context, is this a reasonable assumption? Why or why not?
+46. Youden's J weighs the true positive rate and the false positive rate equally. In the German Credit training data (490 good customers, 210 defaulters), what cost ratio between a missed default and a false alarm does that amount to? Is it a reasonable assumption for a bank? Why or why not?
 
 ### Business Cost Sensitivity
 

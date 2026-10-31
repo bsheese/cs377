@@ -220,4 +220,4 @@ eXtreme Gradient Boosting, a tree-based ensemble algorithm. Instead of fitting a
 ## Y
 
 ### Youden's J Statistic
-A metric for finding the optimal decision threshold: `J = TPR − FPR`. Maximizes the distance between the ROC curve and the random chance line. Finds the threshold that gives the best balance between catching positives and avoiding false alarms, assuming both error types are equally costly.
+A metric for finding the optimal decision threshold: `J = TPR − FPR`. Maximizes the distance between the ROC curve and the random chance line. Finds the threshold that gives the best balance between catching positives and avoiding false alarms, weighing the two error rates equally. Counted in cases, that assumes a missed positive costs as much as (negatives / positives) false alarms, so J matches the cost-optimal threshold only when the real cost ratio equals that class ratio.

@@ -151,11 +151,11 @@
 - [x] Lower than 0.5 (flag more positives, catch more true cases)
 - [ ] At 1.0
 
-### Youden's J is the most appropriate threshold selection method when:
+### Youden's J picks the same threshold as a cost-based search when:
 - [ ] False positives cost more than false negatives
-- [ ] False negatives cost more than false positives
-- [x] False positives and false negatives are equally costly
-- [ ] The dataset has no class imbalance
+- [ ] A missed positive costs exactly as much as a false alarm, whatever the class balance
+- [x] A missed positive costs as many false alarms as there are negatives per positive (the class ratio)
+- [ ] Always, because J already accounts for costs
 
 ### Why do we use out-of-fold (OOF) training probabilities to select the threshold, rather than test-set probabilities?
 - [ ] OOF probabilities are more accurate than test-set probabilities
