@@ -91,7 +91,7 @@ Before we get into the logistic function, it's essential to understand the diffe
 
     $$0 \leq p \leq 1$$
 
-*   Odds: The odds of an event happening are defined as the ratio of the probability of the event happening to the probability of the event not happening. In other words, the odds tell you how much more likely the event is to happen compared to it not happening.
+*   Odds: The odds of an event happening are defined as the ratio of the probability of the event happening to the probability of the event not happening. In other words, the odds compare the chance that the event happens with the chance that it does not happen.
 
     $$\text{Odds} = \frac{p}{1 - p}$$
 
@@ -100,6 +100,26 @@ Before we get into the logistic function, it's essential to understand the diffe
     $$\frac{0.8}{1 - 0.8} = 4$$
 
     This means the odds of rain are 4 to 1 in favor of rain.
+
+    You can also go the other way, from odds back to a probability:
+
+    $$p = \frac{\text{odds}}{1 + \text{odds}}$$
+
+    With odds of 4, this gives $4 / (1 + 4) = 0.8$, the probability we started with.
+
+*   Log-odds: The log-odds (also called the logit) are the natural logarithm of the odds. Everywhere in this module, "log" means the natural log, written $\ln$ on most calculators and `np.log` in Python. The operation that undoes it is raising $e$ to a power (`np.exp` in Python), so if you know the log-odds, then $\text{odds} = e^{\text{log-odds}}$.
+
+This table shows the same five events described in all three ways:
+
+| Probability $p$ | Odds $p/(1-p)$ | Log-odds $\ln(\text{odds})$ |
+|---|---|---|
+| 0.1 | 0.11 | −2.20 |
+| 0.3 | 0.43 | −0.85 |
+| 0.5 | 1.00 | 0.00 |
+| 0.7 | 2.33 | 0.85 |
+| 0.9 | 9.00 | 2.20 |
+
+Look at the range of values each column can take. A probability has to stay between 0 and 1. Odds can be any positive number, and they are below 1 when the event is less likely than not. Log-odds can be any number, negative or positive. The expression $\beta_0 + \beta_1 X_1 + \dots + \beta_k X_k$ can also produce any number, so it makes sense to set it equal to the log-odds, while setting it equal to a probability could give impossible values such as 2.3 or −0.4. This is why logistic regression uses a linear model for the log-odds and then converts the result back to a probability.
 
 ### The Logistic (Sigmoid) Function
 
