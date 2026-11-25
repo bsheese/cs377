@@ -7,7 +7,7 @@
 - How do you write down "the probability of what happened" as one formula, and what does that have to do with log loss?
 - How does the computer find the best coefficients?
 
-Every formula is worked out with numbers from the Challenger data in 18_2_0_2: 23 launches, 7 with O-ring damage, and one feature, the launch temperature. The fitted model is
+Every formula is worked out with numbers from the Challenger data in 18_2_0_2: 23 launches, 7 with damage to a field-joint O-ring, and one feature, the temperature of the joints at launch. The fitted model is
 
 $$z = 15.043 - 0.2322 \times \text{temperature}$$
 
@@ -30,7 +30,7 @@ Think of money in an account that doubles, and then triples. To find the total g
 | The log of a product is a sum: $\ln(ab) = \ln a + \ln b$ | $\ln 6 = 0.693 + 1.099$ |
 | The log of a ratio is a difference: $\ln(a/b) = \ln a - \ln b$ | $\ln(3/2) = 1.099 - 0.693 = 0.405$ |
 
-Two values are worth remembering: $e^0 = 1$, so $\ln 1 = 0$. Also, $e^{-a} = 1 / e^{a}$, so a negative exponent gives a number between 0 and 1. There is no log of 0 or of a negative number.
+Two values are worth remembering: $e^0 = 1$, so $\ln 1 = 0$. Also, $e^{-a} = 1 / e^{a}$, so a negative exponent gives a number between 0 and 1. A negative number has no log, and no number is the log of 0. As a value gets closer to 0, its log goes down without limit, which is why the videos describe the log of 0 as negative infinity.
 
 ---
 
@@ -208,7 +208,7 @@ Both corrections make sense. Probabilities of 0.5 were too high overall, so the 
 | 10 | −0.831 | −1.115 | 0.480 |
 | 50 | −1.152 | −2.116 | 0.443 |
 | 200 | −1.208 | −2.321 | 0.442 |
-| 400 | −1.209 | −2.322 | 0.442 |
+| 400 | −1.208 | −2.322 | 0.442 |
 
 The first few steps make most of the improvement. The steps shrink as the gradient approaches 0, and by step 200 the coefficients are close to the fitted values of −1.208 and −2.322 from Section 3. The search has **converged**. In practice the computer stops when the changes fall below a small number called the **tolerance**, or when it reaches a **maximum number of iterations**. The second of these produces the `ConvergenceWarning` that you may see in scikit-learn, which means that it gave up before it was finished.
 
@@ -218,7 +218,7 @@ The first few steps make most of the improvement. The steps shrink as the gradie
 
 With 0.05, the log loss is still 0.615 after 30 steps. With 1, it has nearly leveled off. With 30, the first step raises the log loss from 0.693 to 1.029, and it keeps jumping around because each step goes past the bottom and lands on the other side.
 
-**One bottom.** The log loss for logistic regression has a single lowest value, with no other low spots for the search to get stuck in. Starting from different coefficients leads to the same answer. This stops being true for the neural networks in 18_2_3.
+**One bottom.** The log loss for logistic regression has no low spots for the search to get stuck in other than the lowest one. For data like these, and with a suitable learning rate, starting from different coefficients leads to the same answer. (Section 7 describes an exception, called perfect separation, in which the best coefficient is infinitely large and the search never finishes.) The log loss of a neural network can have other low spots, as you will see with the models in 18_2_3.
 
 **What is true at the bottom.** When the search has converged, the gradient for the intercept is 0, so the errors average to 0. That means the predicted probabilities for the 23 launches add up to 7, the number of launches that had damage. On the data it was fitted to, the model's average probability matches the actual rate, which is part of the reason that logistic regression tends to be well calibrated. (A penalty that leaves the intercept alone, which is what scikit-learn's default solver uses, keeps this property.)
 
@@ -252,7 +252,7 @@ In exchange for these assumptions, the model gives you probabilities that can be
 | Sigmoid | $p = 1/(1 + e^{-z})$ |
 | Odds ratio for one unit | $e^{\beta}$ |
 | Odds ratio for $c$ units | $e^{c\beta}$ |
-| Largest change in $p$ per unit (approximate) | $\beta/4$ |
+| Upper limit on the change in $p$ per unit | size of $\beta$ (ignoring its sign) divided by 4 |
 | Threshold $t$ on the log-odds scale | $\ln(t/(1-t))$ |
 | Likelihood of one observation | $p$ if $y = 1$, and $1 - p$ if $y = 0$ |
 | Log loss | average of $-\ln(\text{probability given to what happened})$ |

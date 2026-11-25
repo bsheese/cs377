@@ -10,9 +10,9 @@ Two real cases come up throughout. One is the decision to launch the space shutt
 
 **Watch first:** [StatQuest: Logistic Regression](https://www.youtube.com/watch?v=yIYKR4sgzI8)
 
-On the night before January 28, 1986, engineers and managers held a phone conference about whether the space shuttle Challenger should launch in the morning. The forecast was for temperatures around 31°F, much colder than at any earlier launch. Some of the engineers were worried about the O-rings, the rubber seals in the joints of the booster rockets. Rubber gets stiff when it is cold, and a stiff seal may not seal. The shuttle launched anyway. An O-ring failed, the shuttle broke apart 73 seconds into the flight, and all seven people on board died.
+On the night before January 28, 1986, engineers and managers held a phone conference about whether the space shuttle Challenger should launch in the morning. The forecasts were for temperatures below freezing at launch time, much colder than at any earlier launch. Different forecast figures appear in the records. We will use 31°F, the one used in statistical analyses of these data. Some of the engineers were worried about the O-rings, the rubber seals in the joints of the booster rockets. Rubber gets stiff when it is cold, and a stiff seal may not seal. The shuttle launched anyway. An O-ring failed, the shuttle broke apart 73 seconds into the flight, and all seven people on board died.
 
-There were data available that night. The shuttle program had records for 23 earlier launches: the temperature at launch, and whether any of the O-rings in the booster joints had been damaged. Seven of the 23 launches had some damage.
+There were data available that night. The shuttle program had records for 23 earlier launches: the estimated temperature of the booster joints at launch, and whether any of the O-rings in the field joints had been damaged. The field joints connect the main sections of each booster, and the joint that failed on Challenger was one of them. Seven of the 23 launches had some damage there. From here on, "damage" means field-joint damage. The boosters also have nozzle joints, and some of the launches counted as having no damage did have damage there.
 
 Suppose you had been handed those 23 records and asked, "What is the chance of O-ring damage tomorrow?" You already know how to draw a line through data, so you might start there. Code damage as 1 and no damage as 0, and fit a linear regression with temperature as the feature.
 
@@ -22,9 +22,9 @@ The straight line has one thing right, which is that damage becomes less likely 
 
 The S-shaped curve is what logistic regression fits. It goes down as the temperature goes up, as the line does, but it flattens out near 0 and near 1 instead of passing through them. This is the same curve as the one for the mice in the video, except that it runs in the other direction: heavier mice are more likely to be obese, and warmer launches are less likely to have damage.
 
-We read the curve as a probability. At 53°F, the coldest of the 23 launches, it gives 0.94. At 75°F it gives 0.09. If we have to answer yes or no, we pick a threshold, such as 0.5, and say yes above it. The curve crosses 0.5 at about 65°F. You saw in 18_1 that 0.5 is only a default, and this is a case where you would think hard about it: failing to predict damage that does happen is much worse than delaying a launch that would have been fine.
+We read the curve as a probability. At 53°F, the coldest of the 23 launches, it gives 0.94. At 75°F it gives 0.09. If we have to answer yes or no, we pick a threshold, such as 0.5, and say yes at or above it. The curve crosses 0.5 at about 65°F. You saw in 18_1 that 0.5 is only a default, and this is a case where you would think hard about it: failing to predict damage that does happen is much worse than delaying a launch that would have been fine.
 
-Deciding which launches to look at also matters. Much of the discussion that night was about the launches that *had* damage. Those seven happened at 53, 57, 58, 63, 70, 70 and 75 degrees, and by themselves they do not show an obvious pattern. The 16 launches without damage were all at 66°F or above, so all four launches below 65°F had damage, compared with 3 of the 19 launches at 65°F or above. To learn what separates the yeses from the noes, a model needs examples of both.
+Deciding which launches to look at also matters. In the discussion before the launch, the comparison of past flights focused on ones that *had* damage, and left out the flights without any. The seven launches with damage happened at 53, 57, 58, 63, 70, 70 and 75 degrees, and by themselves they do not show an obvious pattern. The 16 launches without damage were all at 66°F or above, so all four launches below 65°F had damage, compared with 3 of the 19 launches at 65°F or above. To learn what separates the yeses from the noes, a model needs examples of both.
 
 ---
 
@@ -47,7 +47,7 @@ To go back, add the two sides together to recover the total. Odds of 4 mean 4 ma
 
 $$p = \frac{\text{odds}}{1 + \text{odds}} = \frac{4}{1 + 4} = 0.80$$
 
-Odds are not limited to the range from 0 to 1. A player who makes 99 out of 100 has odds of 99. This solves half of our problem, because odds have no upper limit. They still cannot go below 0, though, and they are lopsided. Compare a player who makes 80% with a player who makes 20%. Those two are equally far from being a 50/50 shooter, but their odds are 4 and 0.25. All of the below-average shooters are squeezed between 0 and 1, while the good ones are spread out from 1 upward.
+Odds are not limited to the range from 0 to 1. A player who makes 99 out of 100 has odds of 99. This solves half of our problem, because odds have no upper limit. They still cannot go below 0, though, and they are lopsided. Compare a player who makes 80% with a player who makes 20%. Those two are equally far from being a 50/50 shooter, but their odds are 4 and 0.25. All of the shooters below 50% have odds between 0 and 1, while the shooters above 50% are spread out from 1 upward.
 
 Taking the natural logarithm of the odds fixes the lopsidedness. The logarithm of 4 is 1.39, and the logarithm of 0.25 is −1.39. Now the two players are the same distance from 0 in opposite directions, and 0 means 50/50.
 
@@ -73,9 +73,9 @@ The two versions are the same formula (divide the top and bottom of the first by
 
 ## 3. Odds ratios, and how a 91% to 85% difference became "40% less likely"
 
-**Watch first:** [Odds Ratios and Log(Odds Ratios), Clearly Explained!!!](https://www.youtube.com/watch?v=8nm0G-1uJzA) (The second half covers Fisher's exact test, the chi-squared test and the Wald test. You can stop when the video begins to discuss statistical significance.)
+**Watch first:** [Odds Ratios and Log(Odds Ratios), Clearly Explained!!!](https://www.youtube.com/watch?v=8nm0G-1uJzA) (You can stop at about 4:54, when the video begins to discuss statistical significance. The rest covers Fisher's exact test, the chi-squared test and the Wald test.)
 
-In 1999 the *New England Journal of Medicine* published a study in which about 700 doctors watched videotaped interviews with actors playing patients who had chest pain. The actors followed the same script but differed in race and sex. The doctors were asked whether they would refer the patient for a heart test called cardiac catheterization.
+In 1999 the *New England Journal of Medicine* published a study in which about 700 doctors watched videotaped interviews with actors playing patients who had chest pain. Each doctor watched one interview. The actors read from prepared scripts, and the patients they played differed in race, sex and age. The doctors were asked whether they would refer the patient they saw for a heart test called cardiac catheterization.
 
 The study reported that Black patients were referred less often than white patients, with an **odds ratio** of 0.6. News coverage, and many people who read it, took this to mean that Black patients were 40% less likely to be referred. Later that year the same journal published an analysis titled "Misunderstandings about the Effects of Race and Sex on Physicians' Referrals for Cardiac Catheterization." Its authors pointed out that the referral rates were about 91% for white patients and 85% for Black patients. (The same 91% and 85% applied to men and women. When the groups were separated further, the gap came mostly from Black women, who were referred about 79% of the time, compared with 91% for each of the other three groups.)
 
@@ -87,7 +87,7 @@ The difference was real and worth taking seriously, but 85% is not 40% less than
 
 - White patients: 0.91 / 0.09 = 10.1
 - Black patients: 0.85 / 0.15 = 5.7
-- Odds ratio: 5.7 / 10.1 = 0.56, which the study, using unrounded rates, reported as 0.6
+- Odds ratio: 5.7 / 10.1 = 0.56 (with the less rounded rates of 90.6% and 84.7% it is 0.57, and the study's table shows 0.6)
 
 An **odds ratio** is one group's odds divided by another group's odds. The calculation above is correct, and an odds ratio of 0.56 really does mean that the odds were 44% lower. The trouble came from describing it with the word "likely," which readers understand as a statement about probability.
 
@@ -145,7 +145,7 @@ For a Black patient, $z = 2.314 - 0.579 = 1.735$, and the sigmoid gives 0.85, th
 
 **Holding other things equal.** With several features, the model adds up one term for each of them: $z = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots$. Each coefficient then describes a one-unit change in its feature while the others stay the same, just as it did in multiple regression.
 
-**What about 31 degrees?** The model gives $z = 15.043 - 0.2322 \times 31 = 7.845$, for a probability of 0.9996. Be careful with that number. The coldest of the 23 launches was at 53°F, so the model has no data within 20 degrees of 31, and 23 launches are not many. What the data do support is that colder launches had much higher odds of damage and that the planned launch was far colder than any of them. This is also a model of *damage* to an O-ring, and all seven of the earlier launches with damage returned safely, so 0.9996 is not the probability of an accident.
+**What about 31 degrees?** The model gives $z = 15.043 - 0.2322 \times 31 = 7.845$, for a probability of 0.9996. Be careful with that number. The coldest of the 23 launches was at 53°F, so the model has no data within 20 degrees of 31, and 23 launches are not many. What the data do support is that colder launches had much higher odds of damage and that the planned launch was far colder than any of them. This is also a model of *damage* to a field-joint O-ring, and all seven of the earlier launches with that damage returned safely, so 0.9996 is not the probability of an accident.
 
 ---
 
@@ -225,7 +225,7 @@ Scikit-learn's default method for logistic regression (L-BFGS) is a relative of 
 
 ## Sources
 
-- The O-ring data are the 23 launches before Challenger analyzed in Dalal, Fowlkes and Hoadley, "Risk Analysis of the Space Shuttle: Pre-Challenger Prediction of Failure," *Journal of the American Statistical Association* 84 (1989), 945–957. Here an outcome of 1 means that at least one O-ring showed erosion or blow-by (hot gas leaking past the seal).
+- The O-ring data are the 23 launches before Challenger analyzed in Dalal, Fowlkes and Hoadley, "Risk Analysis of the Space Shuttle: Pre-Challenger Prediction of Failure," *Journal of the American Statistical Association* 84 (1989), 945–957. Here an outcome of 1 means that at least one field-joint O-ring showed erosion or blow-by (hot gas leaking past the seal). Damage in the nozzle joints is not counted. Temperatures are estimated joint temperatures. The measured air temperature when Challenger was launched was 36°F, and testimony to the Rogers Commission mentions a forecast of about 26°F.
 - Schulman and colleagues, "The Effect of Race and Sex on Physicians' Recommendations for Cardiac Catheterization," *New England Journal of Medicine* 340 (1999), 618–626.
 - Schwartz, Woloshin and Welch, "Misunderstandings about the Effects of Race and Sex on Physicians' Referrals for Cardiac Catheterization," *New England Journal of Medicine* 341 (1999), 279–283. The calculations in Sections 3 and 4 use the rounded rates of 91% and 85%.
 - The free-throw numbers and the weather forecasts are made up for illustration.
