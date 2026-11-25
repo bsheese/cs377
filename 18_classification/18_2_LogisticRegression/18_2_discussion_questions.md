@@ -2,31 +2,77 @@
 
 ---
 
-## 18_2_0_1: Logistic Regression Foundations (Reading)
+## 18_2_0_2: Logistic Regression in Plain Language (Reading)
 
-### Why Not Linear Regression?
+### Yes-or-No Outcomes
 
-1. A linear regression model fitted to a binary outcome (0/1) can predict probabilities below 0 and above 1. Why are these predictions problematic? Give a specific example where they would fail.
+1. A linear regression fitted to a 0/1 outcome can predict values below 0 and above 1. Why are these predictions a problem? Use the straight line fitted to the Challenger launches as your example.
 
-2. The logistic (sigmoid) function maps any real number to the interval (0, 1). What is the shape of this function, and why does this shape match the behavior of probabilities?
+2. The comparison of past flights before the Challenger launch focused on flights that had damage. What can you learn from all 23 launches that you cannot learn from the seven with damage?
 
-3. "Logistic regression is a linear model." In what sense is this true? In what sense could it be misleading?
+3. The model gives a probability of 0.9996 for O-ring damage at 31°F. Give two reasons to be careful with that number. What do the data support saying instead?
 
-### Coefficients and Log-Odds
+### Odds and Log-Odds
 
-4. In logistic regression, coefficients represent effects on the *log-odds*, not on the probability directly. Why is this harder to interpret than a linear regression coefficient?
+4. Two free-throw shooters make 80% and 20% of their shots. Compare them using odds and then using log-odds. What does taking the log do to the comparison?
 
-5. A positive coefficient means "increases the probability of the outcome." Why is it more precise to say "increases the log-odds"? When would these two statements lead to different interpretations?
+5. A player who goes from 50% to 59% and a player who goes from 90% to 99% both improve by 9 percentage points. Explain, using odds or log-odds, why the second change is larger in logistic regression.
 
-6. Converting log-odds to an odds ratio requires $e^{\beta}$. If $\beta = 0$, what is the odds ratio? What does this mean?
+### Odds Ratios and Coefficients
 
-### Maximum Likelihood Estimation
+6. In the 1999 referral study, how did rates of 91% and 85% turn into reports that one group was "40% less likely" to be referred? Write a correct sentence about the odds ratio and a correct sentence about the probabilities.
 
-7. OLS minimizes squared error to fit a linear model. Logistic regression uses Maximum Likelihood Estimation (MLE). Why can't OLS be used for logistic regression?
+7. When is an odds ratio close to the ratio of the two probabilities, and when are they far apart?
 
-8. The likelihood of observing a set of outcomes is the product of probabilities. Why do we use log-likelihood (sum of logs) instead of the raw likelihood (product of probabilities)?
+8. Someone asks how much a ten-degree change in temperature changes the probability of damage. Why can you not answer with one number, and what can you say that is true at every temperature?
 
-9. The coefficients that maximize the likelihood are found with an iterative optimizer such as gradient descent. What is a "learning rate," and what happens if it is set too high vs. too low?
+9. "Logistic regression is a linear model." In what sense is this true? In what sense could it be misleading?
+
+### Maximum Likelihood
+
+10. How does maximum likelihood use the probabilities that a model gave to a launch with damage and to a launch without damage? Explain with the two weather forecasters or the two candidate curves.
+
+---
+
+## 18_2_0_3: The Math Behind Logistic Regression (Reading)
+
+### Log-Odds and the Sigmoid
+
+1. Explain in words what each of the five algebra steps undoes in going from $\ln(p/(1-p)) = z$ to the sigmoid. Why does the result always stay between 0 and 1?
+
+2. Lowering the threshold from 0.5 to 0.2 moves the cutoff temperature from 64.8°F to 70.8°F. Why do the coefficients stay the same?
+
+### Coefficients
+
+3. In the algebra that shows $e^{\beta_1}$ is the odds ratio, what cancels? Which part of the cancellation is the reason for saying "all else equal"?
+
+4. If $\beta = 0$, what is the odds ratio? What does that say about the feature?
+
+5. A positive coefficient always raises both the log-odds and the probability. Why, then, is it more precise to describe the coefficient as a change in log-odds?
+
+6. Measuring temperature as $(\text{temperature} - 70)/10$ changes the intercept and the coefficient but none of the predictions. What does each of the two new numbers mean?
+
+### Likelihood and Log Loss
+
+7. Explain the difference between probability and likelihood. When a model is being fitted, what is fixed and what is being asked about?
+
+8. The likelihood is a product of probabilities. Why do we work with its log, and why does that not change which coefficients are best?
+
+9. The launch at 75°F contributes about a quarter of the total loss. Why is its loss so large?
+
+10. Linear regression chooses the line with the smallest sum of squared residuals. Why does least squares not work on the log-odds scale, and what plays its part in logistic regression?
+
+### Gradient Descent
+
+11. In the first step, why does the intercept go down, and why does the slope become negative? Answer in terms of the errors $y_i - p_i$.
+
+12. What is a learning rate? What happened to the log loss with learning rates of 0.05 and 30, and why?
+
+13. When the search has converged, the predicted probabilities for the 23 launches add up to 7. Why?
+
+### Assumptions
+
+14. If every launch below 65°F had damage and no other launch did, what would happen to the fitted coefficient? How does scikit-learn's default penalty help?
 
 ---
 
@@ -54,7 +100,7 @@
 
 8. The pipeline chains `ColumnTransformer → LogisticRegression`. What does `remainder='passthrough'` do, and why is it needed?
 
-9. Cross-validation produces scores [0.797, 0.782, 0.842, 0.827, 0.744]. The mean is 0.798, std is 0.069. How would you use these numbers when reporting the model's performance?
+9. Cross-validation produces scores [0.797, 0.782, 0.842, 0.827, 0.744]. The mean is 0.798, and the notebook reports it as 0.798 (+/- 0.069), where 0.069 is two standard deviations. How would you use these numbers when reporting the model's performance?
 
 ### Interpreting Odds Ratios
 
@@ -64,23 +110,27 @@
 
 12. Age has OR ≈ 0.59. Age was standardized before fitting, so this odds ratio describes a one-standard-deviation increase in age (about 14 years). How do you interpret it? Would you prefer to know this as an odds ratio or as a probability change? Why?
 
-13. Two features, `sibspouse` and `parentchild`, both have OR < 1. Does this surprise you? What real-world explanation might account for family size being associated with lower survival?
+13. Two features, `sibspouse` and `parentchild`, both have OR < 1. But in the raw data, passengers traveling with a sibling or spouse survived at a higher rate than those without (0.47 vs. 0.35), and so did passengers traveling with a parent or child (0.51 vs. 0.35). How can both be true? What does "all else equal" add?
+
+14. Passenger A's predicted probability goes from 0.361 to 0.874 when only `sex` is changed. Where does the odds ratio of 12.28 appear in that change, and why is it incorrect to say that the passenger became 12 times as likely to survive?
+
+15. Explain how the intercept and the "beta * input" columns produce passenger B's predicted probability of 0.947. Which contribution is the largest?
 
 ### Evaluation Metrics
 
-14. The model has precision = 0.73 and recall = 0.64 for the "survived" class. What do these two numbers mean in the context of the Titanic? Which error type (false positive vs. false negative) might you care more about?
+16. The model has precision = 0.73 and recall = 0.64 for the "survived" class. What do these two numbers mean in the context of the Titanic? Which error type (false positive vs. false negative) might you care more about?
 
-15. The model predicts deaths better than survivals (higher recall for class 0). Why might this happen, given the class imbalance (62% died)?
+17. The model predicts deaths better than survivals (higher recall for class 0). Why might this happen, given the class imbalance (62% died)?
 
-16. AUC = 0.842. Explain the probabilistic interpretation of AUC in plain English using a concrete example from the Titanic context.
+18. AUC = 0.842. Explain the probabilistic interpretation of AUC in plain English using a concrete example from the Titanic context.
 
 ### Threshold Tuning
 
-17. At t=0.3 (lower threshold), recall increases for survivors but precision decreases. Explain why lowering the threshold produces this tradeoff.
+19. At t=0.3 (lower threshold), recall increases for survivors but precision decreases. Explain why lowering the threshold produces this tradeoff.
 
-18. A medical screening application needs high recall (catch as many true positives as possible). A fraud detection application might prioritize precision (avoid false alarms). What threshold direction would each context favor?
+20. A medical screening application needs high recall (catch as many true positives as possible). A fraud detection application might prioritize precision (avoid false alarms). What threshold direction would each context favor?
 
-19. The threshold t=0.4 happens to maximize accuracy. Why might you NOT want to use this threshold for a specific business decision?
+21. The threshold t=0.4 happens to maximize accuracy. Why might you NOT want to use this threshold for a specific business decision?
 
 ---
 

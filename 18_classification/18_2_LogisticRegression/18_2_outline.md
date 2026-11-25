@@ -3,7 +3,8 @@
 This document outlines the topics covered across the 18_2 Logistic Regression series.
 
 **Data by notebook:**
-- **18_2_0_1 (reading):** none (conceptual primer with required StatQuest video)
+- **18_2_0_2 and 18_2_0_3 (readings):** Challenger O-ring data (23 launches before Challenger); published referral rates from a 1999 medical study (18_2_0_2 only)
+- **18_2_0_1 (older reading, replaced by 18_2_0_2 and 18_2_0_3):** none
 - **18_2_1:** Titanic (survival)
 - **18_2_2:** Titanic (survival), logistic regression vs. XGBoost
 - **18_2_3:** XOR toy data; Titanic (MLP vs. logistic regression)
@@ -11,14 +12,37 @@ This document outlines the topics covered across the 18_2 Logistic Regression se
 
 ---
 
-## 18_2_0_1: Logistic Regression Basics (reading + video)
+## 18_2_0_2: Logistic Regression in Plain Language (reading + videos)
 
-**Topics:** What logistic regression is for; the sigmoid; reading the formula.
+**Topics:** What logistic regression does and how to read it, introduced through real cases. Each section begins with a StatQuest video.
 
-- Required StatQuest video introduction
-- Binary classification predicts a *probability*, then thresholds it
-- Linear regression's output line vs. the sigmoid's (0, 1) squash
-- The logistic function formula and what each $\beta$ means
+- Yes/no outcomes: why a straight line fails and what the S-shaped curve does
+- Probability, odds and log-odds; converting among them
+- Odds ratios, and why an odds ratio is not a statement about how likely something is
+- Coefficients: making a prediction, reading $e^{\beta}$, 0/1 features and the reference group
+- The same odds ratio can change the probability by different amounts
+- Maximum likelihood: choosing the curve that gives the most probability to what happened; link to log loss
+- Gradient descent (optional section)
+
+---
+
+## 18_2_0_3: The Math Behind Logistic Regression (reading + videos)
+
+**Topics:** Where the formulas in 18_2_0_2 come from. Calculus is optional.
+
+- Rules for logs and exponents
+- Solving the log-odds equation for $p$ to get the sigmoid; thresholds on the log-odds scale; decision boundary
+- Why $e^{\beta}$ is the same odds ratio for every starting point; other unit sizes; the intercept; the $\beta/4$ limit
+- Probability vs. likelihood; the likelihood and log-likelihood formulas
+- Log loss (cross-entropy) for each observation and for the model; comparison with a baseline
+- Gradient descent: the first step by hand, convergence, learning rate
+- Assumptions and limits: linearity in the log-odds, interactions, independence, perfect separation, two classes
+
+---
+
+## 18_2_0_1: Logistic Regression Basics (older reading)
+
+Replaced by 18_2_0_2 and 18_2_0_3, which cover the same material. Kept for students who have already studied from it.
 
 ---
 
@@ -42,6 +66,8 @@ This document outlines the topics covered across the 18_2 Logistic Regression se
 
 ### Interpreting and Evaluating
 - Odds ratios: the standard way to interpret logistic regression coefficients
+- From coefficients to a predicted probability: the intercept and contributions worked through for two passengers
+- Odds are not probabilities: what multiplying the odds does to a passenger's probability
 - Predicted probabilities and calibration
 - Classification report; ROC curve and AUC; precision-recall curve (reprise from 18_1)
 - Threshold tuning
