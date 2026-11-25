@@ -1,4 +1,7 @@
 # Logistic Regression 
+
+> **Note:** This reading has been replaced by two newer ones that cover the same material: [18_2_0_2, Logistic Regression in Plain Language](18_2_0_2_LogReg_Plain_Language.md), and then [18_2_0_3, The Math Behind Logistic Regression](18_2_0_3_LogReg_Math.md). Where the course refers to 18_2_0_1, you can use those two instead. This version is kept for anyone who has already studied from it.
+
 Required video: [StatQuest introduction to logistic regression](https://www.youtube.com/watch?v=yIYKR4sgzI8)
 Watch the video several times if you have not had coursework on Logistic Regression before. Take notes. Ask us questions. Watch it again. 
 

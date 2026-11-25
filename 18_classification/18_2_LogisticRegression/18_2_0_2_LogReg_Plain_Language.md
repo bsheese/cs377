@@ -1,6 +1,6 @@
 # Logistic Regression in Plain Language
 
-This reading is an alternate to [18_2_0_1](18_2_0_1_LogReg_Basics.md). It covers the same ideas, but it starts each one with a situation in which somebody needed an answer and brings in the formula afterward. Each section begins with a StatQuest video. Watch the video first, then read the section, which explains the same ideas again with a different example.
+This is the first of two readings that replace [18_2_0_1](18_2_0_1_LogReg_Basics.md). It introduces the main ideas of logistic regression, and it starts each one with a situation in which somebody needed an answer and brings in the formula afterward. Each section begins with a StatQuest video. Watch the video first, then read the section, which explains the same ideas again with a different example.
 
 Two real cases come up throughout. One is the decision to launch the space shuttle Challenger. The other is a medical study whose main finding was widely misreported because odds were read as probabilities.
 
@@ -219,7 +219,7 @@ Scikit-learn's default method for logistic regression (L-BFGS) is a relative of 
 - The same odds ratio can change the probability by a lot or by a little, depending on the starting point.
 - The coefficients are chosen so that the model gives as much probability as possible to what actually happened.
 
-**What's next:** [18_2_1](18_2_1_LogReg_Intro_w_Titanic.ipynb) fits a logistic regression in scikit-learn with seven features instead of one. You will need to read several coefficients at once, decide what "all else equal" means for each of them, and check whether the model's predictions are any better than a simple rule.
+**What's next:** [18_2_0_3](18_2_0_3_LogReg_Math.md) goes back over the same ideas and shows where the formulas come from: why the log-odds line and the S-shaped curve are the same model, why $e$ raised to a coefficient is the same odds ratio for everybody, and how the computer finds the coefficients. After that, [18_2_1](18_2_1_LogReg_Intro_w_Titanic.ipynb) fits a model with seven features.
 
 ---
 
